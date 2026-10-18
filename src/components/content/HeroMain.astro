@@ -92,14 +92,11 @@ const partners = [
       /* At least 90% of the screen height, never shorter than the design. */
       min-height: max(49.6875rem, 90vh);
       min-height: max(49.6875rem, 90svh);
-      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       position: relative;
-      /* Equal top and bottom, so the block sits in the middle of the video.
-         The top clears the overlapping nav. */
-      padding-block: 7rem;
+      padding-block: 9rem var(--space-8);
       @media (width < 48rem) {
         min-height: max(46rem, 90vh);
         min-height: max(46rem, 90svh);
