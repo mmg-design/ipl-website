@@ -6,7 +6,15 @@ interface Props {
   class?: string;
 }
 const { render = true, class: className } = Astro.props;
+import caveat from "@/assets/fonts/Caveat-VariableFont_wght.ttf?url";
+const video = "https://IPLPullZone.b-cdn.net/HitTrax%20Video.mp4";
+const poster = "/images/figma/technology-0.webp";
 ---
+
+<style
+  is:global
+  set:html={`@font-face{font-family:"Caveat";src:url("${caveat}") format("truetype");font-weight:400 700;font-display:swap;}`}
+/>
 
 {
   render && (
@@ -16,10 +24,17 @@ const { render = true, class: className } = Astro.props;
         <img src="/images/figma/1f47e.svg" alt="" loading="lazy" />
       </div>
       <div class="technology-gallery_feature">
-        <img
-          src="/images/figma/technology-0.webp"
-          alt="Brandon Inge demonstrating swing data on a HitTrax screen"
-          loading="lazy"
+        <video
+          class="technology-gallery_preview"
+          src={`${video}#t=0,3`}
+          poster={poster}
+          muted
+          autoplay
+          playsinline
+          preload="metadata"
+          disablepictureinpicture
+          tabindex="-1"
+          aria-label="Brandon Inge demonstrating swing data on a HitTrax screen"
         />
       </div>
       <div class="technology-gallery_image">
@@ -46,6 +61,20 @@ const { render = true, class: className } = Astro.props;
     </div>
   )
 }
+<script>
+  /* Loop only the first three seconds, so the rest of the clip never loads. */
+  const PREVIEW_END = 3;
+  for (const preview of document.querySelectorAll<HTMLVideoElement>(
+    ".technology-gallery_preview",
+  )) {
+    preview.addEventListener("timeupdate", () => {
+      if (preview.currentTime >= PREVIEW_END) {
+        preview.currentTime = 0;
+        preview.play().catch(() => {});
+      }
+    });
+  }
+</script>
 <style is:global>
   @layer components {
     .technology-gallery_wrap {
@@ -77,7 +106,8 @@ const { render = true, class: className } = Astro.props;
       position: absolute;
       left: 0.75rem;
       top: -6rem;
-      font-family: cursive;
+      font-family: "Caveat", cursive;
+      font-weight: 500;
       font-size: 1.6875rem;
       transform: rotate(-4deg);
     }
@@ -96,6 +126,14 @@ const { render = true, class: className } = Astro.props;
     }
     .technology-gallery_feature {
       aspect-ratio: 442 / 589;
+      position: relative;
+      background: var(--dark-950);
+    }
+    .technology-gallery_preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
     }
     .technology-gallery_image {
       aspect-ratio: 3 / 4;
