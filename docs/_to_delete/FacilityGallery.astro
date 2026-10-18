@@ -1,0 +1,88 @@
+---
+import Card from "@/components/item/Card.astro";
+import { facility } from "@/data/home";
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+---
+
+{
+  render && (
+    <div class:list={["facility-gallery_wrap", className]}>
+      <div class="facility-gallery_edge before" aria-hidden="true" inert>
+        <Card
+          variant="facility"
+          {...facility[2]}
+          id={undefined}
+          buttonHref={undefined}
+        />
+      </div>
+      <div class="facility-gallery_list">
+        {facility.map((item) => (
+          <div class="facility-gallery_item">
+            <Card variant="facility" {...item} />
+          </div>
+        ))}
+      </div>
+      <div class="facility-gallery_edge after" aria-hidden="true" inert>
+        <Card
+          variant="facility"
+          {...facility[2]}
+          id={undefined}
+          buttonHref={undefined}
+        />
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .facility-gallery_wrap {
+      position: relative;
+      width: 100%;
+      padding-inline: var(--space-6);
+      @media (width < 48rem) {
+        padding-inline: 0;
+        .facility-gallery_list {
+          grid-template-columns: 1fr;
+          gap: var(--space-5);
+        }
+        .facility-gallery_edge {
+          display: none;
+        }
+        .facility-gallery_item {
+          transform: none;
+        }
+      }
+    }
+    .facility-gallery_list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-5);
+      align-items: stretch;
+    }
+    .facility-gallery_item:first-child {
+      transform: rotate(-1deg) translateY(0.4375rem);
+    }
+    .facility-gallery_item:last-child {
+      transform: rotate(1deg) translateY(0.4375rem);
+    }
+    .facility-gallery_edge {
+      position: absolute;
+      width: calc((100% - 8rem) / 3);
+      top: 2.3125rem;
+    }
+    .facility-gallery_edge.before {
+      right: calc(100% + 1rem);
+      transform: rotate(-3deg);
+    }
+    .facility-gallery_edge.after {
+      left: calc(100% + 1rem);
+      transform: rotate(3deg);
+    }
+  }
+</style>

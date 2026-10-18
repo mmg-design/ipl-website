@@ -95,9 +95,11 @@ const partners = [
       width: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: end;
+      justify-content: center;
       position: relative;
-      padding-block: 9rem var(--space-8);
+      /* Equal top and bottom, so the block sits in the middle of the video.
+         The top clears the overlapping nav. */
+      padding-block: 7rem;
       @media (width < 48rem) {
         min-height: max(46rem, 90vh);
         min-height: max(46rem, 90svh);
