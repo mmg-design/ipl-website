@@ -1,0 +1,166 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Background treatment. */
+  variant: "hero" | "glow" | "den" | "technology" | "cta";
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, variant, class: className } = Astro.props;
+const images = { hero: "hero-4.webp", cta: "cta-0.webp", den: "d1b9b.webp" };
+const videos: Partial<Record<Props["variant"], string>> = {
+  hero: "https://IPLPullZone.b-cdn.net/Main%20Website%20Video.mp4",
+  cta: "https://IPLPullZone.b-cdn.net/Footer%20Video.mp4",
+};
+const video = videos[variant];
+---
+
+{
+  render && (
+    <div class:list={["scene_wrap", variant, className]} aria-hidden="true">
+      {video && (
+        <video
+          class="scene_photo"
+          src={video}
+          poster={`/images/figma/${images[variant as "hero" | "cta"]}`}
+          autoplay
+          muted
+          loop
+          playsinline
+          disablepictureinpicture
+          preload={variant === "hero" ? "auto" : "metadata"}
+          tabindex="-1"
+        />
+      )}
+      {variant === "den" && (
+        <img
+          class="scene_photo"
+          src={`/images/figma/${images.den}`}
+          alt=""
+          loading="lazy"
+        />
+      )}
+      {variant === "glow" && (
+        <img
+          class="scene_glow"
+          src="/images/figma/9265a.svg"
+          alt=""
+          loading="lazy"
+        />
+      )}
+      {variant === "den" && (
+        <img
+          class="scene_glow"
+          src="/images/figma/684b1.svg"
+          alt=""
+          loading="lazy"
+        />
+      )}
+      {variant === "technology" && (
+        <>
+          <img
+            class="scene_pulse first"
+            src="/images/figma/9edab.svg"
+            alt=""
+            loading="lazy"
+          />
+          <img
+            class="scene_pulse second"
+            src="/images/figma/9edab.svg"
+            alt=""
+            loading="lazy"
+          />
+        </>
+      )}
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .scene_wrap {
+      overflow: clip;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+      /* The bottom fade sits on top of the side darkening, so the hero lands
+         on exactly the next section's colour. It is eased over many stops
+         rather than a straight two-stop ramp, which is what left a visible
+         band where the gradient began, and it goes fully solid just before
+         the edge so there is no seam. */
+      &.hero::after {
+        --_fade: var(--dark-900);
+        background:
+          linear-gradient(
+            0deg,
+            var(--_fade) 0%,
+            var(--_fade) 3%,
+            color-mix(in srgb, var(--_fade) 97%, transparent) 8%,
+            color-mix(in srgb, var(--_fade) 91%, transparent) 14%,
+            color-mix(in srgb, var(--_fade) 82%, transparent) 20%,
+            color-mix(in srgb, var(--_fade) 70%, transparent) 27%,
+            color-mix(in srgb, var(--_fade) 56%, transparent) 34%,
+            color-mix(in srgb, var(--_fade) 42%, transparent) 41%,
+            color-mix(in srgb, var(--_fade) 29%, transparent) 48%,
+            color-mix(in srgb, var(--_fade) 18%, transparent) 55%,
+            color-mix(in srgb, var(--_fade) 9%, transparent) 62%,
+            color-mix(in srgb, var(--_fade) 3%, transparent) 69%,
+            transparent 76%
+          ),
+          linear-gradient(90deg, #0009, #0003);
+      }
+      &.cta::after {
+        background:
+          linear-gradient(0deg, var(--dark-1000), transparent 65%),
+          linear-gradient(90deg, #0007, transparent);
+      }
+      &.den {
+        background: var(--dark-950);
+      }
+      &.den .scene_photo {
+        opacity: 0.38;
+      }
+      &.technology {
+        background: linear-gradient(var(--light-100), var(--light-200));
+      }
+      &.den .scene_glow {
+        left: 20%;
+        top: 10%;
+      }
+    }
+    .scene_photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .scene_glow {
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      transform: translateX(-50%);
+      width: auto;
+      height: auto;
+      max-width: none;
+    }
+    .scene_pulse {
+      position: absolute;
+      width: auto;
+      height: auto;
+      max-width: none;
+      opacity: 0.62;
+    }
+    .scene_pulse.first {
+      left: 55%;
+      top: 40%;
+    }
+    .scene_pulse.second {
+      left: -15%;
+      bottom: -10%;
+    }
+  }
+</style>

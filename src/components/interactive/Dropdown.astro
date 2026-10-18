@@ -9,6 +9,10 @@ type Props = HTMLAttributes<"div"> & {
   render?: boolean;
   /** Trigger text. */
   label?: string;
+  /** Panel layout. */
+  variant?: "default" | "mega";
+  /** Exclusive dropdown group. */
+  name?: string;
   /** Keep the panel open in design mode. */
   preview?: boolean;
 };
@@ -16,6 +20,8 @@ type Props = HTMLAttributes<"div"> & {
 const {
   render = true,
   label,
+  variant = "default",
+  name,
   preview = false,
   class: className,
   ...rest
@@ -27,7 +33,13 @@ const content = await slotContent(Astro.slots);
 {
   render && label && content && (
     <details
-      class:list={["dropdown_wrap", preview && "preview", className]}
+      class:list={[
+        "dropdown_wrap",
+        variant !== "default" && variant,
+        preview && "preview",
+        className,
+      ]}
+      name={name}
       {...rest}
     >
       <summary class="dropdown_toggle">
@@ -52,10 +64,20 @@ const content = await slotContent(Astro.slots);
     const content = dropdown.querySelector<HTMLElement>(".dropdown_content");
     if (!summary || !content) continue;
 
+    dropdown.addEventListener("toggle", () => {
+      summary.setAttribute("aria-expanded", String(dropdown.open));
+    });
+    summary.setAttribute("aria-expanded", String(dropdown.open));
+    dropdown.addEventListener("focusout", () => {
+      requestAnimationFrame(() => {
+        if (!dropdown.contains(document.activeElement)) dropdown.open = false;
+      });
+    });
     document.addEventListener("keydown", (event) => {
       if (!dropdown.open) return;
 
       if (event.key === "Escape") {
+        event.stopPropagation();
         dropdown.open = false;
         summary.focus();
         return;
@@ -94,6 +116,41 @@ const content = await slotContent(Astro.slots);
 
 <style is:global>
   @layer components {
+    .dropdown_wrap.mega {
+      position: static;
+      .dropdown_toggle {
+        gap: 0.25rem;
+      }
+      .dropdown_content {
+        top: 100%;
+        inset-inline: var(--site-margin);
+        margin-inline: auto;
+        width: auto;
+        min-width: 0;
+        max-width: var(--max-width-main);
+        max-height: calc(100dvh - var(--nav-height) - 1rem);
+        overflow: auto;
+        border: var(--border-width) solid var(--dark-700);
+        border-radius: var(--radius-main);
+        box-shadow: 0 1rem 3rem #0005;
+      }
+      .dropdown_body {
+        padding: var(--space-4);
+      }
+      @media (width < 80rem) {
+        .dropdown_content {
+          position: static;
+          max-height: none;
+          margin-bottom: var(--space-4);
+          max-width: none;
+          width: 100%;
+          box-shadow: none;
+        }
+        .dropdown_body {
+          padding: var(--space-2);
+        }
+      }
+    }
     .dropdown_wrap {
       --_control-pad: 0.75em;
       --_leaving: calc(var(--open-duration) * 0.7);

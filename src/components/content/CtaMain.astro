@@ -1,0 +1,53 @@
+---
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import { contact } from "@/data/home";
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+---
+
+{
+  render && (
+    <div class:list={["cta-main_wrap", className]}>
+      <div class="cta-main_content" id="memberships">
+        <ContentWrapper>
+          <Heading variant="h1">Start Here.</Heading>
+          <Paragraph maxWidth={43}>
+            Memberships, lessons, team training and leagues all run through one
+            front desk. Send a note and we’ll sort out where your athlete fits.
+          </Paragraph>
+          <ButtonWrapper>
+            <Button element="link" href={contact}>
+              Get in Touch
+            </Button>
+          </ButtonWrapper>
+        </ContentWrapper>
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .cta-main_wrap {
+      min-height: 58.5625rem;
+      display: flex;
+      align-items: end;
+      padding-block: var(--section-space-small);
+      width: 100%;
+      @media (width < 48rem) {
+        min-height: 40rem;
+      }
+    }
+    .cta-main_content {
+      max-width: 34rem;
+    }
+  }
+</style>

@@ -26,7 +26,15 @@ type Base = HTMLAttributes<"div"> & {
   /** Button destination. Omit for a `<button>`. */
   buttonHref?: string;
   /** Card layout. */
-  variant?: "default" | "cover" | "stacked";
+  variant?:
+    | "default"
+    | "cover"
+    | "stacked"
+    | "facility"
+    | "pathway"
+    | "program"
+    | "nav-training"
+    | "nav-feature";
   /** Color theme of element and its children. */
   theme?: "inherit" | "light" | "dark" | "brand" | "invert";
 };
@@ -46,6 +54,18 @@ type Props = Base &
         imageAlt?: string;
       }
     | {
+        variant:
+          "facility" | "pathway" | "program" | "nav-training" | "nav-feature";
+        /** Image source. */
+        image: string;
+        /** Image alt text. Omit for decorative images. */
+        imageAlt?: string;
+        /** Icon source. */
+        icon?: string;
+        /** Image crop from the design. */
+        crop?: string;
+      }
+    | {
         variant: "stacked";
         /** Color theme of element and its children. */
         theme?: never;
@@ -57,6 +77,8 @@ type Props = Base &
   );
 
 type AllProps = Base & {
+  icon?: string;
+  crop?: string;
   image?: ImageSource;
   imageAlt?: string;
 };
@@ -73,10 +95,20 @@ const {
   theme = "inherit",
   image,
   imageAlt,
+  icon,
+  crop,
   class: className,
   ...rest
 } = Astro.props as AllProps;
 
+const branded = [
+  "facility",
+  "pathway",
+  "program",
+  "nav-training",
+  "nav-feature",
+].includes(variant);
+const PhotoHeading = headingTag;
 const hasImage = variant !== "default" && !!image;
 const hasContent = !!(eyebrow || heading || text || buttonLabel);
 const hasTheme = variant !== "stacked" && theme !== "inherit";
@@ -105,10 +137,13 @@ if (import.meta.env.DEV && render) {
     );
   }
 }
+
+/* Training cards keep their line of copy tucked away until hover. */
+const reveal = variant === "pathway" || variant === "nav-training";
 ---
 
 {
-  render && (hasContent || hasImage) && (
+  render && !branded && (hasContent || hasImage) && (
     <div
       class:list={[
         "card_wrap",
@@ -150,8 +185,352 @@ if (import.meta.env.DEV && render) {
   )
 }
 
+{
+  render && branded && image && heading && (
+    <article
+      class:list={["card_wrap", variant, crop && `crop-${crop}`, className]}
+      {...rest}
+    >
+      <div class="card_photo">
+        <img src={image as string} alt={imageAlt ?? ""} loading="lazy" />
+      </div>
+      <div class="card_details">
+        {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+        <div class="card_caption">
+          {icon && (
+            <span class="card_icon">
+              <img src={icon} alt="" />
+            </span>
+          )}
+          <div class="card_copy">
+            <PhotoHeading
+              class:list={[
+                "card_title",
+                variant === "pathway" ? "text-style-h2" : "text-style-h3",
+              ]}
+            >
+              {buttonHref ? (
+                <a class="card_destination" href={buttonHref}>
+                  {heading}
+                </a>
+              ) : (
+                heading
+              )}
+            </PhotoHeading>
+            {text &&
+              (reveal ? (
+                <div class="card_reveal">
+                  <p class="card_description">{text}</p>
+                </div>
+              ) : (
+                <p class="card_description">{text}</p>
+              ))}
+          </div>
+        </div>
+        {buttonLabel && (
+          <a class="card_action" href={buttonHref}>
+            {buttonLabel}
+          </a>
+        )}
+      </div>
+    </article>
+  )
+}
+
 <style is:global>
   @layer components {
+    .card_wrap:is(.facility, .pathway, .program, .nav-training, .nav-feature) {
+      gap: 0;
+      border: var(--border-width) solid var(--dark-700);
+      border-radius: var(--radius-main);
+      isolation: isolate;
+      .card_photo {
+        overflow: hidden;
+        position: relative;
+      }
+      .card_photo > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 300ms ease;
+      }
+      .card_details {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        padding: var(--space-4);
+      }
+      .card_caption {
+        display: flex;
+        align-items: end;
+        gap: var(--space-3);
+      }
+      .card_copy {
+        min-width: 0;
+      }
+      .card_description {
+        margin-top: var(--space-4);
+      }
+      .card_destination::after {
+        position: absolute;
+        content: "";
+        inset: 0;
+        z-index: 1;
+      }
+      .card_action {
+        font-size: 0.8125rem;
+        font-weight: var(--primary-bold);
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+        margin-top: auto;
+      }
+      .card_icon {
+        background: linear-gradient(#ffffff22, #ffffff00), var(--brand-500);
+        border-radius: var(--radius-small);
+        padding: 0.5rem;
+        flex: none;
+      }
+      .card_icon > img {
+        width: auto;
+        height: auto;
+        max-width: none;
+      }
+      &:hover .card_photo > img {
+        transform: scale(1.025);
+      }
+      &:has(a:focus-visible) {
+        outline: var(--focus-width) solid currentcolor;
+        outline-offset: var(--focus-offset);
+      }
+      @media (width < 48rem) {
+        &.pathway {
+          min-height: 17rem;
+        }
+        &.pathway .card_title {
+          font-size: 1.625rem;
+        }
+        &.nav-training {
+          min-height: 12rem;
+        }
+      }
+    }
+    .card_wrap.facility {
+      padding: var(--space-2);
+      background: linear-gradient(180deg, #1979b600, #0b3550b8);
+      min-height: 31.75rem;
+      .card_photo {
+        aspect-ratio: 608 / 320;
+        border-radius: var(--radius-main);
+      }
+      .card_details {
+        flex: 1;
+        align-items: center;
+        gap: var(--space-3);
+        text-align: center;
+        padding: var(--space-5) var(--space-2) var(--space-2);
+      }
+      .card_caption {
+        flex: 1;
+        align-items: start;
+      }
+      .card_title {
+        font-size: var(--h3);
+      }
+      .card_description {
+        font-size: 1.0625rem;
+        line-height: 1.65;
+      }
+      .card_caption + .card_action {
+        padding-top: var(--space-3);
+      }
+    }
+    .card_wrap:is(.pathway, .nav-training) {
+      min-height: 20.6875rem;
+      background: var(--dark-950);
+      border-radius: var(--radius-small);
+      .card_photo {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+      }
+      .card_photo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent, var(--dark-950) 90%);
+      }
+      .card_details {
+        margin-top: auto;
+      }
+      &.crop-pitching .card_photo > img {
+        position: absolute;
+        width: 133.67%;
+        height: 125.29%;
+        left: -19.27%;
+        top: -17.56%;
+        max-width: none;
+      }
+      &.crop-mental .card_photo > img {
+        position: absolute;
+        width: 127.21%;
+        height: 268.64%;
+        left: -6.39%;
+        top: -64.44%;
+        max-width: none;
+      }
+      &.crop-baseball .card_photo > img {
+        position: absolute;
+        width: 120.05%;
+        height: 253.53%;
+        left: -3.86%;
+        top: -50.32%;
+        max-width: none;
+      }
+      &.crop-team .card_photo > img {
+        position: absolute;
+        width: 113.61%;
+        height: 144.06%;
+        left: -2.75%;
+        top: -43.96%;
+        max-width: none;
+      }
+      &.crop-softball .card_photo > img {
+        object-position: top;
+      }
+    }
+    /* Training cards: on hover, the icon and title slide up and the line of
+       copy opens underneath. Touch screens, which cannot hover, always show
+       the copy. Keyboard focus reveals it too. */
+    .card_wrap:is(.pathway, .nav-training) {
+      --_reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --_reveal-duration: 450ms;
+      .card_caption {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        align-items: center;
+        column-gap: var(--space-3);
+        row-gap: 0;
+        transition: grid-template-rows var(--_reveal-duration)
+          var(--_reveal-ease);
+      }
+      .card_copy {
+        display: contents;
+      }
+      .card_icon {
+        grid-area: 1 / 1;
+      }
+      .card_title {
+        grid-area: 1 / 2;
+      }
+      .card_reveal {
+        grid-area: 2 / 2;
+        /* Fill the row exactly, so a closed row means zero height. */
+        align-self: stretch;
+        min-height: 0;
+        overflow: hidden;
+      }
+      .card_description {
+        transition:
+          opacity var(--_reveal-duration) var(--_reveal-ease),
+          translate var(--_reveal-duration) var(--_reveal-ease);
+      }
+      @media (hover: hover) {
+        .card_caption {
+          grid-template-rows: auto 0fr;
+        }
+        .card_description {
+          opacity: 0;
+          translate: 0 0.5rem;
+        }
+        &:is(:hover, :focus-within) {
+          .card_caption {
+            grid-template-rows: auto 1fr;
+          }
+          .card_description {
+            opacity: 1;
+            translate: 0 0;
+          }
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card_caption,
+        .card_description {
+          transition-duration: 0ms;
+        }
+      }
+    }
+    .card_wrap.pathway .card_description {
+      /* Full line box, so descenders are not clipped by the reveal. */
+      text-box: normal;
+      margin-top: var(--space-2);
+      font-size: 1.0625rem;
+      line-height: 1.5;
+      color: color-mix(in srgb, currentcolor 85%, transparent);
+    }
+    .card_wrap.nav-training {
+      .card_title,
+      .card_description {
+        text-box: normal;
+      }
+      min-height: 14.75rem;
+      .card_details {
+        padding: 1.25rem;
+      }
+      .card_title {
+        font-size: 1.125rem;
+        line-height: 1.25;
+      }
+      .card_description {
+        font-size: 0.75rem;
+        line-height: 1.5;
+        margin-top: 0.25rem;
+      }
+    }
+    .card_wrap.nav-feature {
+      .card_title,
+      .card_description {
+        text-box: normal;
+      }
+      .card_photo {
+        aspect-ratio: 394 / 228;
+      }
+      .card_photo::after {
+        content: "";
+        position: absolute;
+        inset: 60% 0 0;
+        background: linear-gradient(transparent, var(--dark-800));
+      }
+      .card_details {
+        padding: 1rem 1.25rem 1.25rem;
+      }
+      .card_description {
+        font-size: 0.875rem;
+        line-height: 1.57;
+        margin-top: 0.25rem;
+      }
+      .card_title {
+        font-size: var(--h3);
+      }
+    }
+    .card_wrap.program {
+      background: transparent;
+      border: 0;
+      padding: var(--space-2);
+      .card_photo {
+        aspect-ratio: 405 / 240;
+        border-radius: var(--radius-small);
+      }
+      .card_details {
+        text-align: center;
+        padding: var(--space-5) 0 0;
+      }
+      .card_description {
+        font-size: 1.0625rem;
+        line-height: 1.65;
+      }
+    }
     .card_wrap {
       --_padding: var(--space-6);
       --_min-height: 20rem;

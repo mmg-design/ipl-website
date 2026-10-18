@@ -8,8 +8,12 @@ type Props = HTMLAttributes<"div"> & {
   render?: boolean;
   /** Accessible label. Defaults to `Slider`. */
   label?: string;
-  /** Slider bounds. */
-  variant?: "bleed" | "crop-start" | "contained";
+  /** Slider bounds. `centered` bleeds, snaps slides to the middle and fades those toward the edges. */
+  variant?: "bleed" | "crop-start" | "contained" | "centered";
+  /** Show markers and arrows. */
+  controls?: boolean;
+  /** Loop endlessly. `centered` only. */
+  loop?: boolean;
   /** Slides shown below 30rem. Defaults to `1.02`.
    *
    * @min 1
@@ -36,6 +40,8 @@ const {
   render = true,
   label = "Slider",
   variant = "bleed",
+  controls = true,
+  loop = false,
   xsmall = 1.02,
   small,
   medium,
@@ -77,13 +83,14 @@ const slides = await slotContent(Astro.slots);
     <div
       class:list={["slider_wrap", variant !== "bleed" && variant, className]}
       style={visible}
+      data-loop={loop && variant === "centered" ? "" : undefined}
       {...rest}
     >
       <div class="slider_list" role="group" aria-label={label} tabindex="0">
         <Fragment set:html={slides} />
       </div>
 
-      <div class="slider_controls">
+      <div class="slider_controls" hidden={!controls}>
         <div class="slider_markers" />
         <div class="slider_steps">
           <Button
@@ -173,7 +180,77 @@ const slides = await slotContent(Astro.slots);
       );
     };
 
+    const centered = slider.classList.contains("centered");
+    const looping = centered && slider.dataset.loop !== undefined;
+
+    /* Centered sliders loop by keeping an inert copy of the set on each side
+       and jumping one set width whenever the view drifts into a copy. */
+    if (looping) {
+      const copy = () =>
+        slides.map((slide) => {
+          const clone = slide.cloneNode(true) as HTMLElement;
+          clone.removeAttribute("aria-label");
+          clone.setAttribute("aria-hidden", "true");
+          clone.inert = true;
+          clone.querySelectorAll("[id]").forEach((el) => el.removeAttribute("id"));
+          clone.removeAttribute("id");
+          return clone;
+        });
+      list.prepend(...copy(), ...copy());
+      list.append(...copy(), ...copy());
+    }
+    const all = [...list.children] as HTMLElement[];
+    if (looping) {
+      list.querySelectorAll("img").forEach((img) => {
+        img.loading = "eager";
+        img.decoding = "async";
+      });
+    }
+    const set = () => stride() * slides.length;
+    if (looping) list.scrollLeft = set() * 2;
+
+    /* Slides ride the top edge of a circle: offset from the middle sets how far
+       each one drops and tilts, and how much it fades. */
+    const focus = () => {
+      const middle = list.scrollLeft + list.clientWidth / 2;
+      const radius = Math.max(list.clientWidth * 6, 1800);
+      const step = stride() || 1;
+      for (const slide of all) {
+        const offset = slide.offsetLeft + slide.offsetWidth / 2 - middle;
+        const limit = step * 2.5;
+        const x = Math.max(-limit, Math.min(limit, offset));
+        const drop = radius - Math.sqrt(radius * radius - x * x);
+        const tilt = (Math.asin(x / radius) * 180) / Math.PI;
+        const fade = Math.min(1, Math.abs(offset) / (step * 1.5));
+        slide.style.setProperty("--_arch-y", `${drop.toFixed(2)}px`);
+        slide.style.setProperty("--_arch-tilt", `${tilt.toFixed(3)}deg`);
+        slide.style.setProperty("--_focus", (1 - fade * 0.55).toFixed(3));
+      }
+    };
+
+    const wrap = () => {
+      if (!looping) return;
+      const width = set();
+      if (width <= 0) return;
+      let shift = 0;
+      if (list.scrollLeft < width * 1.5) shift = width;
+      else if (list.scrollLeft > width * 2.5) shift = -width;
+      if (!shift) return;
+      list.scrollLeft += shift;
+      from += shift;
+    };
+
+    let settle = 0;
     const sync = () => {
+      if (looping) {
+        clearTimeout(settle);
+        settle = window.setTimeout(() => {
+          if (!pressed) wrap();
+          focus();
+        }, 160);
+      }
+      if (centered) focus();
+      if (looping) return;
       const total = pages();
       if (total !== drawn) draw(total);
 
@@ -354,6 +431,23 @@ const slides = await slotContent(Astro.slots);
         scroll-padding-inline-start: 0;
       }
 
+      .slider_wrap.centered & {
+        position: relative;
+        overflow-y: hidden;
+        overscroll-behavior-y: auto;
+        scroll-snap-type: x proximity;
+        padding-block: var(--space-2) var(--space-8);
+      }
+
+      .slider_wrap.centered & > * {
+        scroll-snap-align: center;
+        opacity: var(--_focus, 1);
+        transform: translateY(var(--_arch-y, 0)) rotate(var(--_arch-tilt, 0deg));
+        transform-origin: 50% 100%;
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+      }
+
       .slider_wrap.contained & {
         margin-inline: 0;
         padding-inline: 0;
@@ -368,7 +462,8 @@ const slides = await slotContent(Astro.slots);
       gap: var(--space-4);
 
       .slider_wrap:not(.is-ready) &,
-      &.is-empty {
+      &.is-empty,
+      &[hidden] {
         display: none;
       }
     }

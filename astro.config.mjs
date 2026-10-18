@@ -13,6 +13,30 @@ export default defineConfig({
   ],
   fonts: [
     {
+      name: "Gotham",
+      cssVariable: "--font-gotham",
+      provider: fontProviders.local(),
+      options: {
+        variants: [
+          {
+            weight: 400,
+            style: "normal",
+            src: ["./src/assets/fonts/Gotham Regular.otf"],
+          },
+          {
+            weight: 500,
+            style: "normal",
+            src: ["./src/assets/fonts/Gotham Medium.otf"],
+          },
+          {
+            weight: 700,
+            style: "normal",
+            src: ["./src/assets/fonts/Gotham Bold.otf"],
+          },
+        ],
+      },
+    },
+    {
       name: "Inter",
       cssVariable: "--font-inter",
       provider: fontProviders.local(),

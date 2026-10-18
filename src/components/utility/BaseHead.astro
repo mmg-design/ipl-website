@@ -9,7 +9,7 @@ type Props = SeoProps;
 const {
   title,
   description = SITE_DESCRIPTION,
-  image = "/og-image.jpg",
+  image = "/images/figma/hero-4.webp",
   type = "website",
   noindex,
 } = Astro.props;
@@ -26,7 +26,7 @@ const socialImage = new URL(image, Astro.site);
   @layer base, patterns, components, utilities;
 </style>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<Font cssVariable="--font-inter" preload />
+<Font cssVariable="--font-gotham" preload />
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
@@ -44,6 +44,5 @@ const socialImage = new URL(image, Astro.site);
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={socialImage} />
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/webp" href="/images/figma/b1d48.webp" />
 <meta name="generator" content={Astro.generator} />

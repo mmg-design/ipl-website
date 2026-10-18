@@ -1,0 +1,232 @@
+---
+import Heading from "@/components/typography/Heading.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import { booking } from "@/data/home";
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+
+/* Partner logos for the hero ticker. Each class carries the crop for its file. */
+const partners = [
+  { class: "hittrax", src: "/images/figma/d36ad.webp", alt: "2SP Sports" },
+  { class: "hp", src: "/images/figma/eb407.webp", alt: "High Performance" },
+  { class: "mindset", src: "/images/figma/00a28.webp", alt: "HitTrax" },
+  {
+    class: "sports",
+    src: "/images/figma/73872.webp",
+    alt: "Champion Mindset Group",
+  },
+];
+---
+
+{
+  render && (
+    <div class:list={["hero-main_wrap", className]}>
+      <div class="hero-main_content">
+        <ContentWrapper>
+          <Eyebrow>
+            Baseball and Softball Training Facility · Brighton, MI
+          </Eyebrow>
+          <Heading tag="h1" maxWidth={22}>
+            Train Like It Matters.
+            <br />
+            Because It Does.
+          </Heading>
+          <Paragraph maxWidth={52}>
+            Six HitTrax cages. A varsity-size turf infield. A D1 weight room.
+            Coaching from a thirteen-year big leaguer. Under one roof in
+            Brighton.
+          </Paragraph>
+          <ButtonWrapper>
+            <>
+              <Button element="link" href={booking}>
+                Book a cage
+              </Button>
+              <Button element="link" href="/#contact" emphasis="secondary">
+                Contact us
+              </Button>
+            </>
+          </ButtonWrapper>
+        </ContentWrapper>
+        {/* Partner logos run as a slow ticker. Two identical panels sit side by
+          side and the track travels exactly one panel, so the loop is seamless.
+          The second panel is a visual copy only, held out of the accessibility
+          tree so screen readers hear each partner once. */}
+        <div class="hero-main_partners" role="group" aria-label="Training partners">
+          <div class="hero-main_partners-track">
+            {[0, 1].map((copy) => (
+              <div
+                class="hero-main_partners-panel"
+                aria-hidden={copy === 1 ? "true" : undefined}
+                inert={copy === 1}
+              >
+                {partners.map((partner) => (
+                  <span class:list={["hero-main_partner", partner.class]}>
+                    <img
+                      src={partner.src}
+                      alt={copy === 1 ? "" : partner.alt}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .hero-main_wrap {
+      /* At least 90% of the screen height, never shorter than the design. */
+      min-height: max(49.6875rem, 90vh);
+      min-height: max(49.6875rem, 90svh);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+      position: relative;
+      padding-block: 9rem var(--space-8);
+      @media (width < 48rem) {
+        min-height: max(46rem, 90vh);
+        min-height: max(46rem, 90svh);
+        padding-block: 8rem 4rem;
+        justify-content: end;
+        gap: var(--space-7);
+        .hero-main_partners {
+          width: 100%;
+        }
+        .hero-main_content {
+          max-width: 100%;
+        }
+      }
+    }
+    .hero-main_content {
+      max-width: 50.25rem;
+    }
+    /* The ticker window. Sits under the buttons, stays under half the screen
+       wide, clips the strip, and fades logos at both edges instead of cutting
+       them off. */
+    .hero-main_partners {
+      /* Space between logos. */
+      --_gap: 2.25rem;
+      /* Time for one full pass. Higher is slower. */
+      --_duration: 24s;
+      /* How far in from each edge the fade runs. */
+      --_fade: 15%;
+      /* Widest the window gets, as a share of the screen. */
+      --_max-width: 42vw;
+      width: min(100%, var(--_max-width));
+      margin-top: var(--space-7);
+      overflow: clip;
+      container-type: inline-size;
+      opacity: 0.69;
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        black var(--_fade),
+        black calc(100% - var(--_fade)),
+        transparent
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        black var(--_fade),
+        black calc(100% - var(--_fade)),
+        transparent
+      );
+    }
+    .hero-main_partners-track {
+      display: flex;
+      width: max-content;
+      animation: hero-main-partners var(--_duration) linear infinite;
+    }
+    /* Hold still while someone is looking closely at a logo. */
+    .hero-main_partners:hover .hero-main_partners-track {
+      animation-play-state: paused;
+    }
+    /* Each panel is at least as wide as the window, so four logos spread
+       across the full width and the copy always covers the gap as the
+       original leaves. Half-gap padding keeps spacing even at the seam. */
+    .hero-main_partners-panel {
+      display: flex;
+      flex: none;
+      align-items: center;
+      justify-content: space-around;
+      gap: var(--_gap);
+      min-width: 100cqw;
+      padding-inline: calc(var(--_gap) / 2);
+    }
+    /* Logos enter on the right and exit on the left. The track travels
+       exactly one panel, which lands the copy where the original began. */
+    @keyframes hero-main-partners {
+      to {
+        translate: -50% 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-main_partners-track {
+        animation: none;
+      }
+    }
+    .hero-main_partner {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      flex: none;
+    }
+    .hero-main_partner > img {
+      max-width: none;
+      position: absolute;
+    }
+    .hero-main_partner.hittrax {
+      width: 7.9375rem;
+      height: 1.8125rem;
+      > img {
+        width: 107.98%;
+        height: 273.33%;
+        left: -3.99%;
+        top: -86.67%;
+      }
+    }
+    .hero-main_partner.hp {
+      width: 5.375rem;
+      height: 2.375rem;
+      > img {
+        width: 101.23%;
+        height: 241.18%;
+        left: -0.77%;
+        top: -78.99%;
+      }
+    }
+    .hero-main_partner.mindset {
+      width: 7.375rem;
+      height: 1.3125rem;
+      > img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .hero-main_partner.sports {
+      width: 10.875rem;
+      height: 2rem;
+      > img {
+        width: 100.02%;
+        height: 179.45%;
+        left: -0.01%;
+        top: -39.73%;
+      }
+    }
+  }
+</style>

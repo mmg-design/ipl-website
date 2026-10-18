@@ -1,297 +1,704 @@
 ---
-import Icon from "@/components/media/Icon.astro";
-import NavLink from "@/components/global/NavLink.astro";
-import logo from "@/assets/logo/logo.svg";
-import { SITE_NAME } from "@/consts.ts";
-
+import Button from "@/components/Button.astro";
+import Dropdown from "@/components/interactive/Dropdown.astro";
+import Grid from "@/components/wrapper/Grid.astro";
+import Card from "@/components/item/Card.astro";
+import { training, features, booking } from "@/data/home";
 interface Props {
   /** Set to `false` to omit the component. */
   render?: boolean;
   /** Fix the nav over the page. */
   overlap?: boolean;
 }
-
 const { render = true, overlap = false } = Astro.props;
 ---
 
 {
   render && (
-    <header class:list={["nav_wrap", overlap && "overlap"]}>
+    <header class:list={["nav_wrap", "theme-dark", overlap && "overlap"]}>
+      {/* One shared panel the desktop dropdowns sit on. It morphs to the height
+        of whichever menu is open, so moving between Training and Features
+        glides instead of closing one box and opening another. */}
+      <div class="nav_viewport" aria-hidden="true" />
       <div class="nav_inner">
-        <a class="nav_logo" href="/" aria-label={SITE_NAME}>
-          <Icon src={logo} variant="full-width" />
+        <a class="nav_logo" href="/" aria-label="Inge Performance Lab home">
+          <img
+            src="/images/figma/b1d48.webp"
+            alt="Inge Performance Lab"
+            width="122"
+            height="59"
+          />
         </a>
         <button
           class="nav_toggle"
           type="button"
-          aria-label="Menu"
+          aria-label="Open navigation"
           aria-expanded="false"
           aria-controls="nav-menu"
         >
-          <span class="nav_toggle_icon" />
+          <>
+            <span />
+            <span />
+          </>
         </button>
-        <nav class="nav_menu" id="nav-menu" aria-label="Main">
-          <div class="nav_menu_inner">
-            <ul class="nav_links">
-              <NavLink href="/">Home</NavLink>
-              <NavLink href="/example-components">Example Components</NavLink>
-            </ul>
+        <nav class="nav_menu" id="nav-menu" aria-label="Main navigation">
+          <ul class="nav_links">
+            <li>
+              <Dropdown label="Training" variant="mega" name="main-navigation">
+                <Grid medium={3} class="gap-3">
+                  {training.map((item) => (
+                    <Card
+                      variant="nav-training"
+                      heading={item.heading}
+                      text={item.text}
+                      image={item.image}
+                      icon={item.icon}
+                      crop={item.crop}
+                      buttonHref={`/#${item.id}`}
+                    />
+                  ))}
+                  <div class="nav_tour">
+                    <img
+                      class="nav_tour_photo"
+                      src="/images/figma/b6040.webp"
+                      alt=""
+                      loading="lazy"
+                    />
+                    <div class="nav_tour_content">
+                      <>
+                        <p>Not sure where to start?</p>
+                        <Button element="link" href="/#contact" size="small">
+                          Contact us
+                        </Button>
+                      </>
+                    </div>
+                  </div>
+                </Grid>
+              </Dropdown>
+            </li>
+            <li>
+              <Dropdown label="Features" variant="mega" name="main-navigation">
+                <Grid medium={3} class="gap-3">
+                  {features.map((item) => (
+                    <Card
+                      variant="nav-feature"
+                      heading={item.heading}
+                      text={item.text}
+                      image={item.image}
+                      buttonHref={item.href}
+                    />
+                  ))}
+                </Grid>
+              </Dropdown>
+            </li>
+            <li>
+              <a class="nav_link" href="/#programs">
+                Programs &amp; Events
+              </a>
+            </li>
+            <li>
+              <a class="nav_link" href="/#memberships">
+                Memberships
+              </a>
+            </li>
+            <li>
+              <a class="nav_link" href="/#about">
+                About
+              </a>
+            </li>
+          </ul>
+          <div class="nav_actions">
+            <>
+              <Button
+                element="link"
+                href="/#contact"
+                size="small"
+                emphasis="secondary"
+              >
+                Contact us
+              </Button>
+              <Button element="link" href={booking} size="small">
+                Book a cage
+              </Button>
+            </>
           </div>
         </nav>
       </div>
     </header>
   )
 }
-
-{/* No-JS fallback */}
-<noscript>
-  <style>
-    .nav_toggle {
-      display: none;
-    }
-    .nav_menu {
-      grid-template-rows: 1fr;
-      visibility: visible;
-    }
-    .nav_menu_inner {
-      opacity: 1;
-    }
-  </style>
-</noscript>
-
 <script>
   const nav = document.querySelector<HTMLElement>(".nav_wrap");
   const toggle = nav?.querySelector<HTMLButtonElement>(".nav_toggle");
-
   if (nav && toggle) {
+    const closeDropdowns = () =>
+      nav
+        .querySelectorAll<HTMLDetailsElement>("details")
+        .forEach((d) => (d.open = false));
     const setOpen = (open: boolean) => {
       nav.classList.toggle("open", open);
       toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute(
+        "aria-label",
+        open ? "Close navigation" : "Open navigation",
+      );
+      if (!open) closeDropdowns();
     };
-
-    toggle.addEventListener("click", () => {
-      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    toggle.addEventListener("click", () =>
+      setOpen(toggle.getAttribute("aria-expanded") !== "true"),
+    );
+    nav
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", () => setOpen(false)));
+    document.addEventListener("click", (event) => {
+      if (event.target instanceof Node && !nav.contains(event.target))
+        setOpen(false);
     });
-
-    nav.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setOpen(false));
-    });
-
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && nav.classList.contains("open")) {
+      if (
+        event.key === "Escape" &&
+        nav.classList.contains("open") &&
+        !nav.querySelector("details[open]")
+      ) {
         setOpen(false);
         toggle.focus();
       }
     });
+    const updateScroll = () =>
+      nav.classList.toggle("scrolled", window.scrollY > 32);
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    updateScroll();
+    window
+      .matchMedia("(width >= 80rem)")
+      .addEventListener("change", () => setOpen(false));
+  }
 
-    document.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!nav.classList.contains("open") || !(target instanceof Node)) return;
-      if (!nav.contains(target)) setOpen(false);
+  /* Desktop dropdowns: open on hover and share one panel. When one menu is
+     already open, hovering the next one slides its content in from the side
+     it sits on while the panel eases to the new height. Touch, keyboard and
+     smaller screens keep the plain click-to-open behaviour. */
+  const header = document.querySelector<HTMLElement>(".nav_wrap");
+  const viewport = header?.querySelector<HTMLElement>(".nav_viewport");
+  const menus = header
+    ? [...header.querySelectorAll<HTMLDetailsElement>(".dropdown_wrap.mega")]
+    : [];
+
+  if (header && viewport && menus.length) {
+    const desktop = matchMedia(
+      "(width >= 80rem) and (hover: hover) and (pointer: fine)",
+    );
+    /* A short wait before opening, so a cursor passing over the nav on its way
+       somewhere else does not flash a menu. Moving between open menus skips it. */
+    const OPEN_DELAY = 100;
+    /* Grace period for crossing the gap between a trigger and its panel. */
+    const CLOSE_DELAY = 200;
+
+    let active: HTMLDetailsElement | null = null;
+    let openTimer = 0;
+    let closeTimer = 0;
+
+    const isHover = () => header.classList.contains("is-hover");
+    const panelOf = (menu: HTMLDetailsElement) =>
+      menu.querySelector<HTMLElement>(".dropdown_content")!;
+
+    const setHeight = (menu: HTMLDetailsElement, instant: boolean) => {
+      if (instant) header.classList.add("is-instant");
+      header.style.setProperty(
+        "--nav-viewport-h",
+        `${panelOf(menu).offsetHeight}px`,
+      );
+      if (instant) {
+        void header.offsetHeight;
+        header.classList.remove("is-instant");
+      }
+    };
+
+    /* Re-applying the same motion would not replay it, so clear it first. */
+    const setMotion = (menu: HTMLDetailsElement, motion: string | null) => {
+      delete menu.dataset.motion;
+      if (!motion) return;
+      void menu.offsetWidth;
+      menu.dataset.motion = motion;
+    };
+
+    /* Images loading late can change a panel's height after it opens. */
+    const resizer = new ResizeObserver(() => {
+      if (active) setHeight(active, false);
     });
 
-    window
-      .matchMedia("(width >= 48rem)")
-      .addEventListener("change", (event) => {
-        if (event.matches) setOpen(false);
+    /* Every way a menu opens or closes (hover, click, Escape, focus leaving,
+       a click outside) ends here, so the panel always matches what is open. */
+    const sync = () => {
+      if (!isHover()) return;
+      const next = menus.find((menu) => menu.open) ?? null;
+      if (next === active) return;
+      const prev = active;
+      active = next;
+      resizer.disconnect();
+
+      for (const menu of menus) {
+        menu.dataset.state = menu === next ? "open" : "closed";
+      }
+
+      if (prev && next) {
+        const forward = menus.indexOf(next) > menus.indexOf(prev);
+        setMotion(next, forward ? "from-end" : "from-start");
+        setMotion(prev, forward ? "to-start" : "to-end");
+        setHeight(next, false);
+      } else if (next) {
+        for (const menu of menus) setMotion(menu, null);
+        setHeight(next, true);
+        header.dataset.menu = "open";
+      } else {
+        delete header.dataset.menu;
+      }
+
+      if (next) resizer.observe(panelOf(next));
+    };
+
+    const clearTimers = () => {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+    };
+
+    const openMenu = (menu: HTMLDetailsElement) => {
+      clearTimers();
+      /* The menus share a `name`, so opening one closes the other. */
+      if (!menu.open) menu.open = true;
+      sync();
+    };
+
+    const closeMenus = () => {
+      clearTimers();
+      for (const menu of menus) menu.open = false;
+      sync();
+    };
+
+    const scheduleClose = () => {
+      clearTimeout(openTimer);
+      clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(closeMenus, CLOSE_DELAY);
+    };
+
+    for (const menu of menus) {
+      const item = menu.closest("li") ?? menu;
+      const trigger = menu.querySelector<HTMLElement>("summary");
+
+      item.addEventListener("pointerenter", (event) => {
+        if (!isHover() || event.pointerType !== "mouse") return;
+        clearTimers();
+        if (active) openMenu(menu);
+        else openTimer = window.setTimeout(() => openMenu(menu), OPEN_DELAY);
       });
+
+      item.addEventListener("pointerleave", (event) => {
+        if (!isHover() || event.pointerType !== "mouse") return;
+        scheduleClose();
+      });
+
+      /* A mouse click on a trigger that hover already opened should not close
+         it again. Keyboard activation (detail 0) still toggles as normal. */
+      trigger?.addEventListener("click", (event) => {
+        if (!isHover() || event.detail === 0) return;
+        event.preventDefault();
+        openMenu(menu);
+      });
+
+      menu.addEventListener("toggle", () => requestAnimationFrame(sync));
+    }
+
+    viewport.addEventListener("pointerenter", () => clearTimeout(closeTimer));
+    viewport.addEventListener("pointerleave", (event) => {
+      if (event.pointerType === "mouse") scheduleClose();
+    });
+
+    const setMode = () => {
+      clearTimers();
+      resizer.disconnect();
+      active = null;
+      delete header.dataset.menu;
+      for (const menu of menus) {
+        delete menu.dataset.state;
+        delete menu.dataset.motion;
+      }
+      header.classList.toggle("is-hover", desktop.matches);
+      sync();
+    };
+
+    desktop.addEventListener("change", setMode);
+    setMode();
   }
 </script>
-
+<noscript
+  ><style>
+    .nav_toggle {
+      display: none !important;
+    }
+    .nav_menu {
+      display: flex !important;
+      position: static !important;
+      max-height: none !important;
+    }
+    .nav_inner {
+      flex-wrap: wrap;
+    }
+  </style></noscript
+>
 <style is:global>
+  /* Registered so the shared panel's height can be transitioned. */
+  @property --nav-viewport-h {
+    syntax: "<length>";
+    inherits: true;
+    initial-value: 0px;
+  }
+
   @layer components {
     .nav_wrap {
+      /* Desktop dropdown motion. */
+      --_menu-ease: cubic-bezier(0.22, 1, 0.36, 1);
+      /* Softer curve for the sideways slide, so the travel stays visible. */
+      --_menu-slide-ease: cubic-bezier(0.25, 1, 0.5, 1);
+      --_menu-fade: 200ms;
+      --_menu-morph: 420ms;
+      /* How far content travels sideways when moving between menus. */
+      --_menu-slide: 10rem;
       position: sticky;
       top: 0;
       z-index: 100;
-      display: flex;
-      justify-content: center;
+      width: 100%;
+      background: var(--dark-900);
+      color: var(--light-100);
       padding-inline: var(--site-margin);
-      background-color: var(--background);
-      color: var(--text);
-      border-bottom: var(--border-width) solid var(--border);
-
+      transition:
+        background-color 200ms ease,
+        box-shadow 200ms ease;
       &.overlap {
         position: fixed;
-        inset-inline: 0;
+        background: transparent;
+      }
+      &:is(.scrolled, .open, :has(details[open])) {
+        background: var(--dark-900);
+        box-shadow: 0 0.5rem 2rem #0003;
+      }
+      @media (width < 80rem) {
+        .nav_toggle {
+          display: flex;
+        }
+        .nav_menu {
+          display: none;
+          position: absolute;
+          top: 100%;
+          inset-inline: 0;
+          max-height: calc(100dvh - var(--nav-height));
+          overflow: auto;
+          padding: var(--space-4) var(--site-margin);
+          background: var(--dark-900);
+          align-items: stretch;
+          flex-direction: column;
+        }
+        &.open .nav_menu {
+          display: flex;
+        }
+        .nav_links {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 0;
+        }
+        .nav_links > li {
+          border-bottom: var(--border-width) solid var(--border);
+        }
+        .nav_link {
+          padding-block: var(--space-3);
+          display: block;
+        }
+        .nav_actions {
+          flex-wrap: wrap;
+        }
       }
     }
-
     .nav_inner {
-      width: 100%;
-      max-width: var(--max-width-main);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0 var(--space-6);
-    }
-
-    /* Bar height */
-    .nav_logo,
-    .nav_toggle {
+      gap: var(--space-5);
       min-height: var(--nav-height);
+      max-width: 82rem;
+      margin-inline: auto;
     }
-
     .nav_logo {
+      width: 6rem;
+      height: 3.0625rem;
+      position: relative;
+      flex: none;
+      overflow: hidden;
+    }
+    .nav_logo > img {
+      position: absolute;
+      width: 127.27%;
+      max-width: none;
+      height: 120.81%;
+      left: -13.64%;
+      top: -10.4%;
+    }
+    .nav_menu {
       display: flex;
       align-items: center;
-      width: 6.5rem;
-      transition: opacity var(--hover-duration) var(--hover-ease);
-      @media (hover: hover) {
-        &:hover {
-          opacity: 0.6;
-        }
-      }
+      gap: var(--space-5);
     }
-
-    .nav_toggle {
-      --_icon-width: 1.5rem;
-      --_bar-gap: 0.5rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 2.75rem;
-      margin-right: calc((2.75rem - var(--_icon-width)) / -2);
-      color: inherit;
-      border-radius: var(--radius-small);
-      transition: opacity var(--hover-duration) var(--hover-ease);
-      @media (hover: hover) {
-        &:hover {
-          opacity: 0.6;
-        }
-      }
-    }
-
-    .nav_toggle_icon {
-      position: relative;
-      display: block;
-      width: var(--_icon-width);
-      height: calc(var(--_bar-gap) + var(--border-width));
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        inset-inline: 0;
-        height: var(--border-width);
-        background-color: currentcolor;
-        transition: transform var(--open-duration) var(--open-ease);
-      }
-      &::before {
-        top: 0;
-      }
-      &::after {
-        top: var(--_bar-gap);
-      }
-    }
-
-    .nav_wrap.open .nav_toggle_icon {
-      &::before {
-        transform: translateY(calc(var(--_bar-gap) / 2)) rotate(45deg);
-      }
-      &::after {
-        transform: translateY(calc(var(--_bar-gap) / -2)) rotate(-45deg);
-      }
-    }
-
-    .nav_menu {
-      position: absolute;
-      top: 100%;
-      inset-inline: 0;
-      display: grid;
-      grid-template-rows: 0fr;
-      visibility: hidden;
-      max-height: calc(100svh - var(--nav-height));
-      overflow-x: clip;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      background-color: var(--background);
-      border-bottom: var(--border-width) solid var(--border);
-      transition:
-        grid-template-rows var(--open-duration) var(--open-ease),
-        visibility var(--open-duration) var(--open-ease);
-    }
-
-    .nav_menu_inner {
-      overflow: hidden;
-      opacity: 0;
-      transition: opacity var(--open-duration) var(--open-ease);
-    }
-
-    .nav_wrap.open .nav_menu {
-      grid-template-rows: 1fr;
-      visibility: visible;
-    }
-
-    .nav_wrap.open .nav_menu_inner {
-      opacity: 1;
-      overflow-y: auto;
-    }
-
     .nav_links {
       display: flex;
-      flex-direction: column;
-      padding: var(--space-2) var(--site-margin) var(--space-4);
-      font-size: var(--text-main);
-      font-weight: var(--primary-medium);
-      & > li + li {
-        border-top: var(--border-width) solid var(--border);
-      }
+      gap: clamp(1rem, 2.2vw, 2rem);
+      align-items: center;
+      font-size: 1.0625rem;
     }
-
     .nav_link {
+      white-space: nowrap;
+      transition: opacity 200ms;
+    }
+    .nav_link:hover {
+      opacity: 0.7;
+    }
+    .nav_actions {
+      display: flex;
+      gap: var(--space-3);
+    }
+    .nav_toggle {
+      display: none;
+      width: 2.75rem;
+      height: 2.75rem;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.5rem;
+      color: inherit;
+    }
+    .nav_toggle > span {
       display: block;
-      padding-block: var(--space-3);
-      color: color-mix(in lab, currentcolor 60%, transparent);
-      text-decoration: none;
-      text-underline-offset: 0.4em;
-      text-decoration-thickness: var(--border-width);
-      transition: color var(--hover-duration) var(--hover-ease);
-      &[aria-current="page"] {
-        color: var(--text);
+      width: 1.75rem;
+      height: 0.125rem;
+      background: currentcolor;
+      transition: transform 200ms;
+    }
+    .nav_wrap.open .nav_toggle > span:first-child {
+      transform: translateY(0.3125rem) rotate(45deg);
+    }
+    .nav_wrap.open .nav_toggle > span:last-child {
+      transform: translateY(-0.3125rem) rotate(-45deg);
+    }
+    /* Smaller chevrons beside Training and Features. */
+    .nav_wrap .dropdown_wrap .dropdown_icon {
+      --_size: 0.7em;
+    }
+    .nav_wrap .dropdown_wrap.mega .dropdown_toggle {
+      gap: 0.375rem;
+    }
+
+    /* ---------- Desktop hover dropdowns ---------- */
+    .nav_viewport {
+      display: none;
+    }
+    .nav_wrap.is-hover {
+      transition:
+        background-color 200ms ease,
+        box-shadow 200ms ease,
+        --nav-viewport-h var(--_menu-morph) var(--_menu-ease);
+    }
+    /* Opening fresh snaps the panel to size; only moving between menus morphs. */
+    .nav_wrap.is-hover.is-instant {
+      transition:
+        background-color 200ms ease,
+        box-shadow 200ms ease;
+    }
+
+    /* The shared panel: carries the background, border and shadow, and
+       matches the box the dropdown content sits in. */
+    .nav_wrap.is-hover .nav_viewport {
+      display: block;
+      position: absolute;
+      top: 100%;
+      inset-inline: var(--site-margin);
+      margin-inline: auto;
+      max-width: var(--max-width-main);
+      height: var(--nav-viewport-h);
+      background-color: var(--background-2);
+      border: var(--border-width) solid var(--dark-700);
+      border-radius: var(--radius-main);
+      box-shadow: 0 1rem 3rem #0005;
+      opacity: 0;
+      visibility: hidden;
+      translate: 0 -0.375rem;
+      transition:
+        opacity var(--_menu-fade) var(--_menu-ease),
+        translate var(--_menu-fade) var(--_menu-ease),
+        visibility 0s var(--_menu-fade);
+    }
+    .nav_wrap.is-hover[data-menu="open"] .nav_viewport {
+      opacity: 1;
+      visibility: visible;
+      translate: 0 0;
+      transition:
+        opacity var(--_menu-fade) var(--_menu-ease),
+        translate var(--_menu-fade) var(--_menu-ease),
+        visibility 0s;
+    }
+
+    .nav_wrap.is-hover .dropdown_wrap.mega {
+      /* Both menus stay rendered so one can slide out while the other slides
+         in. Closed ones are hidden with `visibility`, which also keeps them
+         out of the tab order and away from screen readers. */
+      &::details-content {
+        content-visibility: visible;
+        opacity: 1;
+        transition: none;
       }
-      @media (hover: hover) {
-        &:hover {
-          color: var(--text);
-        }
+
+      .dropdown_content {
+        z-index: 1;
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* Clipped to the shared panel while it changes height. */
+        clip-path: inset(
+          0 0 max(0px, calc(100% - var(--nav-viewport-h))) 0 round
+            var(--radius-main)
+        );
+        scale: none;
+        translate: 0 0;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity var(--_menu-fade) var(--_menu-ease),
+          translate var(--_menu-fade) var(--_menu-ease),
+          visibility 0s var(--_menu-fade);
+      }
+
+      &[data-state="open"] .dropdown_content {
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity var(--_menu-fade) var(--_menu-ease),
+          translate var(--_menu-fade) var(--_menu-ease),
+          visibility 0s;
+      }
+
+      /* A menu being replaced fades over the full slide, not the quick fade. */
+      &[data-state="closed"][data-motion^="to-"] .dropdown_content {
+        transition:
+          opacity var(--_menu-morph) var(--_menu-ease),
+          visibility 0s var(--_menu-morph);
+      }
+
+      /* Sideways travel and opacity run as separate animations: the slide
+         takes the full morph, while the fade is quick, so the incoming menu is
+         visible for most of its journey and the outgoing one clears early. */
+      &[data-motion="from-end"] .dropdown_body {
+        animation:
+          nav-menu-from-end var(--_menu-morph) var(--_menu-slide-ease) both,
+          nav-menu-fade-in var(--_menu-fade) linear both;
+      }
+      &[data-motion="from-start"] .dropdown_body {
+        animation:
+          nav-menu-from-start var(--_menu-morph) var(--_menu-slide-ease) both,
+          nav-menu-fade-in var(--_menu-fade) linear both;
+      }
+      &[data-motion="to-start"] .dropdown_body {
+        animation:
+          nav-menu-to-start var(--_menu-morph) var(--_menu-slide-ease) both,
+          nav-menu-fade-out calc(var(--_menu-fade) * 0.8) linear both;
+      }
+      &[data-motion="to-end"] .dropdown_body {
+        animation:
+          nav-menu-to-end var(--_menu-morph) var(--_menu-slide-ease) both,
+          nav-menu-fade-out calc(var(--_menu-fade) * 0.8) linear both;
       }
     }
 
-    @media (width >= 48rem) {
-      .nav_toggle {
-        display: none;
-      }
+    /* Opening from nothing and closing to nothing: a short drop and fade,
+       in step with the shared panel. */
+    .nav_wrap.is-hover:not([data-menu="open"])
+      .dropdown_wrap.mega
+      .dropdown_content {
+      translate: 0 -0.375rem;
+    }
 
-      .nav_menu {
-        position: static;
-        display: block;
-        visibility: visible;
-        background-color: transparent;
-        border-bottom: 0;
+    @keyframes nav-menu-from-end {
+      from {
+        translate: var(--_menu-slide) 0;
       }
+    }
+    @keyframes nav-menu-from-start {
+      from {
+        translate: calc(var(--_menu-slide) * -1) 0;
+      }
+    }
+    @keyframes nav-menu-to-start {
+      to {
+        translate: calc(var(--_menu-slide) * -1) 0;
+      }
+    }
+    @keyframes nav-menu-to-end {
+      to {
+        translate: var(--_menu-slide) 0;
+      }
+    }
+    @keyframes nav-menu-fade-in {
+      from {
+        opacity: 0;
+      }
+    }
+    @keyframes nav-menu-fade-out {
+      to {
+        opacity: 0;
+      }
+    }
 
-      .nav_menu_inner {
-        overflow: visible;
-        opacity: 1;
+    @media (prefers-reduced-motion: reduce) {
+      .nav_wrap.is-hover .dropdown_wrap.mega .dropdown_body {
+        animation: none;
       }
+      .nav_wrap.is-hover,
+      .nav_wrap.is-hover .nav_viewport,
+      .nav_wrap.is-hover .dropdown_wrap.mega .dropdown_content {
+        translate: none !important;
+      }
+    }
 
-      .nav_links {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        padding: 0;
-        gap: var(--space-4);
-        font-size: var(--text-small);
-        & > li + li {
-          border-top: 0;
-        }
-      }
-
-      .nav_link {
-        padding-block: 0;
-        &[aria-current="page"] {
-          text-decoration: underline;
-        }
-      }
+    .nav_tour {
+      position: relative;
+      isolation: isolate;
+      border-radius: var(--radius-small);
+      overflow: hidden;
+      border: var(--border-width) solid var(--brand-600);
+      min-height: 14.75rem;
+      display: flex;
+      align-items: end;
+    }
+    .nav_tour_photo {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+    .nav_tour::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent, var(--dark-950) 85%);
+      z-index: -1;
+    }
+    .nav_tour_content {
+      padding: 1.25rem;
+      display: flex;
+      align-items: end;
+      gap: var(--space-3);
+      width: 100%;
+      justify-content: space-between;
+    }
+    .nav_tour_content > p {
+      font-size: 1rem;
+      line-height: 1.3;
     }
   }
 </style>

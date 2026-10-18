@@ -75,12 +75,15 @@ type Kind =
 type Props = {
   /** Set to `false` to omit the component. */
   render?: boolean;
+  /** Button size. */
+  size?: "regular" | "small";
 } & Tag &
   Kind;
 
 type AllProps = HTMLAttributes<"button"> &
   Omit<HTMLAttributes<"a">, "type"> & {
     render?: boolean;
+    size?: "regular" | "small";
     variant?: "main" | "link" | "play" | "close" | "arrow";
     emphasis?: Emphasis;
     label?: string;
@@ -93,6 +96,7 @@ type AllProps = HTMLAttributes<"button"> &
 
 const {
   render = true,
+  size = "regular",
   variant = "main",
   emphasis = "primary",
   label,
@@ -128,6 +132,7 @@ const named = {
     <Tag
       class:list={[
         "button_wrap",
+        size === "small" && "small",
         emphasis !== "primary" && emphasis,
         variant !== "main" && variant,
         variant === "arrow" && direction === "back" && "back",
@@ -166,12 +171,24 @@ const named = {
       justify-content: center;
       align-items: center;
       gap: 0.5em;
-      padding: 0.75em 1.5em;
+      padding: 0.9375rem 1.875rem;
+      min-height: 3.625rem;
       background-color: var(--button-background);
       color: var(--button-text);
       border: var(--border-width) solid var(--button-border);
-      border-radius: 0.5em;
-      line-height: 1.2;
+      border-radius: var(--radius-small);
+      line-height: 1.4;
+      font-size: 1.1875rem;
+      font-weight: var(--primary-bold);
+      text-transform: uppercase;
+      background-image: linear-gradient(180deg, #ffffff38, #ffffff00);
+      &.small {
+        min-height: 2.5rem;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        padding: 0.6875rem 1.25rem;
+        letter-spacing: 0.03em;
+      }
       text-decoration: none;
       text-align: center;
       transition:

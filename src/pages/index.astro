@@ -1,41 +1,240 @@
 ---
 import Layout from "@/layouts/BaseLayout.astro";
 import Section from "@/components/wrapper/Section.astro";
-import Heading from "@/components/typography/Heading.astro";
-import Eyebrow from "@/components/typography/Eyebrow.astro";
-import Img from "@/components/media/Img.astro";
-import lumos_background from "@/assets/graphics/lumos-background.svg";
-import Icon from "@/components/media/Icon.astro";
-import logo_icon from "@/assets/logo/logo-icon.svg";
 import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import Grid from "@/components/wrapper/Grid.astro";
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import Button from "@/components/Button.astro";
+import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
+import Img from "@/components/media/Img.astro";
+import Scene from "@/components/media/Scene.astro";
+import Card from "@/components/item/Card.astro";
+import HeroMain from "@/components/content/HeroMain.astro";
+import TechnologyGallery from "@/components/content/TechnologyGallery.astro";
+import Testimonial from "@/components/content/Testimonial.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import Slider from "@/components/interactive/Slider.astro";
+import { training, facility, programs, booking, contact } from "@/data/home";
 ---
 
-<Layout theme="dark">
+<Layout
+  theme="dark"
+  overlap
+  title="Baseball & Softball Training in Brighton, MI"
+>
+  <!-- Hero -->
   <Section
-    paddingBottom="even"
-    containerClass="flex-grow"
-    paddingTop="even"
-    class="flex-grow"
-    style="min-height: calc(100svh - var(--nav-height));"
+    paddingTop="none"
+    paddingBottom="none"
+    aria-label="Welcome to Inge Performance Lab"
   >
-    <ContentWrapper
-      class="flex-grow theme-brand"
-      variant="card"
-      mediaOpacity={100}
-    >
-      <Icon src={logo_icon} variant="large" />
-      <Heading variant="display" tag="h1" class="margin-block-8"
-        >Style Guide</Heading
+    <Scene slot="background" variant="hero" />
+    <HeroMain />
+  </Section>
+  <!-- Facility -->
+  <Section
+    id="facility"
+    paddingTop="small"
+    aria-labelledby="facility-title"
+    class="overflow-clip"
+  >
+    <Scene slot="background" variant="glow" />
+    <ContentWrapper centered>
+      <Eyebrow>The Facility</Eyebrow>
+      <Heading id="facility-title">Train like the pros do.</Heading>
+      <Paragraph maxWidth={60} class="text-wrap-balance"
+        >Ten years of planning went into this building, down to the lighting,
+        net heights, turf and ball quality. Walk in and you will know.</Paragraph
       >
-      <Eyebrow variant="tag">v1.0.0</Eyebrow>
+    </ContentWrapper>
+    <Slider
+      variant="centered"
+      controls={false}
+      loop
+      label="Facility features"
+      small={1.3}
+      medium={2.2}
+      large={3}
+    >
+      {facility.map((item) => <Card variant="facility" {...item} />)}
+    </Slider>
+  </Section>
+  <!-- Training -->
+  <Section id="training" aria-labelledby="training-title">
+    <Scene slot="background" variant="glow" />
+    <ContentWrapper variant="auto-width">
+      <Eyebrow>Training</Eyebrow>
+      <Heading id="training-title" variant="h1">IPL Training Pathways</Heading>
+      <Paragraph slot="column2" variant="large" maxWidth={40}
+        >Every path here is coached by people who played or trained at the
+        highest level: Brandon’s 13 MLB seasons, 2SP’s strength staff, HP’s
+        throwing program. Pick the one that fits your athlete.</Paragraph
+      >
+    </ContentWrapper>
+    <Grid medium={2} class="gap-3">
+      {
+        training
+          .slice(0, 4)
+          .map((item) => (
+            <Card
+              id={item.id}
+              variant="pathway"
+              heading={item.heading}
+              text={item.text}
+              image={item.image}
+              icon={item.icon}
+              crop={item.crop}
+              buttonHref={`${contact}?subject=${encodeURIComponent(item.heading + " inquiry")}`}
+            />
+          ))
+      }
+    </Grid>
+  </Section>
+  <!-- Technology -->
+  <Section
+    id="hittrax"
+    gap="0"
+    theme="light"
+    aria-labelledby="technology-title"
+  >
+    <Scene slot="background" variant="technology" />
+    <ContentWrapper variant="columns" column1Class="align-self-start">
+      <Eyebrow>HitTrax Technology</Eyebrow>
+      <Heading id="technology-title" variant="h1"
+        >Expertise backed by leading technology</Heading
+      >
+      <ContentWrapper slot="column2">
+        <Paragraph
+          >HitTrax is included with every rental, lesson and membership. Every
+          swing logs exit velocity, launch angle, distance, spray chart and
+          hard-hit rate, synced with video so your athlete can see the swing and
+          the number side by side.</Paragraph
+        >
+        <Paragraph
+          >Sessions save to a player profile, so you track progress across
+          weeks, not just one good day in the cage. Coaches use the data to
+          decide what to fix next.</Paragraph
+        >
+        <ButtonWrapper
+          >
+          <Button element="link" href={booking}>Book a cage</Button>
+          <Button
+            element="link"
+            href="/#contact"
+            emphasis="secondary">Contact us</Button
+          >
+        </ButtonWrapper
+        >
+      </ContentWrapper>
+    </ContentWrapper>
+    <TechnologyGallery />
+  </Section>
+  <!-- The Den -->
+  <Section id="the-den" aria-labelledby="den-title">
+    <Scene slot="background" variant="den" />
+    <ContentWrapper variant="columns" visualRatio={15 / 16}>
+      <Eyebrow>Powered by 2SP</Eyebrow>
+      <Heading id="den-title">Built in The Den.</Heading>
+      <Paragraph
+        >The Den is IPL’s strength and speed floor, run on 2SP Sports
+        Performance programming. Age-appropriate lifting, sprint mechanics and
+        arm care, built for baseball and softball bodies. Every membership tier
+        above Gold includes it four days a week.</Paragraph
+      >
+      <ButtonWrapper
+        >
+        <Button element="link" href={`${contact}?subject=The%20Den%20inquiry`}
+          >Explore The Den</Button
+        >
+        <Button element="link" href="/#memberships" emphasis="secondary"
+          >See memberships</Button
+        >
+      </ButtonWrapper
+      >
       <Img
         slot="column2"
-        src={lumos_background}
-        width={1920}
-        height={1080}
-        loading="eager"
-        fetchPriority="high"
+        src="/images/figma/28ee9.webp"
+        alt="Strength training in The Den at Inge Performance Lab"
+        width={600}
+        height={640}
       />
     </ContentWrapper>
+  </Section>
+  <!-- Programs -->
+  <Section id="programs" theme="light" aria-labelledby="programs-title">
+    <ContentWrapper variant="sticky-content">
+      <Eyebrow>Leagues and Team Programs</Eyebrow>
+      <Heading id="programs-title"
+        >Six On Six. Real Games.<br />Real Standings.</Heading
+      >
+      <Paragraph
+        >Small-sided leagues on a full indoor infield, team practices run by
+        Brandon Inge, and weekly training blocks that hold your slot all winter.
+        Camps and clinics are posted here as they open.</Paragraph
+      >
+      <ButtonWrapper
+        >
+        <Button element="link" href="#program-list">See all programs</Button
+        >
+        <Button element="link" href="/#memberships" emphasis="secondary"
+          >See memberships</Button
+        >
+      </ButtonWrapper
+      >
+      <Grid slot="column2" id="program-list" class="gap-7"
+        >
+        {
+          programs.map((item) => (
+            <Card
+              {...item}
+              variant="program"
+              buttonHref={`${contact}?subject=${encodeURIComponent(item.heading + " inquiry")}`}
+            />
+          ))
+        }
+      </Grid
+      >
+    </ContentWrapper>
+  </Section>
+  <!-- Testimonials -->
+  <Section aria-labelledby="testimonials-title" gap="small">
+    <ContentWrapper centered>
+      <Heading id="testimonials-title" variant="h1"
+        >Hear from our Athletes</Heading
+      >
+      <Paragraph variant="large" maxWidth={48}
+        >Here is what families say once their athlete has been in the building a
+        few weeks.</Paragraph
+      >
+    </ContentWrapper>
+    <Grid medium={3}>
+      <Testimonial
+        quote="[Placeholder] Travel-ball parent on development. One line on the coaching, one line on the result."
+        author="[Parent Name]"
+        role="12U Travel Baseball Parent"
+      />
+      <Testimonial
+        quote="[Placeholder] Softball parent on the 6v6 winter league or lessons. What changed for their daughter."
+        author="[Parent Name]"
+        role="12U Fastpitch Parent"
+      />
+      <Testimonial
+        quote="[Placeholder] High school athlete on The Den and lessons. Strength, arm care, confidence."
+        author="[Athlete Name]"
+        role="HS Pitcher"
+      />
+    </Grid>
+  </Section>
+  <!-- Contact -->
+  <Section
+    id="contact"
+    paddingTop="none"
+    paddingBottom="none"
+    aria-label="Contact Inge Performance Lab"
+  >
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
   </Section>
 </Layout>

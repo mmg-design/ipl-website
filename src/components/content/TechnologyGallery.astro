@@ -1,0 +1,130 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+---
+
+{
+  render && (
+    <div class:list={["technology-gallery_wrap", className]}>
+      <div class="technology-gallery_note">
+        watch HitTrax in action
+        <img src="/images/figma/1f47e.svg" alt="" loading="lazy" />
+      </div>
+      <div class="technology-gallery_feature">
+        <img
+          src="/images/figma/technology-0.webp"
+          alt="Brandon Inge demonstrating swing data on a HitTrax screen"
+          loading="lazy"
+        />
+      </div>
+      <div class="technology-gallery_image">
+        <img
+          src="/images/figma/31bca.webp"
+          alt="An athlete reviewing HitTrax results"
+          loading="lazy"
+        />
+      </div>
+      <div class="technology-gallery_image batter">
+        <img
+          src="/images/figma/bba82.webp"
+          alt="Hitting practice in a training cage"
+          loading="lazy"
+        />
+      </div>
+      <div class="technology-gallery_image screen">
+        <img
+          src="/images/figma/b9f3d.webp"
+          alt="HitTrax swing tracking technology"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .technology-gallery_wrap {
+      display: grid;
+      grid-template-columns: 1.65fr 1fr 1fr 1fr;
+      align-items: end;
+      gap: var(--space-3);
+      position: relative;
+      width: 100%;
+      padding-top: 0;
+      @media (width < 48rem) {
+        grid-template-columns: 1fr 1fr;
+        margin-top: var(--space-8);
+        .technology-gallery_feature {
+          grid-row: span 2;
+          align-self: stretch;
+        }
+        .technology-gallery_image:last-child {
+          grid-column: span 2;
+          aspect-ratio: 2;
+        }
+        .technology-gallery_note {
+          font-size: 1.25rem;
+          top: -3rem;
+        }
+      }
+    }
+    .technology-gallery_note {
+      position: absolute;
+      left: 0.75rem;
+      top: -6rem;
+      font-family: cursive;
+      font-size: 1.6875rem;
+      transform: rotate(-4deg);
+    }
+    .technology-gallery_note > img {
+      position: absolute;
+      right: 2rem;
+      top: 100%;
+      width: auto;
+      height: auto;
+      transform: rotate(41deg);
+    }
+    .technology-gallery_feature,
+    .technology-gallery_image {
+      overflow: hidden;
+      border-radius: var(--radius-main);
+    }
+    .technology-gallery_feature {
+      aspect-ratio: 442 / 589;
+    }
+    .technology-gallery_image {
+      aspect-ratio: 3 / 4;
+      position: relative;
+    }
+    .technology-gallery_wrap > div > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .technology-gallery_wrap .technology-gallery_note > img {
+      width: auto;
+      height: auto;
+    }
+    .technology-gallery_image.batter > img {
+      position: absolute;
+      height: 121.29%;
+      width: 129.42%;
+      max-width: none;
+      left: -29.62%;
+      top: -21.29%;
+    }
+    .technology-gallery_image.screen > img {
+      position: absolute;
+      height: 100%;
+      width: 240.51%;
+      max-width: none;
+      left: -70.26%;
+      top: 0;
+    }
+  }
+</style>
