@@ -6,23 +6,13 @@ interface Props {
   class?: string;
 }
 const { render = true, class: className } = Astro.props;
-import caveat from "@/assets/fonts/Caveat-VariableFont_wght.ttf?url";
 const video = "https://IPLPullZone.b-cdn.net/HitTrax%20Video.mp4";
 const poster = "/images/figma/technology-0.webp";
 ---
 
-<style
-  is:global
-  set:html={`@font-face{font-family:"Caveat";src:url("${caveat}") format("truetype");font-weight:400 700;font-display:swap;}`}
-/>
-
 {
   render && (
     <div class:list={["technology-gallery_wrap", className]}>
-      <div class="technology-gallery_note">
-        watch HitTrax in action
-        <img src="/images/figma/1f47e.svg" alt="" loading="lazy" />
-      </div>
       <div class="technology-gallery_feature">
         <video
           class="technology-gallery_preview"
@@ -96,28 +86,7 @@ const poster = "/images/figma/technology-0.webp";
           grid-column: span 2;
           aspect-ratio: 2;
         }
-        .technology-gallery_note {
-          font-size: 1.25rem;
-          top: -3rem;
-        }
       }
-    }
-    .technology-gallery_note {
-      position: absolute;
-      left: 0.75rem;
-      top: -6rem;
-      font-family: "Caveat", cursive;
-      font-weight: 500;
-      font-size: 1.6875rem;
-      transform: rotate(-4deg);
-    }
-    .technology-gallery_note > img {
-      position: absolute;
-      right: 2rem;
-      top: 100%;
-      width: auto;
-      height: auto;
-      transform: rotate(41deg);
     }
     .technology-gallery_feature,
     .technology-gallery_image {
@@ -143,10 +112,6 @@ const poster = "/images/figma/technology-0.webp";
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-    .technology-gallery_wrap .technology-gallery_note > img {
-      width: auto;
-      height: auto;
     }
     .technology-gallery_image.batter > img {
       position: absolute;

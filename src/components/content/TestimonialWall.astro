@@ -1,0 +1,39 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+/* Senja widget ID. Reviews are managed in Senja, not in this repo. */
+const id = "a1eadd39-c569-48b0-93af-18266c1d6b31";
+---
+
+{
+  render && (
+    <div class:list={["testimonial-wall_wrap", className]}>
+      <script
+        is:inline
+        src={`https://widget.senja.io/widget/${id}/platform.js`}
+        type="text/javascript"
+        async
+      />
+      <div
+        class="senja-embed"
+        data-id={id}
+        data-mode="shadow"
+        data-lazyload="false"
+        style="display: block; width: 100%;"
+      />
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .testimonial-wall_wrap {
+      width: 100%;
+      min-height: 20rem;
+    }
+  }
+</style>

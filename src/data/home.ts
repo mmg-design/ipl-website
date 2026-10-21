@@ -68,7 +68,7 @@ export const facility = [
     id: "infield",
     eyebrow: "Infield",
     heading: "Full Turf Infield",
-    text: "A varsity-size indoor infield for team practice, fielding work and small-sided games all winter.",
+    text: "A full turf indoor infield for team practice, fielding work and small-sided games all winter.",
     image: asset("card-infield.webp"),
     buttonLabel: "Team Rentals",
     buttonHref: "/#programs",

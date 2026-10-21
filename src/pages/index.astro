@@ -13,7 +13,8 @@ import Scene from "@/components/media/Scene.astro";
 import Card from "@/components/item/Card.astro";
 import HeroMain from "@/components/content/HeroMain.astro";
 import TechnologyGallery from "@/components/content/TechnologyGallery.astro";
-import Testimonial from "@/components/content/Testimonial.astro";
+import TestimonialWall from "@/components/content/TestimonialWall.astro";
+import ReviewQuote from "@/components/content/ReviewQuote.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
 import Slider from "@/components/interactive/Slider.astro";
 import { training, facility, programs, booking, contact } from "@/data/home";
@@ -45,8 +46,9 @@ import { training, facility, programs, booking, contact } from "@/data/home";
       <Eyebrow>The Facility</Eyebrow>
       <Heading id="facility-title">Train like the pros do.</Heading>
       <Paragraph maxWidth={60} class="text-wrap-balance"
-        >Ten years of planning went into this building, down to the lighting,
-        net heights, turf and ball quality. Walk in and you will know.</Paragraph
+        >Our coaches have played and coached at the highest levels. We pair
+        fundamentals that have never changed with modern technology that
+        measures progress and enhances feedback.</Paragraph
       >
     </ContentWrapper>
     <Slider
@@ -135,8 +137,8 @@ import { training, facility, programs, booking, contact } from "@/data/home";
   <Section id="the-den" aria-labelledby="den-title">
     <Scene slot="background" variant="den" />
     <ContentWrapper variant="columns" visualRatio={15 / 16}>
-      <Eyebrow>Powered by 2SP</Eyebrow>
-      <Heading id="den-title">Built in The Den.</Heading>
+      <Eyebrow>Performance Training Powered by 2SP</Eyebrow>
+      <Heading id="den-title">Build the Whole Athlete.</Heading>
       <Paragraph
         >The Den is IPL’s strength and speed floor, run on 2SP Sports
         Performance programming. Age-appropriate lifting, sprint mechanics and
@@ -167,7 +169,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
     <ContentWrapper variant="sticky-content">
       <Eyebrow>Leagues and Team Programs</Eyebrow>
       <Heading id="programs-title"
-        >Six On Six. Real Games.<br />Real Standings.</Heading
+        >Simulate real competition with live programs and leagues.</Heading
       >
       <Paragraph
         >Small-sided leagues on a full indoor infield, team practices run by
@@ -183,6 +185,11 @@ import { training, facility, programs, booking, contact } from "@/data/home";
         >
       </ButtonWrapper
       >
+      <ReviewQuote
+        before="This is "
+        highlight="easily the most impressive baseball training facility I have ever seen"
+        after="."
+      />
       <Grid slot="column2" id="program-list" class="gap-7"
         >
         {
@@ -201,31 +208,12 @@ import { training, facility, programs, booking, contact } from "@/data/home";
   <!-- Testimonials -->
   <Section aria-labelledby="testimonials-title" gap="small">
     <ContentWrapper centered>
-      <Heading id="testimonials-title" variant="h1"
-        >Hear from our Athletes</Heading
-      >
-      <Paragraph variant="large" maxWidth={48}
-        >Here is what families say once their athlete has been in the building a
-        few weeks.</Paragraph
+      <Eyebrow>Testimonials</Eyebrow>
+      <Heading id="testimonials-title" variant="h1" maxWidth={18}
+        >Hear from athletes, parents, and customers.</Heading
       >
     </ContentWrapper>
-    <Grid medium={3}>
-      <Testimonial
-        quote="[Placeholder] Travel-ball parent on development. One line on the coaching, one line on the result."
-        author="[Parent Name]"
-        role="12U Travel Baseball Parent"
-      />
-      <Testimonial
-        quote="[Placeholder] Softball parent on the 6v6 winter league or lessons. What changed for their daughter."
-        author="[Parent Name]"
-        role="12U Fastpitch Parent"
-      />
-      <Testimonial
-        quote="[Placeholder] High school athlete on The Den and lessons. Strength, arm care, confidence."
-        author="[Athlete Name]"
-        role="HS Pitcher"
-      />
-    </Grid>
+    <TestimonialWall />
   </Section>
   <!-- Contact -->
   <Section

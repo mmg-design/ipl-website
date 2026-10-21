@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "githubAccount": "mmg-design",
+  "hosting": {
+    "provider": "cloudflare-workers",
+    "accountId": "34ff19d18d8672470c268db11e5314b5",
+    "project": "ipl-website"
+  },
+  "buildScript": "build",
+  "beforePublish": [],
+  "afterPublish": []
+}

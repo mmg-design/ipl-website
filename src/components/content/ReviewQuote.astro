@@ -1,0 +1,91 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Text before the highlighted part of the quote. */
+  before?: string;
+  /** The highlighted part of the quote. */
+  highlight: string;
+  /** Text after the highlighted part of the quote. */
+  after?: string;
+  /** Utility classes. */
+  class?: string;
+}
+const {
+  render = true,
+  before = "",
+  highlight,
+  after = "",
+  class: className,
+} = Astro.props;
+---
+
+{
+  render && (
+    <figure class:list={["review-quote_wrap", className]}>
+      <div class="review-quote_rating" role="img" aria-label="5 star Google review">
+        <img class="review-quote_google" src="/images/icons/google-g.svg" alt="" />
+        <span class="review-quote_stars">
+          {[0, 1, 2, 3, 4].map(() => (
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" />
+            </svg>
+          ))}
+        </span>
+      </div>
+      <blockquote class="review-quote_text text-style-large">
+        “{before}<mark>{highlight}</mark>{after}”
+      </blockquote>
+    </figure>
+  )
+}
+<style is:global>
+  @layer components {
+    .review-quote_wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      max-width: 27rem;
+      margin: var(--space-6) 0 0;
+      padding: var(--space-4);
+      background: var(--light-100);
+      border: var(--border-width) solid
+        color-mix(in lab, var(--dark-900) 10%, transparent);
+      border-radius: var(--radius-main);
+      box-shadow: 0 1rem 2rem -1rem
+        color-mix(in lab, var(--dark-900) 18%, transparent);
+    }
+    .review-quote_rating {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    .review-quote_google {
+      width: 1.5rem;
+      height: 1.5rem;
+      padding: 0.25rem;
+      border-radius: var(--radius-round);
+      box-shadow: 0 0.125rem 0.375rem #0002;
+    }
+    .review-quote_stars {
+      display: flex;
+      gap: 0.25rem;
+      color: var(--brand-500);
+      > svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: currentcolor;
+      }
+    }
+    .review-quote_text {
+      margin: 0;
+      color: var(--dark-900);
+      > mark {
+        color: inherit;
+        background: color-mix(in lab, #ffe066 45%, transparent);
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+    }
+  }
+</style>

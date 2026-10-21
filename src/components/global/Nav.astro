@@ -281,7 +281,7 @@ const { render = true, overlap = false } = Astro.props;
     };
 
     for (const menu of menus) {
-      const item = menu.closest("li") ?? menu;
+      const item = (menu.closest("li") ?? menu) as HTMLElement;
       const trigger = menu.querySelector<HTMLElement>("summary");
 
       item.addEventListener("pointerenter", (event) => {

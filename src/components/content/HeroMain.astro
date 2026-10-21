@@ -32,18 +32,14 @@ const partners = [
     <div class:list={["hero-main_wrap", className]}>
       <div class="hero-main_content">
         <ContentWrapper>
-          <Eyebrow>
-            Baseball and Softball Training Facility · Brighton, MI
-          </Eyebrow>
-          <Heading tag="h1" maxWidth={22}>
-            Train Like It Matters.
-            <br />
-            Because It Does.
+          <Eyebrow>Baseball and Softball Training · Brighton, MI</Eyebrow>
+          <Heading tag="h1" maxWidth={28}>
+            Michigan’s premier baseball and softball training facility.
           </Heading>
-          <Paragraph maxWidth={52}>
-            Six HitTrax cages. A varsity-size turf infield. A D1 weight room.
-            Coaching from a thirteen-year big leaguer. Under one roof in
-            Brighton.
+          <Paragraph maxWidth={46}>
+            Welcome to Inge Performance Lab: Cages, infield, strength training
+            and mental performance under one roof. Measured on HitTrax, coached
+            by professionals, and open year-round.
           </Paragraph>
           <ButtonWrapper>
             <>
@@ -53,6 +49,19 @@ const partners = [
               <Button element="link" href="/#contact" emphasis="secondary">
                 Contact us
               </Button>
+              <span class="hero-main_rating" role="img" aria-label="Rated 5.0 on Google">
+                <img class="hero-main_laurel" src="/images/icons/google-laurel-left.webp" alt="" width="51" height="96" />
+                <span class="hero-main_rating-body">
+                  <img class="hero-main_google" src="/images/icons/google-g.svg" alt="" width="17" height="17" />
+                  <span class="hero-main_stars">
+                    {[0, 1, 2, 3, 4].map(() => (
+                      <img src="/images/icons/google-star.svg" alt="" width="10" height="10" />
+                    ))}
+                  </span>
+                  <span class="hero-main_rating-label">5.0 on Google</span>
+                </span>
+                <img class="hero-main_laurel" src="/images/icons/google-laurel-right.webp" alt="" width="51" height="96" />
+              </span>
             </>
           </ButtonWrapper>
         </ContentWrapper>
@@ -111,8 +120,47 @@ const partners = [
         }
       }
     }
+    /* Google rating badge, sized from Figma (Badge / Google Rating / A Stacked). */
+    .hero-main_rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      align-self: center;
+      margin-inline-start: var(--space-2);
+    }
+    .hero-main_laurel {
+      width: 1.5625rem;
+      height: 2.9375rem;
+      object-fit: contain;
+      opacity: 0.36;
+    }
+    .hero-main_rating-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.125rem;
+    }
+    .hero-main_google {
+      width: 1.0625rem;
+      height: 1.0625rem;
+    }
+    .hero-main_stars {
+      display: flex;
+      gap: 0.125rem;
+      > img {
+        width: 0.625rem;
+        height: auto;
+      }
+    }
+    .hero-main_rating-label {
+      font-size: 0.75rem;
+      line-height: 1.5;
+      font-weight: var(--primary-medium);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
     .hero-main_content {
-      max-width: 50.25rem;
+      max-width: 56rem;
     }
     /* The ticker window. Sits under the buttons, stays under half the screen
        wide, clips the strip, and fades logos at both edges instead of cutting
