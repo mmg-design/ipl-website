@@ -1,0 +1,131 @@
+---
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+
+/* Partner logos. Each class carries the crop for its file. */
+const partners = [
+  { class: "sports", src: "/images/figma/d36ad.webp", alt: "2SP Sports" },
+  { class: "hp", src: "/images/figma/eb407.webp", alt: "High Performance Training" },
+  { class: "hittrax", src: "/images/figma/00a28.webp", alt: "HitTrax" },
+  { class: "mindset", src: "/images/figma/73872.webp", alt: "Champion Mindset Group" },
+];
+---
+
+{/* Partner logos run as a slow ticker. Two identical panels sit side by side
+  and the track travels exactly one panel, so the loop is seamless. The second
+  panel is a visual copy only, held out of the accessibility tree. */}
+{
+  render && (
+    <div class:list={["partner-ticker_wrap", className]} role="group" aria-label="Training partners">
+      <div class="partner-ticker_track">
+        {[0, 1].map((copy) => (
+          <div
+            class="partner-ticker_panel"
+            aria-hidden={copy === 1 ? "true" : undefined}
+            inert={copy === 1}
+          >
+            {partners.map((partner) => (
+              <span class:list={["partner-ticker_logo", partner.class]}>
+                <img
+                  src={partner.src}
+                  alt={copy === 1 ? "" : partner.alt}
+                  loading="eager"
+                  decoding="async"
+                />
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    /* The ticker window: clips the strip and fades logos at both edges. */
+    .partner-ticker_wrap {
+      /* Space between logos. */
+      --_gap: 2.25rem;
+      /* Time for one full pass. Higher is slower. */
+      --_duration: 24s;
+      /* How far in from each edge the fade runs. */
+      --_fade: 15%;
+      /* Widest the window gets, as a share of the screen. */
+      --_max-width: 42vw;
+      width: min(100%, var(--_max-width));
+      overflow: clip;
+      container-type: inline-size;
+      opacity: 0.69;
+      -webkit-mask-image: linear-gradient(to right, transparent, black var(--_fade), black calc(100% - var(--_fade)), transparent);
+      mask-image: linear-gradient(to right, transparent, black var(--_fade), black calc(100% - var(--_fade)), transparent);
+      @media (width < 48rem) {
+        width: 100%;
+      }
+    }
+    .partner-ticker_track {
+      display: flex;
+      width: max-content;
+      animation: partner-ticker var(--_duration) linear infinite;
+    }
+    /* Hold still while someone is looking closely at a logo. */
+    .partner-ticker_wrap:hover .partner-ticker_track {
+      animation-play-state: paused;
+    }
+    /* Each panel is at least as wide as the window, so the copy always covers
+       the gap as the original leaves. Half-gap padding keeps the seam even. */
+    .partner-ticker_panel {
+      display: flex;
+      flex: none;
+      align-items: center;
+      justify-content: space-around;
+      gap: var(--_gap);
+      min-width: 100cqw;
+      padding-inline: calc(var(--_gap) / 2);
+    }
+    @keyframes partner-ticker {
+      to {
+        translate: -50% 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .partner-ticker_track {
+        animation: none;
+      }
+    }
+    .partner-ticker_logo {
+      position: relative;
+      display: block;
+      overflow: hidden;
+      flex: none;
+      > img {
+        max-width: none;
+        position: absolute;
+      }
+      &.sports {
+        width: 7.9375rem;
+        height: 1.8125rem;
+        > img { width: 107.98%; height: 273.33%; left: -3.99%; top: -86.67%; }
+      }
+      &.hp {
+        width: 5.375rem;
+        height: 2.375rem;
+        > img { width: 101.23%; height: 241.18%; left: -0.77%; top: -78.99%; }
+      }
+      &.hittrax {
+        width: 7.375rem;
+        height: 1.3125rem;
+        > img { width: 100%; height: 100%; }
+      }
+      &.mindset {
+        width: 10.875rem;
+        height: 2rem;
+        > img { width: 100.02%; height: 179.45%; left: -0.01%; top: -39.73%; }
+      }
+    }
+  }
+</style>

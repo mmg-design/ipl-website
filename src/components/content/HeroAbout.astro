@@ -1,0 +1,140 @@
+---
+import Heading from "@/components/typography/Heading.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Button from "@/components/Button.astro";
+import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import PartnerTicker from "@/components/content/PartnerTicker.astro";
+import { booking } from "@/data/home";
+interface Props {
+  /** Set to `false` to omit the component. */
+  render?: boolean;
+  /** Utility classes. */
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+
+---
+
+{
+  render && (
+    <div class:list={["hero-about_wrap", className]}>
+      <div class="hero-about_content">
+        <ContentWrapper centered>
+          <div class="hero-about_meta">
+            <span class="hero-about_rating" role="img" aria-label="Rated 5.0 from 18 Google reviews">
+              <img class="hero-about_laurel" src="/images/icons/google-laurel-left.webp" alt="" />
+              <span class="hero-about_rating-body">
+                <span class="hero-about_rating-top">
+                  <img class="hero-about_google" src="/images/icons/google-g.svg" alt="" />
+                  <span class="hero-about_stars">
+                    {[0, 1, 2, 3, 4].map(() => (
+                      <img src="/images/icons/google-star.svg" alt="" />
+                    ))}
+                  </span>
+                </span>
+                <span class="hero-about_rating-label">5.0 · 18 Google reviews</span>
+              </span>
+              <img class="hero-about_laurel" src="/images/icons/google-laurel-right.webp" alt="" />
+            </span>
+            <Eyebrow>About Inge Performance Lab</Eyebrow>
+          </div>
+          <Heading tag="h1" maxWidth={20}>
+            Built on big‑league experience
+          </Heading>
+          <Paragraph class="max-width-none">
+            Brandon Inge spent 13 seasons in the majors watching what a real
+            development staff looks like. Then he spent ten years planning a
+            building in Brighton where a 12 year old could get the same thing.
+          </Paragraph>
+          <ButtonWrapper>
+            <>
+              <Button element="link" href={booking}>
+                Book a tour
+              </Button>
+              <Button element="link" href="/about#coaches" emphasis="secondary">
+                Meet the coaches
+              </Button>
+            </>
+          </ButtonWrapper>
+        </ContentWrapper>
+        <PartnerTicker />
+      </div>
+    </div>
+  )
+}
+<style is:global>
+  @layer components {
+    .hero-about_wrap {
+      width: 100%;
+      min-height: 56.25rem;
+      display: flex;
+      justify-content: center;
+      padding-block: 8.5rem var(--space-8);
+      @media (width < 64rem) {
+        min-height: auto;
+        padding-block: 8rem var(--space-8);
+      }
+    }
+    .hero-about_content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 39.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+    }
+    .hero-about_meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-5);
+    }
+    .hero-about_rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .hero-about_laurel {
+      width: 1.0625rem;
+      height: 1.9375rem;
+      object-fit: contain;
+      opacity: 0.36;
+    }
+    .hero-about_rating-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .hero-about_rating-top {
+      display: flex;
+      align-items: center;
+      gap: 0.3125rem;
+    }
+    .hero-about_google {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+    .hero-about_stars {
+      display: flex;
+      gap: 0.125rem;
+      > img {
+        width: 0.625rem;
+        height: auto;
+      }
+    }
+    .hero-about_rating-label {
+      font-size: 0.5rem;
+      line-height: 1.5;
+      font-weight: var(--primary-medium);
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: color-mix(in lab, currentcolor 85%, transparent);
+    }
+  }
+</style>

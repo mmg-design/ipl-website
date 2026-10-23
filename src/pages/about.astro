@@ -1,0 +1,31 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import HeroAbout from "@/components/content/HeroAbout.astro";
+import HeroAboutBackdrop from "@/components/content/HeroAboutBackdrop.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+---
+
+<Layout theme="dark" overlap title="About Inge Performance Lab">
+  <!-- Hero -->
+  <Section
+    paddingTop="none"
+    paddingBottom="none"
+    aria-label="About Inge Performance Lab"
+  >
+    <HeroAboutBackdrop slot="background" />
+    <HeroAbout />
+  </Section>
+  <!-- Sections from the Figma About page get built here, one at a time. -->
+  <!-- Contact -->
+  <Section
+    id="contact"
+    paddingTop="none"
+    paddingBottom="none"
+    aria-label="Contact Inge Performance Lab"
+  >
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
