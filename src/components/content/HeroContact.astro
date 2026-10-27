@@ -1,0 +1,87 @@
+---
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import GoogleBadge from "@/components/content/GoogleBadge.astro";
+import ReviewQuote from "@/components/content/ReviewQuote.astro";
+import ContactForm from "@/components/content/ContactForm.astro";
+import { contact } from "@/data/home";
+
+const rows = [
+  { icon: "mail", label: "info@ingeperformancelab.com", href: contact },
+  { icon: "call", label: "(810) 206-3763", href: "tel:+18102063763" },
+  { icon: "pin", label: "8101 Movie Dr, Brighton, MI 48116", href: "https://maps.google.com/?q=8101+Movie+Dr,+Brighton,+MI+48116" },
+];
+const paths: Record<string, string> = {
+  mail: '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3.5 6l8.5 7 8.5-7"/>',
+  call: '<path d="M5 4h3.5l1.5 4-2 1.5a11 11 0 0 0 6.5 6.5L16 14l4 1.5V19a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+  pin: '<path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+};
+---
+
+<div class="hero-contact_wrap">
+  <div class="hero-contact_content">
+    <div class="hero-contact_meta">
+      <GoogleBadge />
+      <Eyebrow>Contact us</Eyebrow>
+    </div>
+    <Heading tag="h1" variant="h1">Get in touch.</Heading>
+    <Paragraph class="max-width-none">
+      Cages, lessons, programs, team blocks, memberships. Call, email or send the form and you will hear back the same business day. If it is about a booking you already made, the fastest route is the number below.
+    </Paragraph>
+    <ul class="hero-contact_list" role="list">
+      {rows.map((row) => (
+        <li>
+          <a class="hero-contact_link" href={row.href} target={row.icon === "pin" ? "_blank" : undefined} rel={row.icon === "pin" ? "noopener" : undefined}>
+            <svg class="hero-contact_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={paths[row.icon]} />
+            <span>{row.label}</span>
+            <svg class="hero-contact_arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <ReviewQuote before="This is " highlight="easily the most impressive baseball training facility" after=" I have ever seen." class="hero-contact_quote" />
+  </div>
+  <div class="hero-contact_form">
+    <ContactForm />
+  </div>
+</div>
+
+<style is:global>
+  @layer components {
+    .hero-contact_wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 35rem) minmax(0, 40rem);
+      justify-content: space-between;
+      gap: var(--space-7);
+      width: 100%;
+      padding-top: 10rem;
+      padding-bottom: 3rem;
+    }
+    .hero-contact_content { display: flex; flex-direction: column; align-items: flex-start; gap: 1.75rem; }
+    .hero-contact_content > * { margin: 0 !important; }
+    .hero-contact_meta { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
+    .hero-contact_content .heading { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
+    .hero-contact_list { list-style: none; padding: 0.5rem 0; display: flex; flex-direction: column; gap: 1rem; }
+    .hero-contact_link {
+      display: inline-flex; align-items: center; gap: 1rem;
+      font-size: 1.0625rem; line-height: 1.65;
+      transition: color 0.3s ease;
+    }
+    .hero-contact_icon { width: 1.5rem; height: 1.5rem; flex: none; }
+    .hero-contact_arrow {
+      width: 0.875rem; height: 0.875rem; flex: none;
+      opacity: 0; translate: -0.375rem 0;
+      transition: opacity 0.3s ease, translate 0.3s ease;
+    }
+    .hero-contact_link:hover, .hero-contact_link:focus-visible { color: var(--brand-500); }
+    .hero-contact_link:hover .hero-contact_arrow,
+    .hero-contact_link:focus-visible .hero-contact_arrow { opacity: 1; translate: 0 0; }
+    .hero-contact_form { position: relative; }
+    .hero-contact_form > .contact-form_card { position: absolute; top: 5rem; left: 0; right: 0; }
+    @media (width < 64rem) {
+      .hero-contact_wrap { grid-template-columns: 1fr; padding-top: 8rem; padding-bottom: var(--space-8); }
+      .hero-contact_form > .contact-form_card { position: relative; top: 0; }
+    }
+  }
+</style>

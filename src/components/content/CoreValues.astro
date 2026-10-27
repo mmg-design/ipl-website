@@ -1,0 +1,165 @@
+---
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+
+interface Props {
+  render?: boolean;
+  class?: string;
+}
+const { render = true, class: className } = Astro.props;
+
+const icons = {
+  shield:
+    '<path d="M12 3l7 3v5c0 4.4-3 8.3-7 9.5C8 19.3 5 15.4 5 11V6z"/><path d="M9 12l2 2 4-4"/>',
+  chart: '<path d="M5 19h14"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+  target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/>',
+  ball: '<circle cx="12" cy="12" r="8"/><path d="M7.5 5.5c1.8 1.6 2.8 4 2.8 6.5s-1 4.9-2.8 6.5M16.5 5.5c-1.8 1.6-2.8 4-2.8 6.5s1 4.9 2.8 6.5"/>',
+};
+
+const rows = [
+  {
+    feature: {
+      eyebrow: "Expertise",
+      title: "The right information, the first time",
+      text: "Our coaches played and taught at the highest levels of the game, including 13 big league seasons. We hire selectively, because bad information can cost an athlete years.",
+      image: "/images/about/values-expertise.webp",
+      position: "center top",
+      alt: "Coaches talking with a softball team on the indoor infield",
+    },
+    cards: [
+      { icon: icons.shield, title: "Run like a pro facility", text: "We swap balls when they wear and fix HitTrax the day it breaks. Policies are clear, and the staff treats your athlete's time like it matters." },
+      { icon: icons.chart, title: "Measured, not guessed", text: "Every cage has HitTrax with video, included at no extra cost. Exit velo, launch angle, and spray charts show exactly what's improving." },
+    ],
+  },
+  {
+    reverse: true,
+    feature: {
+      eyebrow: "Complete development",
+      title: "End to end approach",
+      text: "Athletes can hit, field, pitch through HP, and lift in The Den powered by 2SP. Everything a baseball or softball player needs to reach the next level is under one roof.",
+      image: "/images/about/values-development.webp",
+      position: "left top",
+      alt: "Brandon Inge reviewing swing data on a HitTrax screen",
+    },
+    cards: [
+      { icon: icons.target, title: "Coached to the athlete", text: "We don't run assembly-line lessons. Every athlete gets instruction built around their swing, their position, and where they're trying to go." },
+      { icon: icons.ball, title: "Softball is not an afterthought", text: "We have softball machines in every cage, a varsity-size indoor infield, and coaches who are in the fastpitch community year round." },
+    ],
+  },
+];
+---
+
+{
+  render && (
+    <div class:list={["core-values_wrap", className]}>
+      <div class="core-values_header">
+        <div class="core-values_title">
+          <Eyebrow>What we stand for</Eyebrow>
+          <Heading id="values-title" variant="h1" tag="h2">Our core values</Heading>
+        </div>
+        <Paragraph variant="large" class="core-values_intro max-width-none">
+          IPL is built entirely around the needs of baseball and softball players. These standards apply to every lesson, rep, and rental in the building.
+        </Paragraph>
+      </div>
+      {rows.map((row) => (
+        <div class:list={["core-values_row", row.reverse && "is-reverse"]}>
+          <article class="core-values_feature">
+            <img src={row.feature.image} alt={row.feature.alt} loading="lazy" style={`object-position: ${row.feature.position}`} />
+            <div class="core-values_feature-content">
+              <p class="core-values_feature-eyebrow">{row.feature.eyebrow}</p>
+              <h3 class="core-values_feature-title">{row.feature.title}</h3>
+              <p class="core-values_text">{row.feature.text}</p>
+            </div>
+          </article>
+          <div class="core-values_stack">
+            {row.cards.map((card) => (
+              <article class="core-values_card">
+                <span class="core-values_icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={card.icon} />
+                </span>
+                <h3 class="core-values_card-title">{card.title}</h3>
+                <p class="core-values_text">{card.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+<style is:global>
+  @layer components {
+    .core-values_wrap { display: flex; flex-direction: column; gap: 2rem; width: 100%; }
+    .core-values_header {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: end;
+      gap: var(--space-4) clamp(2rem, 6vw, 5.75rem);
+      margin-bottom: 3rem;
+    }
+    .core-values_title { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .core-values_title .heading { margin: 0; }
+    .core-values_intro { max-width: 47rem; margin: 0; }
+    .core-values_row {
+      display: grid;
+      grid-template-columns: 9fr 6.6fr;
+      gap: 2rem;
+      min-height: clamp(36rem, 56vw, 50.625rem);
+    }
+    .core-values_row.is-reverse { grid-template-columns: 6.6fr 9fr; }
+    .core-values_row.is-reverse .core-values_feature { order: 2; }
+    .core-values_feature {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-main, 0.75rem);
+      padding: clamp(2rem, 3.4vw, 3rem);
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      isolation: isolate;
+    }
+    .core-values_feature img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 70%; z-index: -2;
+    }
+    .core-values_feature::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, #022337 17%, rgb(2 35 55 / 0) 54%);
+    }
+    .core-values_feature-content { max-width: 35rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .core-values_feature-eyebrow {
+      margin: 0; font-weight: var(--primary-bold); font-size: 0.875rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .core-values_feature-title {
+      margin: 0 0 0.5rem; font-weight: var(--primary-regular);
+      font-size: clamp(1.75rem, 2.9vw, 2.625rem); line-height: 1.08; letter-spacing: -0.02em;
+    }
+    .core-values_stack { display: grid; grid-template-rows: 1fr 1fr; gap: 2rem; }
+    .core-values_card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem; text-align: center; padding: 2rem;
+      background: #0b3550;
+      border: 0.0625rem solid color-mix(in lab, #b0b4b8 45%, transparent);
+      border-radius: var(--radius-main, 0.75rem);
+    }
+    .core-values_icon {
+      width: 3.75rem; aspect-ratio: 1; display: grid; place-items: center;
+      border-radius: 0.5rem; background: var(--brand-500); color: white;
+    }
+    .core-values_icon svg { width: 55%; }
+    .core-values_card-title {
+      margin: 0; font-weight: var(--primary-regular);
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem); line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .core-values_text { margin: 0; font-size: 1.0625rem; line-height: 1.65; max-width: 30rem; }
+    @media (width < 64rem) {
+      .core-values_header { grid-template-columns: 1fr; }
+      .core-values_row, .core-values_row.is-reverse { grid-template-columns: 1fr; min-height: 0; }
+      .core-values_row.is-reverse .core-values_feature { order: 0; }
+      .core-values_feature { min-height: 32rem; }
+    }
+  }
+</style>

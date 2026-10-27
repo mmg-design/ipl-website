@@ -1,0 +1,35 @@
+---
+/** Google rating badge with laurels. Shared by hero sections. */
+interface Props { class?: string }
+const { class: className } = Astro.props;
+---
+
+<span class:list={["hero-about_rating", className]} role="img" aria-label="Rated 5.0 from 18 Google reviews">
+  <img class="hero-about_laurel" src="/images/icons/google-laurel-left.webp" alt="" />
+  <span class="hero-about_rating-body">
+    <span class="hero-about_rating-top">
+      <img class="hero-about_google" src="/images/icons/google-g.svg" alt="" />
+      <span class="hero-about_stars">
+        {[0, 1, 2, 3, 4].map(() => <img src="/images/icons/google-star.svg" alt="" />)}
+      </span>
+    </span>
+    <span class="hero-about_rating-label">5.0 · 18 Google reviews</span>
+  </span>
+  <img class="hero-about_laurel" src="/images/icons/google-laurel-right.webp" alt="" />
+</span>
+
+<style is:global>
+  @layer components {
+    .hero-about_rating { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .hero-about_laurel { width: 1.0625rem; height: 1.9375rem; object-fit: contain; opacity: 0.36; }
+    .hero-about_rating-body { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+    .hero-about_rating-top { display: flex; align-items: center; gap: 0.3125rem; }
+    .hero-about_google { width: 0.75rem; height: 0.75rem; }
+    .hero-about_stars { display: flex; gap: 0.125rem; > img { width: 0.625rem; height: auto; } }
+    .hero-about_rating-label {
+      font-size: 0.5rem; line-height: 1.5; font-weight: var(--primary-medium);
+      text-transform: uppercase; white-space: nowrap;
+      color: color-mix(in lab, currentcolor 85%, transparent);
+    }
+  }
+</style>

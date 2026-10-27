@@ -35,7 +35,7 @@ const columns = [
       ["Our Coaches", "/#training"],
       ["Events", "/#programs"],
       ["Support IPL", contact + "?subject=Support%20IPL"],
-      ["Contact", "/#contact"],
+      ["Contact", "/contact"],
     ],
   },
 ];
@@ -82,8 +82,11 @@ const social = [
                   <ul>
                     {column.links.map(([label, href]) => (
                       <li>
-                        <a class="footer_link" href={href}>
-                          {label}
+                        <a class="footer_link has-arrow" href={href}>
+                          <span>{label}</span>
+                          <svg class="footer_link_arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
                         </a>
                       </li>
                     ))}
@@ -128,13 +131,7 @@ const social = [
             </div>
             <div class="footer_social" aria-label="Social media">
               {social.map(([label, file]) => (
-                <span class="footer_social_icon" title={label}>
-                  <img
-                    src={`/images/figma/${file}`}
-                    alt={label}
-                    loading="lazy"
-                  />
-                </span>
+                <span class="footer_social_icon" title={label} role="img" aria-label={label} style={`--_icon: url(/images/figma/${file})`} />
               ))}
             </div>
           </div>
@@ -269,9 +266,33 @@ const social = [
       font-size: 1.0625rem;
       line-height: 1.65;
     }
-    .footer_link:hover {
-      text-decoration: underline;
-      text-underline-offset: 0.25em;
+    .footer_link {
+      transition: color 0.3s ease;
+    }
+    .footer_link:hover,
+    .footer_link:focus-visible {
+      color: var(--brand-500);
+    }
+    .footer_link.has-arrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer_link_arrow {
+      width: 0.875rem;
+      height: 0.875rem;
+      flex: none;
+      opacity: 0;
+      translate: -0.375rem 0;
+      transition: opacity 0.3s ease, translate 0.3s ease;
+    }
+    .footer_link.has-arrow:hover .footer_link_arrow,
+    .footer_link.has-arrow:focus-visible .footer_link_arrow {
+      opacity: 1;
+      translate: 0 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .footer_link_arrow { translate: 0 0; }
     }
     .footer_logo {
       width: 8.625rem;
@@ -293,9 +314,16 @@ const social = [
       display: flex;
       gap: var(--space-3);
     }
-    .footer_social_icon > img {
-      width: auto;
-      height: auto;
+    .footer_social_icon {
+      display: block;
+      width: 1.5rem;
+      height: 1.5rem;
+      background-color: currentcolor;
+      mask: var(--_icon) center / contain no-repeat;
+      transition: background-color 0.3s ease;
+    }
+    .footer_social_icon:hover {
+      background-color: var(--brand-500);
     }
     .footer_bottom {
       border-top: var(--border-width) solid #ffffff24;

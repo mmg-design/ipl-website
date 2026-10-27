@@ -4,10 +4,15 @@ interface Props {
   render?: boolean;
   /** Utility classes. */
   class?: string;
+  /** Senja widget ID. Defaults to the homepage testimonial wall. */
+  id?: string;
 }
-const { render = true, class: className } = Astro.props;
-/* Senja widget ID. Reviews are managed in Senja, not in this repo. */
-const id = "a1eadd39-c569-48b0-93af-18266c1d6b31";
+/* Reviews are managed in Senja, not in this repo. */
+const {
+  render = true,
+  class: className,
+  id = "a1eadd39-c569-48b0-93af-18266c1d6b31",
+} = Astro.props;
 ---
 
 {

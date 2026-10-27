@@ -4,6 +4,14 @@ import Section from "@/components/wrapper/Section.astro";
 import Scene from "@/components/media/Scene.astro";
 import HeroAbout from "@/components/content/HeroAbout.astro";
 import HeroAboutBackdrop from "@/components/content/HeroAboutBackdrop.astro";
+import ContentWrapper from "@/components/wrapper/ContentWrapper.astro";
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import StoryVideo from "@/components/content/StoryVideo.astro";
+import CoreValues from "@/components/content/CoreValues.astro";
+import BuildingStats from "@/components/content/BuildingStats.astro";
+import CoachGrid from "@/components/content/CoachGrid.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
 ---
 
@@ -17,6 +25,35 @@ import CtaMain from "@/components/content/CtaMain.astro";
     <HeroAboutBackdrop slot="background" />
     <HeroAbout />
   </Section>
+  <!-- Story -->
+  <Section id="story" theme="light" aria-labelledby="story-title">
+    <ContentWrapper centered>
+      <Eyebrow>The story</Eyebrow>
+      <Heading id="story-title">Get the right information.</Heading>
+      <Paragraph class="max-width-none story_text"
+        >Brandon kept meeting kids who had spent years and thousands of dollars
+        on hitting and fielding coaches, and had gotten worse. Not because the
+        kids did not work. Because the information was wrong. IPL exists so that
+        does not happen to your athlete.</Paragraph
+      >
+    </ContentWrapper>
+    <StoryVideo class="story_video" />
+  </Section>
+  <!-- Core values -->
+  <Section id="values" theme="dark" aria-labelledby="values-title">
+    <CoreValues />
+  </Section>
+  <!-- The building -->
+  <Section id="building" theme="dark" class="building_section" aria-labelledby="building-title">
+    <div slot="background" class="building_bg" aria-hidden="true">
+      <img src="/images/about/numbers-bg.webp" alt="" loading="lazy" />
+    </div>
+    <BuildingStats />
+  </Section>
+  <!-- Coaches (Sanity: coach documents, see src/data/coaches.ts) -->
+  <Section id="coaches" theme="light" class="coaches_section" aria-labelledby="coaches-title">
+    <CoachGrid />
+  </Section>
   <!-- Sections from the Figma About page get built here, one at a time. -->
   <!-- Contact -->
   <Section
@@ -29,3 +66,19 @@ import CtaMain from "@/components/content/CtaMain.astro";
     <CtaMain />
   </Section>
 </Layout>
+
+<style is:global>
+  @layer components {
+    #story .story_text { max-width: 41rem; margin-inline: auto; }
+    .building_section { min-height: clamp(40rem, 69vw, 62.5rem); background-color: #011a29; }
+    .building_section .container { align-self: flex-start; }
+    .building_bg { position: absolute; inset: 0; overflow: hidden; }
+    .building_bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+    .building_bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, #011a29 0%, color-mix(in lab, #011a29 70%, transparent) 35%, transparent 70%);
+    }
+    .coaches_section { background-image: linear-gradient(180deg, #fff, #eef3f7); }
+    #story .story_video { margin-top: var(--space-8); }
+  }
+</style>
