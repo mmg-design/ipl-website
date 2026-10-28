@@ -1,0 +1,57 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import IncludedGrid from "@/components/content/IncludedGrid.astro";
+import PricingTiers from "@/components/content/PricingTiers.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import FaqSection from "@/components/content/FaqSection.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, included, pricing, hittrax, ways, faqs } from "@/data/batting-cages";
+---
+
+<Layout theme="dark" overlap title="Batting Cage Rentals in Brighton, MI">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section" aria-label="Batting cage rentals">
+    <div slot="background" class="feature-hero_bg" aria-hidden="true">
+      <img src={hero.image} alt="" />
+    </div>
+    <FeatureHero {...hero} />
+  </Section>
+
+  <Section id="included" theme="light" class="feature_section" aria-label="What is included">
+    <IncludedGrid {...included} />
+  </Section>
+
+  <Section id="rates" theme="light" class="feature_section feature_section-fade" aria-labelledby="pricing-title">
+    <PricingTiers {...pricing} />
+  </Section>
+
+  <Section id="hittrax" theme="dark" class="feature_section feature_section-glow" aria-label="HitTrax in every cage">
+    <SplitFeature {...hittrax} />
+  </Section>
+
+  <Section id="ways" theme="light" class="feature_section" aria-label="Ways to use a cage">
+    <WaysGrid {...ways} />
+  </Section>
+
+  <Section id="faqs" theme="light" class="feature_section" aria-labelledby="faqs-title">
+    <FaqSection heading={faqs.heading} text={faqs.text} items={faqs.items} contactPrompt />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser page="batting-cages" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>

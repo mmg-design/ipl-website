@@ -29,10 +29,10 @@ const paths: Record<string, string> = {
     <Paragraph class="max-width-none">
       Cages, lessons, programs, team blocks, memberships. Call, email or send the form and you will hear back the same business day. If it is about a booking you already made, the fastest route is the number below.
     </Paragraph>
-    <ul class="hero-contact_list" role="list">
+    <ul class="hero-contact_list" role="list" aria-label="Contact details">
       {rows.map((row) => (
         <li>
-          <a class="hero-contact_link" href={row.href} target={row.icon === "pin" ? "_blank" : undefined} rel={row.icon === "pin" ? "noopener" : undefined}>
+          <a class="hero-contact_link" href={row.href} target={row.icon === "pin" ? "_blank" : undefined} rel={row.icon === "pin" ? "noopener" : undefined} aria-label={row.icon === "pin" ? `${row.label} (opens Google Maps in a new tab)` : undefined}>
             <svg class="hero-contact_icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={paths[row.icon]} />
             <span>{row.label}</span>
             <svg class="hero-contact_arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -51,12 +51,12 @@ const paths: Record<string, string> = {
   @layer components {
     .hero-contact_wrap {
       display: grid;
-      grid-template-columns: minmax(0, 35rem) minmax(0, 40rem);
-      justify-content: space-between;
-      gap: var(--space-7);
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+      gap: var(--space-8);
       width: 100%;
       padding-top: 10rem;
-      padding-bottom: 3rem;
+      padding-bottom: var(--space-8);
     }
     .hero-contact_content { display: flex; flex-direction: column; align-items: flex-start; gap: 1.75rem; }
     .hero-contact_content > * { margin: 0 !important; }
@@ -75,13 +75,11 @@ const paths: Record<string, string> = {
       transition: opacity 0.3s ease, translate 0.3s ease;
     }
     .hero-contact_link:hover, .hero-contact_link:focus-visible { color: var(--brand-500); }
+    .hero-contact_link:focus-visible { outline: 0.125rem solid var(--brand-500); outline-offset: 0.25rem; border-radius: 0.25rem; }
     .hero-contact_link:hover .hero-contact_arrow,
     .hero-contact_link:focus-visible .hero-contact_arrow { opacity: 1; translate: 0 0; }
-    .hero-contact_form { position: relative; }
-    .hero-contact_form > .contact-form_card { position: absolute; top: 5rem; left: 0; right: 0; }
     @media (width < 64rem) {
       .hero-contact_wrap { grid-template-columns: 1fr; padding-top: 8rem; padding-bottom: var(--space-8); }
-      .hero-contact_form > .contact-form_card { position: relative; top: 0; }
     }
   }
 </style>

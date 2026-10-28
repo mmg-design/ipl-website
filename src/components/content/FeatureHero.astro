@@ -1,0 +1,59 @@
+---
+/** Hero for feature pages (Batting Cages, HitTrax, The Den...). */
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+import Button from "@/components/Button.astro";
+import GoogleBadge from "@/components/content/GoogleBadge.astro";
+
+interface Link { label: string; href: string }
+interface Props {
+  eyebrow: string;
+  title: string;
+  text: string;
+  primary?: Link;
+  secondary?: Link;
+}
+const { eyebrow, title, text, primary, secondary } = Astro.props;
+---
+
+<div class="feature-hero_content">
+  <Eyebrow>{eyebrow}</Eyebrow>
+  <Heading tag="h1" variant="h1">{title}</Heading>
+  <Paragraph class="max-width-none">{text}</Paragraph>
+  {(primary || secondary) && (
+    <div class="feature-hero_actions">
+      {primary && <Button element="link" href={primary.href}>{primary.label}</Button>}
+      {secondary && <Button element="link" href={secondary.href} emphasis="secondary">{secondary.label}</Button>}
+    </div>
+  )}
+  <GoogleBadge />
+</div>
+
+<style is:global>
+  @layer components {
+    .feature-hero_content {
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 1.75rem; max-width: 45rem; width: 100%;
+      padding-block: 9rem var(--space-7);
+    }
+    .feature-hero_content > * { margin: 0 !important; }
+    .feature-hero_content .heading { margin-block: 0.25rem 0.5rem !important; }
+    .feature-hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem !important; }
+    @media (width < 64rem) { .feature-hero_content { padding-top: 8rem; } }
+    /* Shared feature-page section styles */
+    .feature-hero_section { min-height: max(36rem, 78svh); background-color: #022337; justify-content: center; overflow: hidden; }
+    .feature-hero_bg { position: absolute; inset: 0; overflow: hidden; }
+    .feature-hero_bg img { width: 100%; height: 100%; object-fit: cover; transform-origin: 65% 50%; animation: feature-hero-zoom 24s ease-in-out infinite alternate; }
+    @keyframes feature-hero-zoom { from { scale: 1; } to { scale: 1.08; } }
+    @media (prefers-reduced-motion: reduce) { .feature-hero_bg img { animation: none; } }
+    .feature-hero_bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(2 35 55 / 0.9) 0%, rgb(2 35 55 / 0.78) 40%, rgb(2 35 55 / 0.55) 75%, rgb(2 35 55 / 0.45) 100%); }
+    .feature_section { min-height: 0; }
+    .feature_section-fade { background-image: linear-gradient(180deg, #fff, #eef3f7); }
+    .feature_section-glow { overflow: hidden; isolation: isolate; }
+    .feature_section-glow::before {
+      content: ""; position: absolute; z-index: -1; left: 50%; bottom: -20%; width: 90%; height: 70%; translate: -50% 0;
+      background: radial-gradient(closest-side, rgb(14 120 190 / 0.55), transparent); filter: blur(3rem); pointer-events: none;
+    }
+  }
+</style>

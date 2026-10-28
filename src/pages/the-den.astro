@@ -1,0 +1,51 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import PricingTiers from "@/components/content/PricingTiers.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, packages, room, twoSP, programs } from "@/data/the-den";
+---
+
+<Layout theme="dark" overlap title="The Den: Baseball and Softball Strength Training in Michigan">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section" aria-label="The Den strength training">
+    <div slot="background" class="feature-hero_bg" aria-hidden="true">
+      <img src={hero.image} alt="" />
+    </div>
+    <FeatureHero {...hero} />
+  </Section>
+
+  <Section id="packages" theme="light" class="feature_section" aria-label="Session packages">
+    <WaysGrid {...packages} variant="tracks" />
+  </Section>
+
+  <Section id="room" theme="light" class="feature_section feature_section-fade" aria-label="The room">
+    <SplitFeature {...room} glow={false} />
+  </Section>
+
+  <Section id="2sp" theme="dark" class="feature_section feature_section-glow" aria-label="About 2SP">
+    <SplitFeature {...twoSP} headingVariant="h3" />
+  </Section>
+
+  <Section id="programs" theme="light" class="feature_section" aria-labelledby="pricing-title">
+    <PricingTiers {...programs} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser page="the-den" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>

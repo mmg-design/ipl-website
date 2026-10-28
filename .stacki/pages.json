@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "entries": [
+    "index.astro",
+    "about.astro",
+    "batting-cages.astro",
+    "contact.astro",
+    "hittrax.astro",
+    "the-den.astro",
+    "example-components.astro",
+    "404.astro"
+  ]
+}

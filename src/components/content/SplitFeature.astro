@@ -1,0 +1,52 @@
+---
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Button from "@/components/Button.astro";
+
+interface Point { title: string; text: string }
+interface Props {
+  eyebrow?: string; heading: string; text: string;
+  /** Two-up sub points under the copy. */
+  points?: Point[];
+  /** Blue glow behind the image (dark sections). */
+  glow?: boolean;
+  button?: { label: string; href: string };
+  image: string; alt: string; id?: string;
+  headingVariant?: "h2" | "h3";
+}
+const { eyebrow, heading, text, points, glow = true, button, image, alt, id, headingVariant = "h2" } = Astro.props;
+---
+
+<div class="split-feature_wrap">
+  <div class="split-feature_content">
+    <SectionIntro eyebrow={eyebrow} heading={heading} text={text} align="start" id={id} variant={headingVariant} />
+    {points && (
+      <ul class="split-feature_points" role="list">
+        {points.map((p) => (
+          <li><h3>{p.title}</h3><p>{p.text}</p></li>
+        ))}
+      </ul>
+    )}
+    {button && <Button element="link" href={button.href}>{button.label}</Button>}
+  </div>
+  <div class:list={["split-feature_media", glow && "has-glow"]}><img class="split-feature_image" src={image} alt={alt} loading="lazy" /></div>
+</div>
+
+<style is:global>
+  @layer components {
+    .split-feature_wrap { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: var(--space-8); width: 100%; }
+    .split-feature_content { display: flex; flex-direction: column; align-items: flex-start; gap: 2.5rem; }
+    .split-feature_media { position: relative; isolation: isolate; }
+    .split-feature_media.has-glow::before {
+      content: ""; position: absolute; z-index: -1; inset: -30% -40% -30% -25%;
+      background: radial-gradient(closest-side, rgb(14 120 190 / 0.75), rgb(6 100 157 / 0.3) 55%, transparent 100%);
+      filter: blur(2.5rem); pointer-events: none;
+    }
+    .split-feature_points { list-style: none; margin: 0; padding: 0.5rem 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; width: 100%; }
+    .split-feature_points li { display: flex; flex-direction: column; gap: 1.25rem; }
+    .split-feature_points h3 { margin: 0; font-size: 1rem; font-weight: var(--primary-bold); line-height: 1.3; }
+    .split-feature_points p { margin: 0; font-size: 1.0625rem; line-height: 1.65; }
+    @media (width < 30rem) { .split-feature_points { grid-template-columns: 1fr; } }
+    .split-feature_image { width: 100%; aspect-ratio: 600 / 640; object-fit: cover; border-radius: 0.75rem; display: block; box-shadow: 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.45); }
+    @media (width < 64rem) { .split-feature_wrap { grid-template-columns: 1fr; } }
+  }
+</style>

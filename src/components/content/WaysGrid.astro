@@ -1,0 +1,40 @@
+---
+/** Three-up image columns. "ways": small bold title + button. "tracks": large title, no button. */
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Button from "@/components/Button.astro";
+
+interface Item { title: string; text: string; image: string; alt: string; button?: { label: string; href: string } }
+interface Props { eyebrow?: string; heading: string; text?: string; items: Item[]; variant?: "ways" | "tracks" }
+const { eyebrow, heading, text, items, variant = "ways" } = Astro.props;
+---
+
+<div class:list={["ways-grid_wrap", `is-${variant}`]}>
+  <SectionIntro eyebrow={eyebrow} heading={heading} text={text} variant={variant === "ways" && !eyebrow ? "h3" : "h2"} />
+  <ul class="ways-grid_list" role="list">
+    {items.map((item) => (
+      <li class="ways-grid_item">
+        <img src={item.image} alt={item.alt} loading="lazy" />
+        <h3 class="ways-grid_title">{item.title}</h3>
+        <p class="ways-grid_text">{item.text}</p>
+        {item.button && <Button element="link" href={item.button.href}>{item.button.label}</Button>}
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style is:global>
+  @layer components {
+    .ways-grid_wrap { display: flex; flex-direction: column; align-items: center; gap: var(--space-8); width: 100%; }
+    .ways-grid_list { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3rem; }
+    .ways-grid_item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
+    .ways-grid_item > * { margin: 0; }
+    .ways-grid_item img { width: 100%; aspect-ratio: 395 / 240; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.75rem; }
+    .ways-grid_title { font-size: 1.125rem; font-weight: var(--primary-bold); line-height: 1.25; }
+    .ways-grid_text { font-size: 1.0625rem; line-height: 1.65; max-width: 24rem; }
+    .ways-grid_item .button { margin-top: 0.75rem; }
+    .is-tracks .ways-grid_item { gap: 1.5rem; }
+    .is-tracks .ways-grid_item img { aspect-ratio: 405 / 240; margin-bottom: 0.5rem; }
+    .is-tracks .ways-grid_title { font-size: clamp(1.625rem, 2.3vw, 2rem); font-weight: var(--primary-regular); line-height: 1.2; letter-spacing: -0.01em; }
+    @media (width < 64rem) { .ways-grid_list { grid-template-columns: 1fr; max-width: 30rem; } }
+  }
+</style>

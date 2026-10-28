@@ -13,17 +13,18 @@ interface Props {
 const { class: className, action } = Astro.props;
 ---
 
-<div class:list={["contact-form_card", "theme-light", className]}>
+<div class:list={["contact-form_card", "theme-light", className]} role="region" aria-label="Contact form">
   <Form
     name="contact"
     action={action}
     successMessage="Thanks. We will get back to you the same business day."
     errorMessage="That did not send. Please call (810) 206-3763 or try again."
   >
-    <Input label="Name" name="name" placeholder="" required />
-    <Input label="Email" name="email" variant="email" placeholder="" required />
+    <Input label="Name" name="name" placeholder="" autocomplete="name" required />
+    <Input label="Email" name="email" variant="email" placeholder="" autocomplete="email" required />
     <Textarea label="What can we help with?" name="message" rows={6} placeholder="Age, sport, and what you are trying to fix..." required />
     <Choice label="I accept the Privacy Policy" name="privacy" required />
+    <p class="contact-form_note"><a href="mailto:info@ingeperformancelab.com?subject=Privacy%20Policy%20request">Read the Privacy Policy</a></p>
     <Button type="submit">Send it</Button>
   </Form>
 </div>
@@ -31,22 +32,20 @@ const { class: className, action } = Astro.props;
 <style is:global>
   @layer components {
     .contact-form_card {
-      position: relative;
-      z-index: 3;
-      width: 100%;
+            width: 100%;
       background: white;
       color: #000;
       border-radius: 0.8125rem;
       padding: 2.6875rem 1.6875rem;
-      filter:
-        drop-shadow(0 18px 20.5px rgb(0 0 0 / 0.1))
-        drop-shadow(0 74px 37px rgb(0 0 0 / 0.09))
-        drop-shadow(0 166px 50px rgb(0 0 0 / 0.05))
-        drop-shadow(0 295px 59px rgb(0 0 0 / 0.01));
+      box-shadow: 0 1.125rem 1.25rem rgb(0 0 0 / 0.1), 0 4.625rem 2.3rem rgb(0 0 0 / 0.09);
     }
     .contact-form_card .form_fields { display: flex; flex-direction: column; gap: 1.625rem; }
     .contact-form_card .form_fields > button { align-self: flex-start; margin-top: 0.5rem; }
     .contact-form_card :is(input:not([type="checkbox"]), textarea) { min-height: 3.25rem; border-radius: 0.8125rem; }
+    .contact-form_card :is(input, textarea):focus-visible { outline: 0.125rem solid var(--brand-500); outline-offset: 0.125rem; }
+    .contact-form_note { margin: -0.75rem 0 0; font-size: 0.875rem; }
+    .contact-form_note a { text-decoration: underline; text-underline-offset: 0.2em; color: #022337; transition: color 0.3s ease; }
+    .contact-form_note a:hover { color: var(--brand-600); }
     .contact-form_card textarea { min-height: 12rem !important; height: 12rem; }
   }
 </style>

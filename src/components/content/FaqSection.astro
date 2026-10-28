@@ -1,0 +1,48 @@
+---
+/** Global FAQ block (contact-page layout): centered intro, collapsible accordion, optional contact prompt. */
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Accordion from "@/components/interactive/Accordion.astro";
+import AccordionItem from "@/components/interactive/AccordionItem.astro";
+import Button from "@/components/Button.astro";
+
+interface Faq { question: string; answer: string }
+interface Props {
+  heading: string;
+  text?: string;
+  items: Faq[];
+  /** Show the "Still have questions?" prompt. */
+  contactPrompt?: boolean;
+}
+const { heading, text, items, contactPrompt = false } = Astro.props;
+---
+
+<div class="faq-section_wrap">
+  <SectionIntro eyebrow="FAQs" heading={heading} text={text} variant="h3" id="faqs-title" />
+  <Accordion openFirst class="faq-section_list">
+    {items.map((faq) => (
+      <AccordionItem heading={faq.question}>
+        <p>{faq.answer}</p>
+      </AccordionItem>
+    ))}
+  </Accordion>
+  {contactPrompt && (
+    <div class="faq-section_prompt">
+      <h3 class="faq-section_prompt-title">Still have questions?</h3>
+      <p class="faq-section_prompt-text">Call the desk or send the form.</p>
+      <Button element="link" href="/contact">Contact us</Button>
+    </div>
+  )}
+</div>
+
+<style is:global>
+  @layer components {
+    .faq-section_wrap { width: 100%; max-width: 48rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-8); }
+    .faq-section_list .accordion_item:first-child { border-top: var(--border-width) solid var(--border); }
+    .faq-section_list .accordion_body { padding-bottom: 1.5rem; }
+    .faq-section_list .accordion_title { font-weight: var(--primary-bold); }
+    .faq-section_prompt { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
+    .faq-section_prompt > * { margin: 0; }
+    .faq-section_prompt-title { font-weight: var(--primary-regular); font-size: clamp(1.625rem, 2.3vw, 2rem); line-height: 1.2; }
+    .faq-section_prompt-text { font-size: 1.125rem; line-height: 1.67; margin-bottom: 0.5rem; }
+  }
+</style>

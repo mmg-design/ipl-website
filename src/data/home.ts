@@ -48,19 +48,19 @@ export const features = [
     heading: "Batting Cages",
     text: "Six wide tunnels, fully equipped with machines and HitTrax in every single cage.",
     image: asset("bf6c5.webp"),
-    href: "/#cages",
+    href: "/batting-cages",
   },
   {
     heading: "HitTrax",
     text: "Cutting-edge technology to deeply understand your swing included at no extra charge.",
     image: asset("9ae85.webp"),
-    href: "/#hittrax",
+    href: "/hittrax",
   },
   {
     heading: "The Den",
     text: "Strength and speed for every sport. A D1-caliber weight room powered by 2SP.",
     image: asset("582d5.webp"),
-    href: "/#the-den",
+    href: "/the-den",
   },
 ];
 export const facility = [
@@ -68,7 +68,7 @@ export const facility = [
     id: "infield",
     eyebrow: "Infield",
     heading: "Full Turf Infield",
-    text: "A full turf indoor infield for team practice, fielding work and small-sided games all winter.",
+    text: "A varsity-size indoor softball field for team practice, fielding work and small-sided games all winter.",
     image: asset("card-infield.webp"),
     buttonLabel: "Team Rentals",
     buttonHref: "/#programs",
@@ -80,7 +80,7 @@ export const facility = [
     text: "Jr. Hack Attack machines for baseball and softball, HitTrax included in every cage.",
     image: asset("bba82.webp"),
     buttonLabel: "Batting Cages",
-    buttonHref: booking,
+    buttonHref: "/batting-cages",
   },
   {
     id: "data",
@@ -141,13 +141,13 @@ export const programs = [
   {
     id: "winter-leagues",
     heading: "6v6 Winter Softball Leagues",
-    text: "10U, 12U and 14U fastpitch on the full indoor infield. Games count, standings are posted, and every at-bat is tracked on HitTrax. Winter 2027 registration is open.",
+    text: "10U, 12U and 14U fastpitch, plus 6v6 baseball for players up to age 12, on the full indoor infield. Games count, standings are posted, and every at-bat is tracked on HitTrax. Winter 2027 registration is open.",
     image: asset("cc2e2.webp"),
   },
   {
     id: "pro-practice",
     heading: "Pro Practice Sessions",
-    text: "Brandon Inge runs your team's practice start to finish, offensive or defensive. 8 to 12 players, $20 per player per hour. You bring the roster, he brings the plan.",
+    text: "Brandon Inge runs your team's practice start to finish, offensive or defensive. 8 to 12 players. Pricing is the $150 per hour field rental plus $20 per player per hour. You bring the roster, he brings the plan.",
     image: asset("78fac.webp"),
   },
   {

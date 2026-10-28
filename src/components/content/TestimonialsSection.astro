@@ -1,0 +1,19 @@
+---
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import TestimonialWall from "@/components/content/TestimonialWall.astro";
+
+interface Props { heading?: string; widgetId?: string }
+const { heading = "Hear from athletes, parents, and customers.", widgetId } = Astro.props;
+---
+
+<div class="testimonials-section_wrap">
+  <SectionIntro eyebrow="Testimonials" heading={heading} id="testimonials-title" />
+  <TestimonialWall id={widgetId} />
+</div>
+
+<style is:global>
+  @layer components {
+    .testimonials-section_wrap { display: flex; flex-direction: column; gap: var(--space-8); width: 100%; }
+    .testimonials-section_wrap .section-intro .heading { font-size: clamp(2.5rem, 4.5vw, 3.625rem); line-height: 1.02; }
+  }
+</style>

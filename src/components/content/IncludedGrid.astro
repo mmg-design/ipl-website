@@ -1,0 +1,44 @@
+---
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+
+interface Item { tag: string; title: string; text: string; image: string; alt: string }
+interface Props { eyebrow?: string; heading: string; text?: string; items: Item[]; tone?: "light" | "dark" }
+const { eyebrow, heading, text, items, tone = "light" } = Astro.props;
+---
+
+<div class:list={["included-grid_wrap", `is-${tone}`]}>
+  <SectionIntro eyebrow={eyebrow} heading={heading} text={text} />
+  <ul class="included-grid_list" role="list">
+    {items.map((item) => (
+      <li class="included-grid_card">
+        <img class="included-grid_image" src={item.image} alt={item.alt} loading="lazy" />
+        <div class="included-grid_body">
+          <Eyebrow>{item.tag}</Eyebrow>
+          <h3 class="included-grid_title">{item.title}</h3>
+          <p class="included-grid_text">{item.text}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style is:global>
+  @layer components {
+    .included-grid_wrap { display: flex; flex-direction: column; gap: var(--space-8); width: 100%; }
+    .included-grid_list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .included-grid_card {
+      display: flex; flex-direction: column; overflow: hidden;
+      border: var(--border-width) solid color-mix(in lab, currentcolor 35%, transparent);
+      border-radius: 0.5rem;
+      background: linear-gradient(180deg, rgb(255 255 255 / 0.45), rgb(238 243 247 / 0.45));
+    }
+    .included-grid_wrap.is-dark .included-grid_card { background: #0b3550; border-color: rgb(176 180 184 / 0.55); }
+    .included-grid_image { width: 100%; aspect-ratio: 624 / 260; object-fit: cover; display: block; }
+    .included-grid_body { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.5rem; }
+    .included-grid_body > * { margin: 0; }
+    .included-grid_title { font-weight: var(--primary-regular); font-size: clamp(1.5rem, 2.3vw, 2rem); line-height: 1.2; letter-spacing: -0.01em; margin-top: 0.25rem; }
+    .included-grid_text { font-size: 1.125rem; line-height: 1.67; margin-top: 0.25rem !important; }
+    @media (width < 48rem) { .included-grid_list { grid-template-columns: 1fr; } }
+  }
+</style>

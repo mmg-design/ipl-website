@@ -2,10 +2,7 @@
 import Layout from "@/layouts/BaseLayout.astro";
 import Section from "@/components/wrapper/Section.astro";
 import Scene from "@/components/media/Scene.astro";
-import Heading from "@/components/typography/Heading.astro";
-import Eyebrow from "@/components/typography/Eyebrow.astro";
-import Accordion from "@/components/interactive/Accordion.astro";
-import AccordionItem from "@/components/interactive/AccordionItem.astro";
+import FaqSection from "@/components/content/FaqSection.astro";
 import HeroContact from "@/components/content/HeroContact.astro";
 import TestimonialWall from "@/components/content/TestimonialWall.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
@@ -13,7 +10,7 @@ import { contactFaqs } from "@/data/contact";
 ---
 
 <Layout theme="dark" overlap title="Contact Inge Performance Lab">
-  <!-- Hero + form (form overlaps into the reviews section) -->
+  <!-- Hero + form -->
   <Section theme="dark" paddingTop="none" paddingBottom="none" class="contact-hero_section" aria-label="Contact Inge Performance Lab">
     <div slot="background" class="contact-hero_bg" aria-hidden="true">
       <img src="/images/contact-hero-bg.webp" alt="" />
@@ -22,25 +19,13 @@ import { contactFaqs } from "@/data/contact";
   </Section>
 
   <!-- Reviews carousel (Senja) -->
-  <Section theme="light" paddingTop="none" class="contact-reviews_section" aria-label="Google reviews">
+  <Section theme="light" class="contact-reviews_section" aria-label="Google reviews">
     <TestimonialWall id="08367aee-889b-432d-8e39-c1c346e49f23" />
   </Section>
 
   <!-- FAQs -->
   <Section id="faqs" theme="light" paddingTop="none" aria-labelledby="faqs-title">
-    <div class="contact-faq_wrap">
-      <div class="contact-faq_header">
-        <Eyebrow>FAQs</Eyebrow>
-        <Heading id="faqs-title" variant="h3">Questions we get asked most.</Heading>
-      </div>
-      <Accordion openFirst class="contact-faq_list">
-        {contactFaqs.map((faq) => (
-          <AccordionItem heading={faq.question}>
-            <p>{faq.answer}</p>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+    <FaqSection heading="Questions we get asked most." items={contactFaqs} />
   </Section>
 
   <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
@@ -55,16 +40,7 @@ import { contactFaqs } from "@/data/contact";
     .contact-hero_bg { position: absolute; inset: 0; overflow: hidden; }
     .contact-hero_bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.71; }
     .contact-hero_bg::after { content: ""; position: absolute; inset: 0; background: rgb(2 35 55 / 0.62); }
-    .contact-reviews_section { min-height: 0; padding-top: 14rem; }
-    .contact-faq_wrap { width: 100%; max-width: 48rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-8); }
-    .contact-faq_header { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; text-align: center; }
-    .contact-faq_header .heading { margin: 0; }
-    .contact-faq_list .accordion_item:first-child { border-top: var(--border-width) solid var(--border); }
-    .contact-faq_list .accordion_body { padding-bottom: 1.5rem; }
-    .contact-faq_list .accordion_title { font-weight: var(--primary-bold); }
+    .contact-reviews_section { min-height: 0; }
     #faqs { min-height: 0; }
-    @media (width < 64rem) {
-      .contact-reviews_section { padding-top: var(--space-8); }
-    }
   }
 </style>

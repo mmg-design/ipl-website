@@ -1,0 +1,35 @@
+---
+/** Eyebrow + heading + optional text, centered or left. Explicit gaps (text-box trim safe). */
+import Heading from "@/components/typography/Heading.astro";
+import Paragraph from "@/components/typography/Paragraph.astro";
+import Eyebrow from "@/components/typography/Eyebrow.astro";
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  text?: string;
+  id?: string;
+  align?: "center" | "start";
+  variant?: "h2" | "h3";
+}
+const { eyebrow, heading, text, id, align = "center", variant = "h2" } = Astro.props;
+---
+
+<div class:list={["section-intro", align === "start" && "is-start"]}>
+  {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+  <Heading id={id} variant={variant}>{heading}</Heading>
+  {text && <Paragraph class="max-width-none">{text}</Paragraph>}
+</div>
+
+<style is:global>
+  @layer components {
+    .section-intro {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      gap: 1.5rem; max-width: 48rem; margin-inline: auto; width: 100%;
+    }
+    .section-intro.is-start { align-items: flex-start; text-align: left; margin-inline: 0; }
+    .section-intro > * { margin: 0 !important; }
+    .section-intro .heading + .text { margin-top: 0.875rem !important; }
+    .section-intro .eyebrow_wrap + .heading { margin-top: 0.125rem !important; }
+  }
+</style>
