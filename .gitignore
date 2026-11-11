@@ -30,3 +30,4 @@ pnpm-debug.log*
 docs/_to_delete/
 docs/*-original/
 *.tgz
+*.bundle
