@@ -66,6 +66,35 @@ const centered = align === "center";
 </div>
 )}
 
+<script is:inline>
+  /* Measure the headline's longest rendered line and expose it as --_heading-w, so the
+     subheadline wraps inside it. Re-runs once fonts load and on resize. */
+  (() => {
+    const fit = () => {
+      document.querySelectorAll(".feature-hero_content").forEach((c) => {
+        const h = c.querySelector("h1");
+        if (!h) return;
+        const r = document.createRange();
+        r.selectNodeContents(h);
+        const lines = new Map();
+        for (const b of r.getClientRects()) {
+          if (!b.width) continue;
+          const k = Math.round(b.top);
+          const l = lines.get(k) || [Infinity, -Infinity];
+          lines.set(k, [Math.min(l[0], b.left), Math.max(l[1], b.right)]);
+        }
+        let w = 0;
+        lines.forEach(([a, z]) => (w = Math.max(w, z - a)));
+        if (w) c.style.setProperty("--_heading-w", Math.ceil(w) + "px");
+      });
+    };
+    fit();
+    if (document.fonts) document.fonts.ready.then(fit);
+    let raf;
+    addEventListener("resize", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(fit); });
+  })();
+</script>
+
 <style is:global>
   @layer components {
     .feature-hero_content {
@@ -75,7 +104,14 @@ const centered = align === "center";
     }
     .feature-hero_content > * { margin: 0 !important; }
     .feature-hero_content .heading { margin-block: 0.25rem 0.5rem !important; }
-    .feature-hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem !important; }
+    /* Subheadline and buttons: the same 3rem between them on every feature hero (content gap + this margin) */
+    .feature-hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem !important; }
+    .feature-hero_section.is-inset .feature-hero_actions { margin-top: 1.5rem !important; }
+    /* Subheadline never runs wider than the headline's longest line (measured by the script below).
+       17rem floor so a very short headline on a phone does not squeeze the copy into a sliver. */
+    /* Phones: hero eyebrows drop the " · Location" suffix so the pill stays on one line */
+    @media (width < 48rem) { .feature-hero_content .eyebrow_suffix { display: none; } }
+    .feature-hero_content > .text { max-width: max(var(--_heading-w, 100%), 17rem) !important; text-wrap: pretty; }
     @media (width < 64rem) { .feature-hero_content { padding-top: 8rem; } }
     /* Shared feature-page section styles */
     .feature-hero_section { min-height: max(36rem, 78svh); background-color: #022337; justify-content: center; overflow: hidden; }
@@ -101,7 +137,7 @@ const centered = align === "center";
       box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.03), 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.6);
     }
     @media (width < 64rem) {
-      .feature-hero_split { grid-template-columns: 1fr; padding-top: 7rem; }
+      .feature-hero_split { grid-template-columns: minmax(0, 1fr); padding-top: 7rem; }
       .feature-hero_media { width: min(100%, 18rem); }
     }
     /* Lighter overlay so more of the photo shows (training pages). Copy side stays dark enough to read. */

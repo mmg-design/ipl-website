@@ -20,6 +20,10 @@ const {
 } = Astro.props;
 
 const content = await slotContent(Astro.slots);
+/* "Topic · Location" eyebrows: the suffix gets its own span so a hero can drop it on phones (see FeatureHero). */
+const sep = " · ";
+const [lead, ...tail] = typeof content === "string" ? content.split(sep) : [content];
+const suffix = tail.length ? sep + tail.join(sep) : "";
 ---
 
 {
@@ -32,7 +36,8 @@ const content = await slotContent(Astro.slots);
         <span class="eyebrow_marker" aria-hidden="true" />
       )}
       <Tag class="eyebrow_text text-style-small">
-        <Fragment set:html={content} />
+        <Fragment set:html={lead} />
+        {suffix && <span class="eyebrow_suffix" set:html={suffix} />}
       </Tag>
     </div>
   )
@@ -61,6 +66,11 @@ const content = await slotContent(Astro.slots);
         letter-spacing: 0.06em;
         line-height: 1.3;
         text-transform: uppercase;
+      }
+      /* Phones: the pill always stays on one line, the type scales down with the screen instead */
+      @media (width < 48rem) {
+        &.tag { padding: 0.3125rem 0.75rem; max-width: 100%; }
+        .eyebrow_text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(0.625rem, 2.85vw, 0.8125rem); letter-spacing: 0.04em; }
       }
       .eyebrow_marker {
         flex: none;

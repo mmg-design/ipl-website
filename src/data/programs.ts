@@ -8,7 +8,7 @@ import { swift } from "@/data/swift";
 const ask = (subject: string) => `${contact}?subject=${encodeURIComponent(subject)}`;
 
 export const hero = {
-  eyebrow: "Baseball and softball camps, clinics and leagues · Brighton, MI",
+  eyebrow: "Camps, clinics and leagues · Brighton, MI",
   title: "Leagues, team blocks and practices.",
   text: "Our six on six leagues keep standings and track every at-bat on HitTrax. Team blocks hold your slot all winter, and Pro Practice sessions are planned and run start to finish by Brandon Inge. Camps and clinics are posted here as they open.",
   image: "/images/figma/cc2e2.webp",
