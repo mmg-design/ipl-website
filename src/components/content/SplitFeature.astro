@@ -1,4 +1,5 @@
 ---
+import Clip from "@/components/media/Clip.astro";
 import SectionIntro from "@/components/content/SectionIntro.astro";
 import Button from "@/components/Button.astro";
 
@@ -7,18 +8,28 @@ interface Props {
   eyebrow?: string; heading: string; text: string;
   /** Two-up sub points under the copy. */
   points?: Point[];
+  /** Optional row of headshots under the copy. */
+  people?: { name: string; role?: string; image: string }[];
   /** Blue glow behind the image (dark sections). */
   glow?: boolean;
   button?: { label: string; href: string };
-  image: string; alt: string; id?: string;
+  /** Optional second button, styled secondary. */
+  secondaryButton?: { label: string; href: string };
+  /** Leave image out for a centered, copy-only layout. */
+  image?: string; alt?: string; id?: string;
+  /** Optional clip in place of the image. The image becomes its poster. */
+  video?: string;
   headingVariant?: "h2" | "h3";
+  /** Optional partner logo above the copy. */
+  logo?: { src: string; alt: string };
 }
-const { eyebrow, heading, text, points, glow = true, button, image, alt, id, headingVariant = "h2" } = Astro.props;
+const { eyebrow, heading, text, points, people, glow = true, button, image, alt, id, headingVariant = "h2", video, logo, secondaryButton } = Astro.props;
 ---
 
-<div class="split-feature_wrap">
+<div class:list={["split-feature_wrap", !image && "is-centered"]}>
   <div class="split-feature_content">
-    <SectionIntro eyebrow={eyebrow} heading={heading} text={text} align="start" id={id} variant={headingVariant} />
+    {logo && <img class="split-feature_logo" src={logo.src} alt={logo.alt} loading="lazy" />}
+    <SectionIntro eyebrow={eyebrow} heading={heading} text={text} align={image ? "start" : "center"} id={id} variant={headingVariant} />
     {points && (
       <ul class="split-feature_points" role="list">
         {points.map((p) => (
@@ -26,9 +37,25 @@ const { eyebrow, heading, text, points, glow = true, button, image, alt, id, hea
         ))}
       </ul>
     )}
-    {button && <Button element="link" href={button.href}>{button.label}</Button>}
+    {people && (
+      <ul class="split-feature_people" role="list">
+        {people.map((p) => (
+          <li>
+            <img src={p.image} alt={`Headshot of ${p.name}`} loading="lazy" />
+            <span class="split-feature_person-name">{p.name}</span>
+            {p.role && <span class="split-feature_person-role">{p.role}</span>}
+          </li>
+        ))}
+      </ul>
+    )}
+    {(button || secondaryButton) && (
+      <div class="split-feature_actions">
+        {button && <Button element="link" href={button.href}>{button.label}</Button>}
+        {secondaryButton && <Button element="link" href={secondaryButton.href} emphasis="secondary">{secondaryButton.label}</Button>}
+      </div>
+    )}
   </div>
-  <div class:list={["split-feature_media", glow && "has-glow"]}><img class="split-feature_image" src={image} alt={alt} loading="lazy" /></div>
+  {image && <div class:list={["split-feature_media", glow && "has-glow"]}>{video ? <Clip class="split-feature_image" src={video} poster={image} label={alt ?? ""} /> : <img class="split-feature_image" src={image} alt={alt ?? ""} loading="lazy" />}</div>}
 </div>
 
 <style is:global>
@@ -36,6 +63,8 @@ const { eyebrow, heading, text, points, glow = true, button, image, alt, id, hea
     .split-feature_wrap { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: var(--space-8); width: 100%; }
     .split-feature_content { display: flex; flex-direction: column; align-items: flex-start; gap: 2.5rem; }
     .split-feature_media { position: relative; isolation: isolate; }
+    .split-feature_actions { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .split-feature_logo { width: auto; height: 4.75rem; max-width: 100%; object-fit: contain; margin-bottom: -0.5rem; mix-blend-mode: screen; }
     .split-feature_media.has-glow::before {
       content: ""; position: absolute; z-index: -1; inset: -30% -40% -30% -25%;
       background: radial-gradient(closest-side, rgb(14 120 190 / 0.75), rgb(6 100 157 / 0.3) 55%, transparent 100%);
@@ -48,5 +77,23 @@ const { eyebrow, heading, text, points, glow = true, button, image, alt, id, hea
     @media (width < 30rem) { .split-feature_points { grid-template-columns: 1fr; } }
     .split-feature_image { width: 100%; aspect-ratio: 600 / 640; object-fit: cover; border-radius: 0.75rem; display: block; box-shadow: 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.45); }
     @media (width < 64rem) { .split-feature_wrap { grid-template-columns: 1fr; } }
+    /* Centered, copy-only variant (no image) */
+    .split-feature_wrap.is-centered { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+    .is-centered .split-feature_content { align-items: center; text-align: center; max-width: 52rem; gap: 2rem; }
+    .is-centered .split-feature_logo { height: 6rem; margin-bottom: 0; }
+    .is-centered .split-feature_points { gap: 1rem; padding: 0.5rem 0 0; }
+    .is-centered .split-feature_points li {
+      gap: 0.625rem; padding: 1.75rem 1.5rem; border-radius: 1rem; align-items: center;
+      background: rgb(255 255 255 / 0.04); border: 1px solid rgb(255 255 255 / 0.12);
+    }
+    .theme-light .is-centered .split-feature_points li, [data-theme="light"] .is-centered .split-feature_points li { background: #fff; border-color: rgb(2 35 55 / 0.1); }
+    .is-centered .split-feature_points h3 { font-size: 1.125rem; }
+    .split-feature_people { list-style: none; margin: 0; padding: 0.5rem 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 2.5rem; }
+    .split-feature_people li { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; width: 11rem; }
+    .split-feature_people img { width: 7.5rem; height: 7.5rem; border-radius: 50%; object-fit: cover; object-position: 50% 20%; margin-bottom: 0.5rem; border: 2px solid rgb(255 255 255 / 0.18); }
+    .split-feature_person-name { font-weight: var(--primary-bold); font-size: 1.0625rem; line-height: 1.3; }
+    .split-feature_person-role { font-size: 0.9375rem; line-height: 1.4; opacity: 0.75; }
+    .split-feature_wrap:not(.is-centered) .split-feature_people { justify-content: flex-start; }
+    .is-centered .split-feature_actions { justify-content: center; }
   }
 </style>

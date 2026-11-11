@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "defaultTarget": "all",
   "githubAccount": "mmg-design",
   "hosting": {
     "provider": "cloudflare-workers",
@@ -8,5 +9,14 @@
   },
   "buildScript": "build",
   "beforePublish": [],
-  "afterPublish": []
+  "afterPublish": [],
+  "publishedSite": {
+    "hosting": {
+      "provider": "cloudflare-workers",
+      "accountId": "34ff19d18d8672470c268db11e5314b5",
+      "project": "ipl-website"
+    },
+    "source": "discovered",
+    "url": "https://ipl-website.andy-34f.workers.dev"
+  }
 }

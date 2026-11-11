@@ -25,6 +25,8 @@ type Base = HTMLAttributes<"div"> & {
   buttonLabel?: string;
   /** Button destination. Omit for a `<button>`. */
   buttonHref?: string;
+  /** Show a "Learn more" pill on the photo on hover (program cards). */
+  learnMore?: boolean;
   /** Card layout. */
   variant?:
     | "default"
@@ -98,6 +100,7 @@ const {
   icon,
   crop,
   class: className,
+  learnMore = false,
   ...rest
 } = Astro.props as AllProps;
 
@@ -193,6 +196,12 @@ const reveal = variant === "pathway" || variant === "nav-training";
     >
       <div class="card_photo">
         <img src={image as string} alt={imageAlt ?? ""} loading="lazy" />
+        {learnMore && buttonHref && (
+          <span class="card_more" aria-hidden="true">
+            Learn more
+            <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </span>
+        )}
       </div>
       <div class="card_details">
         {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
@@ -396,7 +405,7 @@ const reveal = variant === "pathway" || variant === "nav-training";
         max-width: none;
       }
       &.crop-softball .card_photo > img {
-        object-position: top;
+        object-position: 50% 30%;
       }
     }
     /* Training cards: on hover, the icon and title slide up and the line of
@@ -478,16 +487,21 @@ const reveal = variant === "pathway" || variant === "nav-training";
       .card_details {
         padding: 1.25rem;
       }
+      /* Title close to the icon's height; copy tucks in snug underneath. */
       .card_title {
-        font-size: 1.125rem;
-        line-height: 1.25;
+        font-size: 1.625rem;
+        line-height: 1;
+        letter-spacing: -0.015em;
       }
       .card_description {
-        font-size: 0.75rem;
-        line-height: 1.5;
-        margin-top: 0.25rem;
+        font-size: 0.8125rem;
+        line-height: 1.35;
+        margin-top: 0;
       }
     }
+    /* Any branded card: keep the top of the photo (heads) in frame. */
+    .card_wrap.crop-top .card_photo > img { object-position: 50% 0%; }
+    .card_wrap.crop-den .card_photo > img { object-position: 50% 22%; }
     .card_wrap.nav-feature {
       .card_title,
       .card_description {
@@ -514,6 +528,18 @@ const reveal = variant === "pathway" || variant === "nav-training";
         font-size: var(--h3);
       }
     }
+    .card_wrap.program .card_photo { position: relative; }
+    .card_more {
+      position: absolute; left: 1rem; bottom: 1rem; z-index: 2;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 0.875rem; border-radius: 999px;
+      background: var(--brand-500); color: #fff;
+      font-size: 0.8125rem; font-weight: var(--primary-bold); letter-spacing: 0.06em; text-transform: uppercase;
+      opacity: 0; translate: 0 0.5rem; transition: opacity 0.3s ease, translate 0.3s ease;
+      pointer-events: none;
+    }
+    .card_more svg { width: 0.875rem; height: 0.875rem; }
+    .card_wrap:hover .card_more, .card_wrap:focus-within .card_more { opacity: 1; translate: 0 0; }
     .card_wrap.program {
       background: transparent;
       border: 0;

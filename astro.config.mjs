@@ -33,6 +33,11 @@ export default defineConfig({
             style: "normal",
             src: ["./src/assets/fonts/Gotham Bold.otf"],
           },
+          {
+            weight: 900,
+            style: "normal",
+            src: ["./src/assets/fonts/Gotham Black.otf"],
+          },
         ],
       },
     },

@@ -1,0 +1,56 @@
+---
+/** Numbered alternating pathway rows (Layout 357). Powers the Training and Features hubs. */
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Button from "@/components/Button.astro";
+
+export interface Pathway {
+  id: string; label: string; eyebrow: string; heading: string; text: string;
+  subheading?: string; image: string; alt: string; button: { label: string; href: string };
+}
+interface Props { items: Pathway[] }
+const { items } = Astro.props;
+---
+
+<ol class="pathway-list" role="list">
+  {items.map((p, i) => (
+    <li class="pathway-list_item" id={p.id}>
+      <div class="pathway-list_info">
+        <span>{String(i + 1).padStart(2, "0")}</span>
+        <span>{p.label}</span>
+      </div>
+      <div class="pathway-list_body">
+        <div class="pathway-list_content">
+          <div class="pathway-list_copy">
+            <SectionIntro eyebrow={p.eyebrow} heading={p.heading} align="start" />
+            {p.subheading && <p class="pathway-list_sub">{p.subheading}</p>}
+            <p class="pathway-list_text">{p.text}</p>
+          </div>
+          <Button element="link" href={p.button.href}>{p.button.label}</Button>
+        </div>
+        <img class="pathway-list_image" src={p.image} alt={p.alt} loading="lazy" />
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style is:global>
+  @layer components {
+    .pathway-list { list-style: none; margin: 0; padding: 0; width: 100%; }
+    .pathway-list_item { border-top: var(--border-width) solid color-mix(in lab, currentcolor 35%, transparent); padding-bottom: var(--space-8); }
+    .pathway-list_info {
+      position: sticky; top: 4.5rem; z-index: 2; background: var(--background);
+      display: flex; align-items: center; gap: 1.5rem; height: 4rem;
+      font-size: 1.125rem; font-weight: var(--primary-bold);
+    }
+    .pathway-list_body { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; gap: var(--space-8); margin-top: 3rem; }
+    .pathway-list_content { display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; }
+    .pathway-list_copy { display: flex; flex-direction: column; align-items: flex-start; }
+    .pathway-list_sub { margin: 0 !important; padding-top: 1.5rem; font-size: 1.25rem; line-height: 1.4; font-weight: var(--primary-bold); }
+    .pathway-list_text { margin: 0 !important; padding-top: 1.75rem; font-size: 1.125rem; line-height: 1.65; }
+    .pathway-list_image { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 0.75rem; }
+    @media (width < 64rem) {
+      .pathway-list_body { grid-template-columns: 1fr; margin-top: 1.5rem; }
+      .pathway-list_image { order: -1; aspect-ratio: 4 / 3; }
+    }
+  }
+</style>

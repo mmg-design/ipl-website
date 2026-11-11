@@ -9,11 +9,13 @@
 
 .text {
   margin-top: var(--_margin-top);
+  /* Body copy never runs the full width of a wrapper. Override per paragraph with maxWidth. */
+  max-width: var(--_mw, 42rem);
 }
 
 .heading + .text {
   margin-top: 0;
-  max-width: 100%;
+  max-width: var(--_mw, 42rem);
 }
 
 .section {

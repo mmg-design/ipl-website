@@ -1,6 +1,6 @@
 /**
- * Sanity Studio schema for the About page coaches grid.
- * Copy into the Studio project's schemaTypes and add to the schema array.
+ * Sanity schema for coaches and staff (About page grid, training pages, blog authors).
+ * Loaded by the Studio in /studio (studio/schemaTypes/index.ts).
  * Field names must stay in sync with src/data/coaches.ts.
  */
 export default {
@@ -18,6 +18,13 @@ export default {
       options: { hotspot: true },
       fields: [{ name: "alt", title: "Alt text", type: "string" }],
     },
+    {
+      name: "sports", title: "Show on training pages", type: "array", of: [{ type: "string" }],
+      options: { list: ["baseball", "softball", "pitching", "strength", "mental"] },
+    },
+    { name: "sportRole", title: "Role on training pages", type: "string", description: "Optional shorter role, e.g. Hitting and fielding" },
+    { name: "sportBio", title: "Bio on training pages", type: "text", rows: 2, description: "Optional shorter bio for training pages" },
+    { name: "aboutPage", title: "Show on About page", type: "boolean", initialValue: true },
     { name: "order", title: "Display order", type: "number", description: "Lower numbers show first" },
     { name: "showOnSite", title: "Show on site", type: "boolean", initialValue: true },
   ],

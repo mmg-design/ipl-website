@@ -14,11 +14,11 @@ import { hero, tracks, use, beyond, faqs } from "@/data/hittrax";
 ---
 
 <Layout theme="dark" overlap title="HitTrax Batting Cages in Livingston County, MI">
-  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section" aria-label="HitTrax batting cages">
-    <div slot="background" class="feature-hero_bg" aria-hidden="true">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-inset" aria-label="HitTrax batting cages">
+    <div slot="background" class="feature-hero_bg is-light" aria-hidden="true">
       <img src={hero.image} alt="" />
     </div>
-    <FeatureHero {...hero} />
+    <FeatureHero {...hero} ticker />
   </Section>
 
   <Section id="tracks" theme="light" class="feature_section feature_section-fade" aria-label="What HitTrax tracks">

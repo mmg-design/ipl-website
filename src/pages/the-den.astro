@@ -5,23 +5,25 @@ import Scene from "@/components/media/Scene.astro";
 import FeatureHero from "@/components/content/FeatureHero.astro";
 import WaysGrid from "@/components/content/WaysGrid.astro";
 import SplitFeature from "@/components/content/SplitFeature.astro";
+import ClipReel from "@/components/content/ClipReel.astro";
+import FaqSection from "@/components/content/FaqSection.astro";
 import PricingTiers from "@/components/content/PricingTiers.astro";
 import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
 import BlogTeaser from "@/components/content/BlogTeaser.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
-import { hero, packages, room, twoSP, programs } from "@/data/the-den";
+import { hero, packages, room, twoSP, programs, clips, faqs } from "@/data/the-den";
 ---
 
 <Layout theme="dark" overlap title="The Den: Baseball and Softball Strength Training in Michigan">
-  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section" aria-label="The Den strength training">
-    <div slot="background" class="feature-hero_bg" aria-hidden="true">
-      <img src={hero.image} alt="" />
-    </div>
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-split" aria-label="The Den strength training">
+    <Scene slot="background" variant="wall" />
     <FeatureHero {...hero} />
   </Section>
 
-  <Section id="packages" class="feature_section" aria-label="Session packages" theme="light">
-    <WaysGrid {...packages} variant="tracks" />
+  {/* Flexible packages: hidden for now (data kept in the-den.ts as `packages`). */}
+
+  <Section id="clips" theme="dark" class="feature_section" aria-label="Inside The Den">
+    <ClipReel {...clips} />
   </Section>
 
   <Section id="room" theme="light" class="feature_section feature_section-fade" aria-label="The room">
@@ -34,6 +36,10 @@ import { hero, packages, room, twoSP, programs } from "@/data/the-den";
 
   <Section id="programs" theme="light" class="feature_section" aria-labelledby="pricing-title">
     <PricingTiers {...programs} />
+  </Section>
+
+  <Section id="faqs" theme="light" class="feature_section" aria-labelledby="faqs-title">
+    <FaqSection heading={faqs.heading} text={faqs.text} items={faqs.items} contactPrompt />
   </Section>
 
   <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">

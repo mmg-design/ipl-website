@@ -11,7 +11,6 @@ import Eyebrow from "@/components/typography/Eyebrow.astro";
 import StoryVideo from "@/components/content/StoryVideo.astro";
 import CoreValues from "@/components/content/CoreValues.astro";
 import BuildingStats from "@/components/content/BuildingStats.astro";
-import CoachGrid from "@/components/content/CoachGrid.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
 ---
 
@@ -30,7 +29,7 @@ import CtaMain from "@/components/content/CtaMain.astro";
     <ContentWrapper centered>
       <Eyebrow>The story</Eyebrow>
       <Heading id="story-title">Get the right information.</Heading>
-      <Paragraph class="max-width-none story_text"
+      <Paragraph class="story_text"
         >Brandon kept meeting kids who had spent years and thousands of dollars
         on hitting and fielding coaches, and had gotten worse. Not because the
         kids did not work. Because the information was wrong. IPL exists so that
@@ -50,10 +49,6 @@ import CtaMain from "@/components/content/CtaMain.astro";
     </div>
     <BuildingStats />
   </Section>
-  <!-- Coaches (Sanity: coach documents, see src/data/coaches.ts) -->
-  <Section id="coaches" theme="light" class="coaches_section" aria-labelledby="coaches-title">
-    <CoachGrid />
-  </Section>
   <!-- Sections from the Figma About page get built here, one at a time. -->
   <!-- Contact -->
   <Section
@@ -70,14 +65,6 @@ import CtaMain from "@/components/content/CtaMain.astro";
 <style is:global>
   @layer components {
     #story .story_text { max-width: 41rem; margin-inline: auto; }
-    .building_section { min-height: clamp(40rem, 69vw, 62.5rem); background-color: #011a29; }
-    .building_section .container { align-self: flex-start; }
-    .building_bg { position: absolute; inset: 0; overflow: hidden; }
-    .building_bg img { width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
-    .building_bg::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(180deg, #011a29 0%, color-mix(in lab, #011a29 70%, transparent) 35%, transparent 70%);
-    }
     .coaches_section { background-image: linear-gradient(180deg, #fff, #eef3f7); }
     #story .story_video { margin-top: var(--space-8); }
   }

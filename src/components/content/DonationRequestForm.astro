@@ -1,0 +1,111 @@
+---
+/**
+ * Sponsorship and donation request form (Support IPL). Mirrors the fields on the
+ * existing Squarespace form. Set `action` to the form endpoint before launch.
+ */
+import Form from "@/components/form/Form.astro";
+import Fieldset from "@/components/form/Fieldset.astro";
+import Input from "@/components/form/Input.astro";
+import Textarea from "@/components/form/Textarea.astro";
+import Select from "@/components/form/Select.astro";
+import Choice from "@/components/form/Choice.astro";
+import Button from "@/components/Button.astro";
+import { countries } from "@/data/countries";
+
+interface Props { action?: string; class?: string }
+const { action, class: className } = Astro.props;
+const yesNo = (name: string, required = false) => [
+  { label: "Yes", value: "Yes", name, required },
+  { label: "No", value: "No", name, required },
+];
+---
+
+<div class:list={["donation-form_card", "theme-light", className]} role="region" aria-label="Donation and sponsorship request form">
+  <Form
+    name="donation-request"
+    action={action}
+    successMessage="Thanks. Your request is in, and we will be in touch."
+    errorMessage="That did not send. Please email info@ingeperformancelab.com or call (810) 206-3763."
+  >
+    <Fieldset legend="Organization information">
+      <Input label="Organization name" name="organization_name" placeholder="" required />
+    </Fieldset>
+
+    <Fieldset legend="Contact person" variant="columns">
+      <Input label="First name" name="first_name" variant="first-name" placeholder="" required />
+      <Input label="Last name" name="last_name" variant="last-name" placeholder="" required />
+      <Input label="Title or role" name="title_role" placeholder="" />
+      <Input label="Phone number" name="phone" variant="phone" placeholder="" required />
+      <Input label="Email" name="email" variant="email" placeholder="" required />
+      <Input label="Organization website" name="website" variant="url" placeholder="https://" />
+    </Fieldset>
+    <Choice label="Sign up for news and updates" name="newsletter" value="Yes" />
+
+    <Fieldset legend="Mailing address" variant="columns">
+      <Select label="Country" name="mailing_country" options={countries} value="United States" />
+      <Input label="Address line 1" name="mailing_address_1" placeholder="" autocomplete="address-line1" required />
+      <Input label="Address line 2" name="mailing_address_2" placeholder="" autocomplete="address-line2" />
+      <Input label="City" name="mailing_city" placeholder="" autocomplete="address-level2" required />
+      <Input label="State" name="mailing_state" placeholder="" autocomplete="address-level1" required />
+      <Input label="ZIP code" name="mailing_zip" variant="zip-code" placeholder="" required />
+    </Fieldset>
+
+    <Fieldset legend="Event details" variant="columns">
+      <Input label="Event name" name="event_name" placeholder="" required />
+      <Input label="Event date" name="event_date" variant="date" />
+      <Input label="Type of event" name="event_type" placeholder="" />
+      <Input label="Expected number of attendees" name="attendees" variant="number" placeholder="" />
+    </Fieldset>
+    <Textarea label="Brief description of event" name="event_description" rows={4} placeholder="" />
+
+    <Fieldset legend="Event location" variant="columns">
+      <Select label="Country" name="event_country" options={countries} value="United States" />
+      <Input label="Address line 1" name="event_address_1" placeholder="" required />
+      <Input label="Address line 2" name="event_address_2" placeholder="" />
+      <Input label="City" name="event_city" placeholder="" required />
+      <Input label="State" name="event_state" placeholder="" required />
+      <Input label="ZIP code" name="event_zip" variant="zip-code" placeholder="" required />
+    </Fieldset>
+
+    <Fieldset legend="The request">
+      <Textarea label="What are you requesting?" name="request" rows={3} placeholder="" />
+      <Textarea label="How will the donation be used?" name="donation_use" rows={3} placeholder="" />
+      <Textarea label="Who will benefit from this event or fundraiser?" name="beneficiaries" rows={3} placeholder="" />
+      <Textarea label="Please tell us about your organization and its mission" name="mission" rows={4} placeholder="" />
+      <Textarea label="How does this event positively impact the community?" name="community_impact" rows={3} placeholder="" />
+      <Input label="Date donation is needed by" name="needed_by" variant="date" />
+    </Fieldset>
+
+    <Fieldset legend="Is your organization a registered nonprofit?" legendStyle="label" variant="inline">
+      {yesNo("nonprofit").map((o) => <Choice type="radio" {...o} />)}
+    </Fieldset>
+    <Input label="Tax ID or 501(c)(3) number, if applicable" name="tax_id" placeholder="" />
+
+    <Fieldset legend="Has Inge Performance Lab supported your organization before?" legendStyle="label" variant="inline">
+      {yesNo("supported_before").map((o) => <Choice type="radio" {...o} />)}
+    </Fieldset>
+    <Textarea label="If yes, please share when and how" name="supported_before_details" rows={3} placeholder="" />
+
+    <Fieldset legend="Will Inge Performance Lab receive recognition for the donation?" legendStyle="label" variant="inline">
+      {yesNo("recognition").map((o) => <Choice type="radio" {...o} />)}
+    </Fieldset>
+    <Textarea label="Please describe any recognition opportunities" name="recognition_details" rows={3} placeholder="" />
+
+    <Button type="submit">Submit request</Button>
+  </Form>
+</div>
+
+<style is:global>
+  @layer components {
+    .donation-form_card {
+      width: 100%; max-width: 52rem; margin-inline: auto;
+      background: #fff; color: #022337; border-radius: 0.8125rem;
+      padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 4vw, 3.5rem);
+      box-shadow: 0 1.125rem 1.25rem rgb(0 0 0 / 0.1), 0 4.625rem 2.3rem rgb(0 0 0 / 0.09);
+    }
+    .donation-form_card .form_fields { display: flex; flex-direction: column; gap: 2rem; }
+    .donation-form_card .form_fields > button { align-self: flex-start; }
+    .donation-form_card :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { min-height: 3.25rem; border-radius: 0.8125rem; }
+    .donation-form_card :is(input, select, textarea):focus-visible { outline: 0.125rem solid var(--brand-500); outline-offset: 0.125rem; }
+  }
+</style>

@@ -11,18 +11,30 @@ interface Props {
   class?: string;
   /** Override the list (otherwise pulled from Sanity, with fallback). */
   coaches?: Coach[];
+  /** Only coaches tagged for this training page. */
+  sport?: "baseball" | "softball" | "pitching" | "strength" | "mental";
+  /** "wide": 2-up landscape cards (Team 12). Default 3-up square. */
+  variant?: "default" | "wide";
+  heading?: string;
+  text?: string;
+  ctaText?: string;
 }
-const { render = true, class: className, coaches: override } = Astro.props;
-const coaches = override ?? (await getCoaches());
+const {
+  render = true, class: className, coaches: override, sport, variant = "default",
+  heading = "Meet our expert staff",
+  text = "Playing history and coaching credentials.",
+  ctaText,
+} = Astro.props;
+const coaches = override ?? (await getCoaches(sport));
 ---
 
 {
   render && (
-    <div class:list={["coach-grid_wrap", className]}>
+    <div class:list={["coach-grid_wrap", variant === "wide" && "is-wide", className]}>
       <div class="coach-grid_header">
         <Eyebrow>Coaches</Eyebrow>
-        <Heading id="coaches-title">Meet our expert staff</Heading>
-        <Paragraph class="max-width-none">Playing history and coaching credentials.</Paragraph>
+        <Heading id="coaches-title">{heading}</Heading>
+        <Paragraph>{text}</Paragraph>
       </div>
       <ul class="coach-grid_list" role="list">
         {coaches.map((coach) => (
@@ -46,6 +58,7 @@ const coaches = override ?? (await getCoaches());
       </ul>
       <div class="coach-grid_footer">
         <h3 class="coach-grid_cta">Want to coach here?</h3>
+        {ctaText && <p class="coach-grid_cta-text">{ctaText}</p>}
         <Button element="link" href={`${contact}?subject=Coaching%20at%20IPL`}>Contact us</Button>
       </div>
     </div>
@@ -80,5 +93,10 @@ const coaches = override ?? (await getCoaches());
     .coach-grid_cta { margin: 0; font-weight: var(--primary-regular); font-size: clamp(1.625rem, 2.3vw, 2rem); line-height: 1.2; letter-spacing: -0.01em; }
     @media (width < 64rem) { .coach-grid_list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 2rem; } }
     @media (width < 40rem) { .coach-grid_list { grid-template-columns: 1fr; } }
+    .coach-grid_cta-text { margin: 0 0 0.5rem; font-size: 1.125rem; line-height: 1.67; }
+    .coach-grid_wrap.is-wide .coach-grid_list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4rem; }
+    .coach-grid_wrap.is-wide .coach-grid_photo { aspect-ratio: 608 / 405; border-radius: 0.75rem; }
+    .coach-grid_wrap.is-wide .coach-grid_bio { max-width: 34rem; }
+    @media (width < 48rem) { .coach-grid_wrap.is-wide .coach-grid_list { grid-template-columns: 1fr; gap: 3rem; } }
   }
 </style>

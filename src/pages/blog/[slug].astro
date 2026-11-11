@@ -1,0 +1,64 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import PostHeader from "@/components/blog/PostHeader.astro";
+import PostBody from "@/components/blog/PostBody.astro";
+import NewsletterCard from "@/components/blog/NewsletterCard.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { getAllPosts, getPost } from "@/data/posts";
+import { SITE_URL } from "@/consts";
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = (await getPost(slug!))!;
+const url = new URL(`/blog/${post.slug}`, SITE_URL).toString();
+const image = post.image ? new URL(post.image, SITE_URL).toString() : undefined;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title,
+  description: post.seoDescription || post.excerpt,
+  image,
+  datePublished: post.publishedAt,
+  author: { "@type": post.author ? "Person" : "Organization", name: post.author?.name ?? "Inge Performance Lab" },
+  publisher: { "@type": "Organization", name: "Inge Performance Lab", url: SITE_URL },
+  mainEntityOfPage: url,
+};
+---
+
+<Layout theme="dark" overlap title={post.seoTitle || post.title} description={post.seoDescription || post.excerpt} image={post.image} type="article">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature_section blog_section" aria-label="Post header">
+    <PostHeader post={post} />
+  </Section>
+
+  <Section theme="dark" paddingTop="medium" class="feature_section post_section" aria-label="Article">
+    <PostBody body={post.body}>
+      <NewsletterCard slot="aside" />
+    </PostBody>
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section post_related" aria-labelledby="blog-title">
+    <BlogTeaser exclude={post.slug} heading="Keep reading" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .blog_section { background: radial-gradient(60rem 30rem at 50% 0%, rgb(14 120 190 / 0.28), transparent 70%), #022337; }
+    .post_section { background: #022337; }
+    .post_related { background: #011a29; }
+  }
+</style>

@@ -1,0 +1,85 @@
+---
+/** Post header (Figma Blog Post Header 2): back link, category, title, lead image, author and share row. */
+import AuthorChip from "@/components/blog/AuthorChip.astro";
+import { formatDate, type Post } from "@/data/posts";
+import { SITE_URL } from "@/consts";
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const url = new URL(`/blog/${post.slug}`, SITE_URL).toString();
+const u = encodeURIComponent(url);
+const shares = [
+  { label: "Share on LinkedIn", href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}`, icon: "M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.06c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.13V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.95 1.32-1.95 2.69V21h-4z" },
+  { label: "Share on X", href: `https://twitter.com/intent/tweet?url=${u}&text=${encodeURIComponent(post.title)}`, icon: "M17.75 3h3.07l-6.7 7.66L22 21h-6.17l-4.83-6.32L5.47 21H2.4l7.17-8.2L2 3h6.33l4.37 5.78zm-1.08 16.2h1.7L7.4 4.73H5.58z" },
+  { label: "Share on Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${u}`, icon: "M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.25-1.46 1.5-1.46H16.6V4.46A21 21 0 0014.3 4.3c-2.28 0-3.84 1.39-3.84 3.95v2.25H8v3h2.46V21z" },
+];
+---
+
+<header class="post-header">
+  <a class="post-header_back" href="/blog">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 3.5L5.5 8 10 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    All posts
+  </a>
+  <div class="post-header_titles">
+    <span class="post-header_meta"><span class="blog-pill">{post.category}</span><span>{post.readTime} min read</span></span>
+    <h1 class="post-header_title">{post.title}</h1>
+  </div>
+  {post.image && <img class="post-header_image" src={post.image} alt={post.imageAlt} />}
+  <div class="post-header_row">
+    <div class="post-header_facts">
+      <AuthorChip author={post.author} />
+      {post.publishedAt && (
+        <span class="post-header_fact"><span class="post-header_label">Published on</span><time datetime={post.publishedAt}>{formatDate(post.publishedAt)}</time></span>
+      )}
+    </div>
+    <div class="post-header_share" aria-label="Share this post">
+      <button type="button" class="post-header_icon" data-copy={url} aria-label="Copy link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 007.07 0l3-3a5 5 0 00-7.07-7.07l-1.5 1.5" /><path d="M14 11a5 5 0 00-7.07 0l-3 3a5 5 0 007.07 7.07l1.5-1.5" /></svg>
+      </button>
+      {shares.map((s) => (
+        <a class="post-header_icon" href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={s.icon} /></svg>
+        </a>
+      ))}
+    </div>
+  </div>
+</header>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(btn.dataset.copy ?? location.href); btn.classList.add("is-copied"); setTimeout(() => btn.classList.remove("is-copied"), 1600); } catch {}
+    });
+  });
+</script>
+
+<style is:global>
+  @layer components {
+    .post-header .blog-pill {
+      display: inline-flex; align-items: center; justify-content: center; font-size: 0.8125rem; font-weight: var(--primary-bold); letter-spacing: 0.06em; text-transform: uppercase; line-height: 1;
+      text-box: trim-both cap alphabetic; padding: 0.5rem 0.875rem; border-radius: 999px; color: #fff; background: var(--brand-500); border: 1px solid rgb(255 255 255 / 0.28);
+    }
+    .post-header { display: flex; flex-direction: column; gap: 2.5rem; width: 100%; padding-top: 8.5rem; }
+    .post-header_back { display: inline-flex; align-items: center; gap: 0.375rem; align-self: flex-start; font-size: 0.9375rem; font-weight: var(--primary-bold); color: inherit; text-decoration: none; opacity: 0.85; }
+    .post-header_back svg { width: 1rem; height: 1rem; transition: translate 0.25s; }
+    .post-header_back:hover { opacity: 1; }
+    .post-header_back:hover svg { translate: -0.2rem 0; }
+    .post-header_titles { display: flex; flex-direction: column; gap: 1.25rem; max-width: 58rem; }
+    .post-header_meta { display: flex; align-items: center; gap: 1rem; font-size: 0.9375rem; font-weight: var(--primary-bold); }
+    .post-header_title { margin: 0; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1.08; letter-spacing: -0.02em; }
+    .post-header_image { width: 100%; aspect-ratio: 1280 / 600; object-fit: cover; border-radius: 1rem; }
+    .post-header_row { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; padding-bottom: 2rem; border-bottom: 1px solid rgb(255 255 255 / 0.1); }
+    .post-header_facts { display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; }
+    .post-header_fact { display: flex; flex-direction: column; gap: 0.125rem; font-size: 0.9375rem; }
+    .post-header_label { font-size: 0.875rem; opacity: 0.7; }
+    .post-header_share { display: flex; gap: 0.5rem; }
+    .post-header_icon {
+      display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; color: inherit; cursor: pointer;
+      background: rgb(255 255 255 / 0.06); border: 1px solid rgb(255 255 255 / 0.14); transition: background-color 0.25s, border-color 0.25s;
+    }
+    .post-header_icon svg { width: 1.0625rem; height: 1.0625rem; }
+    .post-header_icon:hover { background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.3); }
+    .post-header_icon.is-copied { border-color: var(--brand-500); color: var(--brand-500); }
+    @media (width < 48rem) { .post-header { padding-top: 7.5rem; gap: 2rem; } }
+  }
+</style>

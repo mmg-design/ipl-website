@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import CoverflowSlider from "@/components/content/CoverflowSlider.astro";
+import PathwayList from "@/components/content/PathwayList.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, strip, features } from "@/data/features";
+---
+
+<Layout theme="dark" overlap title="Facility Features | Inge Performance Lab, Brighton MI">
+  <Section theme="dark" paddingTop="none" class="feature-hero_section features-hero" aria-label="Facility features">
+    <FeatureHero {...hero} />
+    <CoverflowSlider items={strip} class="features-coverflow" />
+  </Section>
+
+  <Section id="features" theme="light" paddingTop="none" class="feature_section" aria-label="All features">
+    <PathwayList items={features} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .features-hero { min-height: 0; background: radial-gradient(ellipse 80% 60% at 50% 70%, #0f4a6e 0%, #022337 70%); }
+    .features-coverflow { margin-top: -3rem; margin-bottom: -2rem; }
+  }
+</style>

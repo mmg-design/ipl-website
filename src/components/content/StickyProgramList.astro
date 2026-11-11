@@ -1,0 +1,75 @@
+---
+/**
+ * Sticky intro on the left, program cards scrolling on the right.
+ * Each card: large image with a type bubble, eyebrow, title, copy, optional meta and a button.
+ */
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Button from "@/components/Button.astro";
+
+export interface ProgramItem {
+  tag: string; eyebrow: string; title: string; text: string;
+  meta?: string; image: string; alt: string; position?: string;
+  button: { label: string; href: string };
+}
+interface Props {
+  eyebrow: string; heading: string; text?: string; items: ProgramItem[];
+  cta?: { label: string; href: string }; id?: string;
+}
+const { eyebrow, heading, text, items, cta, id } = Astro.props;
+const external = (href: string) => href.startsWith("http");
+---
+
+<div class="program-list_wrap">
+  <div class="program-list_intro">
+    <SectionIntro eyebrow={eyebrow} heading={heading} text={text} align="start" id={id} />
+    {cta && <Button element="link" href={cta.href} emphasis="secondary">{cta.label}</Button>}
+  </div>
+  <ul class="program-list_items" role="list">
+    {items.map((item) => (
+      <li class="program-list_item">
+        <div class="program-list_media">
+          <img src={item.image} alt={item.alt} loading="lazy" style={item.position ? `object-position: ${item.position}` : undefined} />
+          <span class="program-list_tag">{item.tag}</span>
+        </div>
+        <div class="program-list_body">
+          <span class="program-list_eyebrow">{item.eyebrow}</span>
+          <h3 class="program-list_title">{item.title}</h3>
+          <p class="program-list_text">{item.text}</p>
+          {item.meta && <p class="program-list_meta">{item.meta}</p>}
+          <Button element="link" href={item.button.href} target={external(item.button.href) ? "_blank" : undefined} rel={external(item.button.href) ? "noopener" : undefined}>{item.button.label}</Button>
+        </div>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style is:global>
+  @layer components {
+    .program-list_wrap { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: var(--space-8); align-items: start; width: 100%; }
+    .program-list_intro { position: sticky; top: 7rem; display: flex; flex-direction: column; align-items: flex-start; gap: 2rem; }
+    .program-list_intro .heading { font-size: clamp(2.5rem, 4.4vw, 3.5rem); }
+    .program-list_items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4.5rem; }
+    .program-list_item { display: flex; flex-direction: column; gap: 1.75rem; }
+    .program-list_media { position: relative; border-radius: 0.75rem; overflow: hidden; aspect-ratio: 16 / 11; box-shadow: 0 1.25rem 2.5rem -1rem rgb(2 35 55 / 0.35); }
+    .program-list_media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .program-list_tag {
+      position: absolute; left: 1.25rem; bottom: 1.25rem;
+      padding: 0.4rem 0.875rem; border-radius: 999px;
+      background: rgb(2 35 55 / 0.72); border: 1px solid rgb(255 255 255 / 0.3);
+      -webkit-backdrop-filter: blur(0.5rem); backdrop-filter: blur(0.5rem);
+      color: #fff; font-size: 0.8125rem; font-weight: var(--primary-bold); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .program-list_body { display: flex; flex-direction: column; align-items: flex-start; }
+    .program-list_body > * { margin: 0 !important; }
+    .program-list_eyebrow { font-size: 0.875rem; font-weight: var(--primary-bold); letter-spacing: 0.06em; text-transform: uppercase; color: var(--brand-600); }
+    .program-list_title { padding-top: 1rem; font-size: clamp(1.625rem, 2.4vw, 2rem); line-height: 1.15; font-weight: var(--primary-bold); }
+    .program-list_text { padding-top: 1.25rem; font-size: 1.125rem; line-height: 1.65; }
+    .program-list_meta { padding-top: 1.5rem; font-size: 1rem; line-height: 1.5; font-weight: var(--primary-bold); }
+    .program-list_body > a, .program-list_body > button { margin-top: 1.75rem !important; }
+    @media (width < 64rem) {
+      .program-list_wrap { grid-template-columns: 1fr; gap: var(--space-7); }
+      .program-list_intro { position: static; }
+      .program-list_items { gap: 3.5rem; }
+    }
+  }
+</style>

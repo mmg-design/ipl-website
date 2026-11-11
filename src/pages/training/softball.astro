@@ -1,0 +1,60 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import PricingTiers from "@/components/content/PricingTiers.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import TrainingLinks from "@/components/content/TrainingLinks.astro";
+import { hero, infield, coach, community, pricing, coaches, programs } from "@/data/softball-training";
+---
+
+<Layout theme="dark" overlap title="Softball and Fastpitch Training in Brighton, MI">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-inset" aria-label="Softball and fastpitch training">
+    <div slot="background" class="feature-hero_bg is-light is-dim is-top" aria-hidden="true">
+      <img src={hero.image} alt="" />
+    </div>
+    <FeatureHero {...hero} ticker />
+  </Section>
+
+  <Section id="coach" theme="light" class="feature_section feature_section-fade" aria-label="What we coach">
+    <WaysGrid {...coach} variant="panels" />
+  </Section>
+
+  <Section id="infield" theme="light" class="feature_section" aria-label="The indoor infield">
+    <SplitFeature {...infield} glow={false} />
+  </Section>
+
+  <Section id="programs" theme="light" class="feature_section" aria-label="Softball programs">
+    <WaysGrid {...programs} />
+  </Section>
+
+  <Section id="community" theme="dark" class="feature_section feature_section-glow" aria-label="The softball community">
+    <SplitFeature {...community} />
+  </Section>
+
+  <Section id="rates" theme="light" class="feature_section" aria-labelledby="pricing-title">
+    <PricingTiers {...pricing} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="more-training" theme="light" class="feature_section feature_section-fade" aria-label="Other training at IPL">
+    <TrainingLinks current="softball" />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser page="softball-training" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>

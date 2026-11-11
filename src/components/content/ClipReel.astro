@@ -1,0 +1,45 @@
+---
+/** A row of portrait clips. Scrolls sideways on small screens. */
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import Clip from "@/components/media/Clip.astro";
+import type { Clip as ClipItem } from "@/data/media";
+interface Props { eyebrow?: string; heading: string; text?: string; clips: ClipItem[] }
+const { eyebrow, heading, text, clips } = Astro.props;
+---
+
+<div class="clip-reel_wrap">
+  <SectionIntro eyebrow={eyebrow} heading={heading} text={text} />
+  <ul class="clip-reel_list" role="list">
+    {clips.map((c) => (
+      <li class="clip-reel_item">
+        <Clip src={c.src} poster={c.poster} label={c.label} />
+        <span class="clip-reel_label">{c.label}</span>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style is:global>
+  @layer components {
+    .clip-reel_wrap { display: flex; flex-direction: column; gap: var(--space-7); width: 100%; }
+    .clip-reel_list {
+      list-style: none; margin: 0; padding: 0 0 0.5rem;
+      display: grid; grid-auto-flow: column; grid-auto-columns: minmax(13rem, 1fr); gap: 1rem;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      /* Clips fade out toward both outside edges of the row */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%);
+    }
+    .clip-reel_list::-webkit-scrollbar { display: none; }
+    .clip-reel_item {
+      position: relative; aspect-ratio: 9 / 20; border-radius: 0.75rem; overflow: hidden; scroll-snap-align: start;
+      border: var(--border-width) solid rgb(255 255 255 / 0.1);
+      box-shadow: 0 1rem 2.5rem -1rem rgb(0 0 0 / 0.5);
+    }
+    .clip-reel_label {
+      position: absolute; inset: auto 0 0 0; padding: 2.5rem 1rem 0.875rem; color: white;
+      font-size: 0.875rem; font-weight: var(--primary-bold); letter-spacing: 0.04em; text-transform: uppercase;
+      background: linear-gradient(transparent, rgb(1 26 41 / 0.85));
+    }
+  }
+</style>

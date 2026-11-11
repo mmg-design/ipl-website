@@ -6,11 +6,20 @@ import Button from "@/components/Button.astro";
 import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
 import { booking } from "@/data/home";
 
+interface Link { label: string; href: string }
 interface Props {
   render?: boolean;
   class?: string;
+  /** Override the two buttons (Book a Tour page swaps the tour button for cage booking). */
+  primary?: Link;
+  secondary?: Link;
 }
-const { render = true, class: className } = Astro.props;
+const {
+  render = true,
+  class: className,
+  primary = { label: "Book a tour", href: booking },
+  secondary = { label: "See the cages", href: "/#facility" },
+} = Astro.props;
 
 const stats = [
   { value: "6", label: "Wide tunnels, HitTrax in all of them" },
@@ -26,12 +35,12 @@ const stats = [
       <div class="building-stats_content">
         <Eyebrow>The building</Eyebrow>
         <Heading id="building-title">Michigan’s premier baseball and softball training HQ.</Heading>
-        <Paragraph class="max-width-none">
+        <Paragraph>
           Most baseball and softball training facilities lack robustness and aren't specified. We proudly serve baseball and softball athletes end to end and have deeply thought through everything these sports desire.
         </Paragraph>
         <ButtonWrapper>
-          <Button element="link" href={booking}>Book a tour</Button>
-          <Button element="link" href="/#facility" emphasis="secondary">See the cages</Button>
+          <Button element="link" href={primary.href}>{primary.label}</Button>
+          <Button element="link" href={secondary.href} emphasis="secondary">{secondary.label}</Button>
         </ButtonWrapper>
       </div>
       <dl class="building-stats_grid">
@@ -48,6 +57,24 @@ const stats = [
 
 <style is:global>
   @layer components {
+    /* Section shell, shared by About and Book a Tour:
+       <Section theme="dark" class="building_section"> with <div slot="background" class="building_bg"><img/></div> */
+    .building_section { min-height: clamp(40rem, 69vw, 62.5rem); background-color: #011a29; }
+    /* The section is a centered flex column: pin the copy and stats near the top instead. */
+    .building_section { justify-content: flex-start; }
+    .building_bg { position: absolute; inset: 0; overflow: hidden; }
+    /* Field sits lower so the copy and stats land above home plate; photo fades out toward the top. */
+    .building_section { padding-top: clamp(6rem, 8.5vw, 8rem) !important; }
+    .building_bg img {
+      position: absolute; inset: 22% 0 0 0; width: 100%; height: 78%;
+      object-fit: cover; object-position: center bottom;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 0.35) 25%, rgb(0 0 0 / 0.8) 55%, #000 80%);
+      mask-image: linear-gradient(180deg, transparent 0%, rgb(0 0 0 / 0.35) 25%, rgb(0 0 0 / 0.8) 55%, #000 80%);
+    }
+    .building_bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, #011a29 0%, color-mix(in lab, #011a29 55%, transparent) 30%, transparent 60%);
+    }
     .building-stats_wrap {
       display: grid;
       grid-template-columns: 38.5rem 1fr;
@@ -57,7 +84,7 @@ const stats = [
     }
     .building-stats_content { display: flex; flex-direction: column; align-items: flex-start; }
     .building-stats_content .eyebrow_wrap { margin-bottom: 1rem; }
-    .building-stats_content .heading { margin: 0 0 1.5rem; }
+    .building-stats_content .heading { margin: 0 0 2rem; }
     .building-stats_content .text { margin: 0 0 2rem; }
     .building-stats_grid {
       display: grid;

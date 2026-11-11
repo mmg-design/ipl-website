@@ -15,23 +15,23 @@ import { hero, included, pricing, hittrax, ways, faqs } from "@/data/batting-cag
 ---
 
 <Layout theme="dark" overlap title="Batting Cage Rentals in Brighton, MI">
-  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section" aria-label="Batting cage rentals">
-    <div slot="background" class="feature-hero_bg" aria-hidden="true">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-inset" aria-label="Batting cage rentals">
+    <div slot="background" class="feature-hero_bg is-light" aria-hidden="true">
       <img src={hero.image} alt="" />
     </div>
-    <FeatureHero {...hero} />
+    <FeatureHero {...hero} ticker />
   </Section>
 
   <Section id="included" theme="light" class="feature_section" aria-label="What is included">
     <IncludedGrid {...included} />
   </Section>
 
-  <Section id="rates" theme="light" class="feature_section feature_section-fade" aria-labelledby="pricing-title">
-    <PricingTiers {...pricing} />
-  </Section>
-
   <Section id="hittrax" theme="dark" class="feature_section feature_section-glow" aria-label="HitTrax in every cage">
     <SplitFeature {...hittrax} />
+  </Section>
+
+  <Section id="rates" theme="light" class="feature_section feature_section-fade" aria-labelledby="pricing-title">
+    <PricingTiers {...pricing} />
   </Section>
 
   <Section id="ways" theme="light" class="feature_section" aria-label="Ways to use a cage">

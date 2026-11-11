@@ -1,7 +1,7 @@
 ---
+import Paragraph from "@/components/typography/Paragraph.astro";
 /** Eyebrow + heading + optional text, centered or left. Explicit gaps (text-box trim safe). */
 import Heading from "@/components/typography/Heading.astro";
-import Paragraph from "@/components/typography/Paragraph.astro";
 import Eyebrow from "@/components/typography/Eyebrow.astro";
 
 interface Props {
@@ -18,7 +18,7 @@ const { eyebrow, heading, text, id, align = "center", variant = "h2" } = Astro.p
 <div class:list={["section-intro", align === "start" && "is-start"]}>
   {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
   <Heading id={id} variant={variant}>{heading}</Heading>
-  {text && <Paragraph class="max-width-none">{text}</Paragraph>}
+  {text && <Paragraph>{text}</Paragraph>}
 </div>
 
 <style is:global>
@@ -29,7 +29,7 @@ const { eyebrow, heading, text, id, align = "center", variant = "h2" } = Astro.p
     }
     .section-intro.is-start { align-items: flex-start; text-align: left; margin-inline: 0; }
     .section-intro > * { margin: 0 !important; }
-    .section-intro .heading + .text { margin-top: 0.875rem !important; }
+    .section-intro .heading + .text { margin-top: 0.5rem !important; }
     .section-intro .eyebrow_wrap + .heading { margin-top: 0.125rem !important; }
   }
 </style>

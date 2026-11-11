@@ -1,0 +1,146 @@
+---
+/** Slow auto-rotating stacked slider: big centre card, smaller cards outside, faded edges. Each card links to its page. */
+interface Slide { src: string; alt: string; href: string; label: string }
+interface Props { items: Slide[]; interval?: number; class?: string }
+const { items, interval = 4500, class: className } = Astro.props;
+// Render the set twice so there are always cards on both sides of the centre.
+const slides = items.length < 6 ? [...items, ...items] : items;
+---
+
+<div class:list={["coverflow", className]} data-coverflow data-interval={interval} role="region" aria-roledescription="carousel" aria-label="Facility features">
+  <ul class="coverflow_track" role="list">
+    {slides.map((s, i) => (
+      <li class="coverflow_slide" data-index={i} aria-hidden={i >= items.length ? "true" : undefined}>
+        <a href={s.href} class="coverflow_link" tabindex={i >= items.length ? -1 : undefined}>
+          <img src={s.src} alt={s.alt} loading="eager" />
+          <span class="coverflow_label">{s.label}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<script>
+  function initCoverflow(root: HTMLElement) {
+    const slides = [...root.querySelectorAll<HTMLElement>(".coverflow_slide")];
+    const n = slides.length;
+    const ms = Number(root.dataset.interval) || 4500;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let active = 0;
+    /* Fractional offset while dragging, in cards. Positive moves toward the next card. */
+    let drag = 0;
+    let timer: number | undefined;
+
+    // Even gaps: each card's centre = sum of the scaled widths before it + one gap per card.
+    const S = (a: number) => 1 - a * 0.2;
+    const along = (k: number) => { let x = 0; for (let j = 1; j <= k; j++) x += (S(j - 1) + S(j)) / 2; return x; };
+    /* Works for fractional offsets too, so cards can follow the pointer. */
+    const pos = (o: number) => {
+      const a = Math.abs(o), k = Math.floor(a), t = a - k;
+      const x = along(k) + (along(k + 1) - along(k)) * t;
+      return { f: Math.sign(o) * x, g: o };
+    };
+    const render = () => {
+      slides.forEach((el, i) => {
+        let o = (((i - active - drag) % n) + n) % n;
+        if (o > n / 2) o -= n;
+        const p = pos(o);
+        el.style.setProperty("--f", String(p.f));
+        el.style.setProperty("--g", String(p.g));
+        el.style.setProperty("--abs", String(Math.min(Math.abs(o), 3)));
+        el.classList.toggle("is-active", Math.abs(o) < 0.5);
+        el.classList.toggle("is-hidden", Math.abs(o) > 2.6);
+      });
+    };
+    const go = (d: number) => { active = (active + d + n) % n; render(); };
+    const next = () => go(1);
+    const start = () => { stop(); if (!reduce) timer = window.setInterval(next, ms); };
+    const stop = () => window.clearInterval(timer);
+
+    /* Drag / swipe: cards track the pointer, then settle on the nearest card. */
+    let downX = 0, pointerId: number | null = null, dragging = false, moved = false, settleTimer = 0;
+    const step = () => {
+      const card = slides[0].offsetWidth || 300;
+      return card + 20;
+    };
+    root.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      pointerId = e.pointerId; downX = e.clientX; dragging = false; moved = false; stop();
+    });
+    window.addEventListener("pointermove", (e) => {
+      if (pointerId !== e.pointerId) return;
+      const dx = e.clientX - downX;
+      if (!dragging && Math.abs(dx) > 5) { dragging = true; moved = true; root.classList.add("is-dragging"); root.classList.remove("is-settling"); }
+      if (!dragging) return;
+      drag = -dx / step();
+      render();
+    });
+    const release = (e: PointerEvent) => {
+      if (pointerId !== e.pointerId) return;
+      pointerId = null;
+      if (dragging) {
+        dragging = false;
+        const target = Math.round(active + drag);
+        drag = 0;
+        root.classList.remove("is-dragging");
+        root.classList.add("is-settling");
+        go(target - active);
+        window.clearTimeout(settleTimer);
+        settleTimer = window.setTimeout(() => root.classList.remove("is-settling"), 700);
+      }
+      if (!root.matches(":hover")) start();
+    };
+    window.addEventListener("pointerup", release);
+    window.addEventListener("pointercancel", release);
+    root.addEventListener("click", (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); moved = false; } }, true);
+    root.addEventListener("dragstart", (e) => e.preventDefault());
+    root.addEventListener("mouseenter", stop);
+    root.addEventListener("mouseleave", () => { if (pointerId === null) start(); });
+    root.addEventListener("focusin", stop);
+    root.addEventListener("focusout", start);
+    slides.forEach((el, i) => el.querySelector("a")?.addEventListener("focus", () => { active = i; drag = 0; render(); }));
+    render();
+    start();
+  }
+  document.querySelectorAll<HTMLElement>("[data-coverflow]").forEach(initCoverflow);
+</script>
+
+<style is:global>
+  @layer components {
+    .coverflow {
+      position: relative; width: 100%; height: calc(clamp(15rem, 26vw, 22rem) * 4 / 3 + 6rem); overflow: hidden;
+      cursor: grab; touch-action: pan-y; user-select: none;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    }
+    .coverflow.is-dragging { cursor: grabbing; }
+    /* While dragging, cards follow the pointer with no lag; on release they settle quickly. */
+    .coverflow.is-dragging .coverflow_slide { transition: none; }
+    .coverflow.is-settling .coverflow_slide { transition: translate 0.55s cubic-bezier(0.22, 1, 0.36, 1), scale 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease; }
+    .coverflow_track { list-style: none; margin: 0; padding: 0; position: absolute; inset: 0; }
+    .coverflow_slide {
+      --card: clamp(15rem, 26vw, 22rem);
+      position: absolute; top: 50%; left: 50%; width: var(--card); aspect-ratio: 3 / 4;
+      --gap: 1.25rem;
+      translate: calc(-50% + var(--f, 0) * var(--card) + var(--g, 0) * var(--gap)) -50%;
+      scale: calc(1 - var(--abs, 0) * 0.2);
+      z-index: calc(10 - var(--abs, 0));
+      opacity: calc(1 - var(--abs, 0) * 0.3);
+      transition: translate 1.4s cubic-bezier(0.65, 0, 0.35, 1), scale 1.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 1.4s ease;
+    }
+    .coverflow_slide.is-hidden { opacity: 0; pointer-events: none; }
+    .coverflow_link { position: relative; display: block; height: 100%; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 1.25rem 2.25rem rgb(0 0 0 / 0.35); }
+    .coverflow_link img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; -webkit-user-drag: none; transition: scale 0.6s ease; }
+    .coverflow_link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgb(2 35 55 / 0.85)); }
+    .coverflow_label {
+      position: absolute; left: 1.25rem; bottom: 1.1rem; z-index: 1;
+      font-weight: var(--primary-bold); font-size: 1.125rem; color: white;
+      opacity: 0; translate: 0 0.5rem; transition: opacity 0.6s ease, translate 0.6s ease;
+    }
+    .coverflow_slide.is-active .coverflow_label { opacity: 1; translate: 0 0; }
+    .coverflow_slide.is-active .coverflow_link:hover img { scale: 1.04; }
+    .coverflow_link:focus-visible { outline: 0.1875rem solid var(--brand-500); outline-offset: 0.25rem; }
+    @media (prefers-reduced-motion: reduce) { .coverflow_slide { transition: none; } }
+    @media (width < 48rem) { .coverflow_slide { --card: 13rem; } }
+  }
+</style>

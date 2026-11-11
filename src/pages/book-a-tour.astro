@@ -1,0 +1,53 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import HeroCollage from "@/components/content/HeroCollage.astro";
+import FormSplit from "@/components/content/FormSplit.astro";
+import ContactForm from "@/components/content/ContactForm.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import BuildingStats from "@/components/content/BuildingStats.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, collage, requestTour, stops, building } from "@/data/book-a-tour";
+---
+
+<Layout theme="dark" overlap title="Book a Tour | Inge Performance Lab, Brighton MI" description="Tour Inge Performance Lab in Brighton, MI. Fifteen minutes on the floor: the batting cages, the indoor turf infield and The Den strength room. Request a time and we confirm the same business day.">
+  <!-- Hero (Header 78): centered copy over a drifting photo band -->
+  <Section theme="dark" paddingTop="none" paddingBottom="none" gap="0" class="feature-hero_section tour-hero" aria-label="Book a tour">
+    <FeatureHero {...hero} align="center" />
+    <HeroCollage photos={collage} variant="band" />
+  </Section>
+
+  <!-- Tour request form (Contact 7) -->
+  <Section id="request" theme="light" class="feature_section" aria-labelledby="request-title">
+    <FormSplit {...requestTour}>
+      <ContactForm variant="tour" />
+    </FormSplit>
+  </Section>
+
+  <!-- Three stops (Layout 239) -->
+  <Section id="stops" theme="light" class="feature_section tour-stops" aria-label="What you will see on a tour">
+    <WaysGrid {...stops} variant="tracks" />
+  </Section>
+
+  <!-- The building -->
+  <Section id="building" theme="dark" class="building_section" aria-labelledby="building-title">
+    <div slot="background" class="building_bg" aria-hidden="true">
+      <img src="/images/about/numbers-bg.webp" alt="" loading="lazy" />
+    </div>
+    <BuildingStats {...building} />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Get in touch with Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .tour-hero { min-height: 0; background: linear-gradient(180deg, #022337 0%, #022337 55%, #0b3a5a 100%); }
+    .tour-stops { background-image: linear-gradient(180deg, #fff, #eef3f7); }
+  }
+</style>

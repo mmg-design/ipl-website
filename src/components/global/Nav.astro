@@ -11,6 +11,12 @@ interface Props {
   overlap?: boolean;
 }
 const { render = true, overlap = false } = Astro.props;
+
+/* About dropdown: text-only links. */
+const about = [
+  { label: "Our Philosophy", href: "/about", text: "Why IPL exists, and the standard every lesson is held to." },
+  { label: "Donation Requests", href: "/support", text: "Schools, teams and nonprofits can request a donation for an event or fundraiser." },
+];
 ---
 
 {
@@ -54,7 +60,7 @@ const { render = true, overlap = false } = Astro.props;
                       image={item.image}
                       icon={item.icon}
                       crop={item.crop}
-                      buttonHref={`/#${item.id}`}
+                      buttonHref={item.href ?? `/#${item.id}`}
                     />
                   ))}
                   <div class="nav_tour">
@@ -67,8 +73,9 @@ const { render = true, overlap = false } = Astro.props;
                     <div class="nav_tour_content">
                       <>
                         <p>Not sure where to start?</p>
-                        <Button element="link" href="/contact" size="small">
-                          Contact us
+                        <Button element="link" href="/training" size="small" class="nav_more">
+                          Explore all training pathways
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
                         </Button>
                       </>
                     </div>
@@ -77,7 +84,7 @@ const { render = true, overlap = false } = Astro.props;
               </Dropdown>
             </li>
             <li>
-              <Dropdown label="Features" variant="mega" name="main-navigation">
+              <Dropdown label="Facility" variant="mega" name="main-navigation">
                 <Grid medium={3} class="gap-3">
                   {features.map((item) => (
                     <Card
@@ -85,26 +92,43 @@ const { render = true, overlap = false } = Astro.props;
                       heading={item.heading}
                       text={item.text}
                       image={item.image}
+                      crop={item.crop}
                       buttonHref={item.href}
                     />
                   ))}
                 </Grid>
+                <div class="nav_more-row">
+                  <Button element="link" href="/features" size="small" class="nav_more">
+                    Explore the full facility
+                    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  </Button>
+                </div>
               </Dropdown>
             </li>
             <li>
-              <a class="nav_link" href="/#programs">
-                Programs &amp; Events
-              </a>
+              <a class="nav_link" href="/programs"> Programs &amp; Leagues </a>
             </li>
             <li>
-              <a class="nav_link" href="/#memberships">
+              <a class="nav_link" href="/memberships">
                 Memberships
               </a>
             </li>
             <li>
-              <a class="nav_link" href="/about">
-                About
-              </a>
+              <Dropdown label="About" variant="mega" name="main-navigation" class="is-compact">
+                <ul class="nav_text-menu" role="list">
+                  {about.map((item) => (
+                    <li>
+                      <a class="nav_text-link" href={item.href}>
+                        <span class="nav_text-title">
+                          {item.label}
+                          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                        </span>
+                        <span class="nav_text-desc">{item.text}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </Dropdown>
             </li>
           </ul>
           <div class="nav_actions">
@@ -201,12 +225,25 @@ const { render = true, overlap = false } = Astro.props;
     const panelOf = (menu: HTMLDetailsElement) =>
       menu.querySelector<HTMLElement>(".dropdown_content")!;
 
+    /* Compact menus (About) sit under their own trigger instead of spanning
+       the nav. Their left edge is set here; the width comes from the content. */
+    const placeCompact = (menu: HTMLDetailsElement) => {
+      if (!menu.classList.contains("is-compact")) return;
+      const panel = panelOf(menu);
+      const trigger = menu.querySelector<HTMLElement>("summary")!;
+      const h = header.getBoundingClientRect();
+      const t = trigger.getBoundingClientRect();
+      const x = Math.max(16, Math.min(t.left - h.left - 24, h.width - panel.offsetWidth - 16));
+      panel.style.left = `${x}px`;
+    };
+
     const setHeight = (menu: HTMLDetailsElement, instant: boolean) => {
       if (instant) header.classList.add("is-instant");
-      header.style.setProperty(
-        "--nav-viewport-h",
-        `${panelOf(menu).offsetHeight}px`,
-      );
+      placeCompact(menu);
+      const panel = panelOf(menu);
+      header.style.setProperty("--nav-viewport-h", `${panel.offsetHeight}px`);
+      header.style.setProperty("--nav-viewport-x", `${panel.offsetLeft}px`);
+      header.style.setProperty("--nav-viewport-w", `${panel.offsetWidth}px`);
       if (instant) {
         void header.offsetHeight;
         header.classList.remove("is-instant");
@@ -224,6 +261,9 @@ const { render = true, overlap = false } = Astro.props;
     /* Images loading late can change a panel's height after it opens. */
     const resizer = new ResizeObserver(() => {
       if (active) setHeight(active, false);
+    });
+    window.addEventListener("resize", () => {
+      if (active) setHeight(active, true);
     });
 
     /* Every way a menu opens or closes (hover, click, Escape, focus leaving,
@@ -320,6 +360,7 @@ const { render = true, overlap = false } = Astro.props;
       for (const menu of menus) {
         delete menu.dataset.state;
         delete menu.dataset.motion;
+        panelOf(menu).style.left = "";
       }
       header.classList.toggle("is-hover", desktop.matches);
       sync();
@@ -515,9 +556,10 @@ const { render = true, overlap = false } = Astro.props;
       display: block;
       position: absolute;
       top: 100%;
-      inset-inline: var(--site-margin);
-      margin-inline: auto;
-      max-width: var(--max-width-main);
+      /* Matches the open menu's box: full width for Training and Features,
+         narrow and under its trigger for About. Set by the script. */
+      left: var(--nav-viewport-x, var(--site-margin));
+      width: var(--nav-viewport-w, calc(100% - var(--site-margin) * 2));
       height: var(--nav-viewport-h);
       background-color: var(--background-2);
       border: var(--border-width) solid var(--dark-700);
@@ -538,7 +580,17 @@ const { render = true, overlap = false } = Astro.props;
       transition:
         opacity var(--_menu-fade) var(--_menu-ease),
         translate var(--_menu-fade) var(--_menu-ease),
+        left var(--_menu-morph) var(--_menu-ease),
+        width var(--_menu-morph) var(--_menu-ease),
         visibility 0s;
+    }
+    .nav_wrap.is-hover.is-instant .nav_viewport { transition: none; }
+    /* Compact menu (About): content-width panel; the script sets its left edge. */
+    .nav_wrap.is-hover .dropdown_wrap.mega.is-compact .dropdown_content {
+      inset-inline: auto;
+      margin-inline: 0;
+      width: max-content;
+      max-width: 24rem;
     }
 
     .nav_wrap.is-hover .dropdown_wrap.mega {
@@ -696,6 +748,33 @@ const { render = true, overlap = false } = Astro.props;
       width: 100%;
       justify-content: space-between;
     }
+    .nav_more-row { display: flex; justify-content: flex-end; margin-top: 1rem; }
+    /* About dropdown: text-only links, two across. */
+    .nav_text-menu { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
+    /* Subtle inset wells: a touch darker than the panel. */
+    .nav_text-link {
+      position: relative; display: flex; flex-direction: column; gap: 0.375rem; height: 100%; padding: 1rem 1.25rem; border-radius: var(--radius-main, 0.75rem);
+      color: inherit; text-decoration: none;
+      background: rgb(0 10 18 / 0.14);
+      border: 1px solid rgb(255 255 255 / 0.05);
+      box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.12);
+      transition: background-color 200ms, border-color 200ms, box-shadow 200ms;
+    }
+    .nav_text-link:hover, .nav_text-link:focus-visible {
+      background: rgb(0 10 18 / 0.22);
+      border-color: rgb(255 255 255 / 0.08);
+      box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.16);
+    }
+    .nav_text-link:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
+    .nav_text-title { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; font-weight: var(--primary-bold); line-height: 1.2; }
+    .nav_text-title svg { width: 1rem; height: 1rem; color: var(--brand-500); transition: translate 200ms; }
+    .nav_text-link:hover .nav_text-title svg { translate: 0.25rem 0; }
+    .nav_text-desc { font-size: 0.9375rem; line-height: 1.5; opacity: 0.75; }
+    .nav_more { display: inline-flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+    .nav_more .button_text { display: inline-flex; align-items: center; gap: 0.5rem; }
+    .nav_more svg { width: 0.875rem; height: 0.875rem; flex: none; transition: translate 0.3s ease; }
+    .nav_more:hover svg, .nav_more:focus-visible svg { translate: 0.1875rem 0; }
+    .nav_tour_content { flex-direction: column; align-items: flex-start; }
     .nav_tour_content > p {
       font-size: 1rem;
       line-height: 1.3;

@@ -1,0 +1,49 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import HeroCollage from "@/components/content/HeroCollage.astro";
+import PathwayList from "@/components/content/PathwayList.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, collage, pathways } from "@/data/training";
+---
+
+<Layout theme="dark" overlap title="Baseball and Softball Training in Brighton, MI">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section training-hero" aria-label="Training pathways">
+    <HeroCollage slot="background" photos={collage} />
+    <div class="training-hero_copy"><FeatureHero {...hero} /></div>
+  </Section>
+
+  <Section id="pathways" theme="light" paddingTop="none" class="feature_section" aria-label="Training pathways">
+    <PathwayList items={pathways} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section feature_section-fade" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .training-hero { min-height: max(40rem, 92svh); background: #011a29; }
+    .training-hero .hero-collage::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(90deg, #011a29 0%, rgb(1 26 41 / 0.9) 22%, rgb(1 26 41 / 0.55) 40%, rgb(1 26 41 / 0) 62%);
+    }
+    .training-hero_copy { width: 50%; padding-right: 5rem; }
+    .training-hero_copy .feature-hero_content { max-width: 35rem; }
+    @media (width < 64rem) { .training-hero_copy { width: 100%; padding-right: 0; } }
+  }
+</style>

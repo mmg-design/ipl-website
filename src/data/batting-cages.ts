@@ -1,13 +1,14 @@
 /** Batting Cages feature page content. Shapes match the reusable feature-page components. */
 import { booking } from "@/data/home";
+import { swift } from "@/data/swift";
 
 export const hero = {
   eyebrow: "Batting cage rentals · Brighton, MI",
   title: "Get the reps in with batting cage rentals.",
   text: "Six wide tunnels. Jr. Hack Attack machines set for baseball or softball. HitTrax with video in every cage, included. Book by the half hour or the hour, online, in under a minute.",
   image: "/images/batting-cages/hero.webp",
-  primary: { label: "Book a cage", href: booking },
-  secondary: { label: "See memberships", href: "/#memberships" },
+  primary: { label: "Book a cage", href: swift.rentals.cage1 },
+  secondary: { label: "See memberships", href: "/memberships" },
 };
 
 export const included = {
@@ -27,9 +28,9 @@ export const pricing = {
   heading: "Transparent and flexible pricing.",
   text: "Book online for the best rates. Machine and HitTrax included in every cage.",
   tiers: [
-    { name: "1 cage", price: "$35", note: "per 30 minutes, $60 per hour", features: ["One tunnel", "Jr. Hack Attack included", "HitTrax included"], image: "/images/batting-cages/hero.webp", alt: "A hitter in a single cage", cta: { label: "Book", href: booking } },
-    { name: "2 cages", price: "$55", note: "per 30 minutes, $110 per hour", features: ["Two tunnels side by side", "Machines included", "HitTrax included", "Most booked by groups"], image: "/images/batting-cages/machine.webp", alt: "A hitter in a cage next to a pitching machine", cta: { label: "Book", href: booking } },
-    { name: "3 cages", price: "$80", note: "per 30 minutes, $160 per hour", features: ["Three tunnels", "Machines included", "HitTrax included", "Small team work", "Need the infield? See Team Rentals"], image: "/images/batting-cages/team.webp", alt: "Players reviewing HitTrax data together", cta: { label: "Book", href: booking } },
+    { name: "1 cage", price: "$35", note: "per 30 minutes, $60 per hour", features: ["One tunnel", "Jr. Hack Attack included", "HitTrax included"], image: "/images/batting-cages/hero.webp", alt: "A hitter in a single cage", cta: { label: "Book", href: swift.rentals.cage1 } },
+    { name: "2 cages", price: "$55", note: "per 30 minutes, $110 per hour", features: ["Two tunnels side by side", "Machines included", "HitTrax included", "Most booked by groups"], image: "/images/batting-cages/machine.webp", alt: "A hitter in a cage next to a pitching machine", cta: { label: "Book", href: swift.rentals.cage2 } },
+    { name: "3 cages", price: "$80", note: "per 30 minutes, $160 per hour", features: ["Three tunnels", "Machines included", "HitTrax included", "Small team work", "Need the infield? See Team Rentals"], image: "/images/batting-cages/team.webp", alt: "Players reviewing HitTrax data together", cta: { label: "Book", href: swift.rentals.cage3 } },
   ],
 };
 
@@ -45,7 +46,7 @@ export const hittrax = {
 export const ways = {
   heading: "Three ways to use a cage.",
   items: [
-    { title: "Open hitting", text: "Rent a tunnel, bring your own group, run your own work. Wide enough that a coach can stand in and work with the hitter.", image: "/images/batting-cages/hero.webp", alt: "A hitter taking open swings", button: { label: "Book a cage", href: booking } },
+    { title: "Open hitting", text: "Rent a tunnel, bring your own group, run your own work. Wide enough that a coach can stand in and work with the hitter.", image: "/images/batting-cages/hero.webp", alt: "A hitter taking open swings", button: { label: "Book a cage", href: swift.rentals.cage1 } },
     { title: "Lesson in the cage", text: "Thirty or sixty minutes with a coach, HitTrax report at the end.", image: "/images/batting-cages/machine.webp", alt: "A hitter working in a cage", button: { label: "Book a lesson", href: booking } },
     { title: "Team block", text: "Multiple cages plus the infield for a full practice.", image: "/images/figma/11101.webp", alt: "A softball team running drills on the indoor field", button: { label: "Team rentals", href: "/#programs" } },
   ],

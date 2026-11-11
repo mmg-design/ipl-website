@@ -1,5 +1,6 @@
 ---
 import { booking, contact } from "@/data/home";
+import { swift } from "@/data/swift";
 interface Props {
   /** Set to `false` to omit the component. */
   render?: boolean;
@@ -12,40 +13,38 @@ const columns = [
       ["Batting Cages", "/batting-cages"],
       ["HitTrax", "/hittrax"],
       ["The Den", "/the-den"],
-      ["Team Rentals", "/#team-training"],
+      ["Team Rentals", "/training/team-rentals"],
       ["Book a Tour", contact + "?subject=Facility%20tour"],
-      ["All Features", "/#facility"],
+      ["All Features", "/features"],
     ],
   },
   {
     label: "Training",
     links: [
-      ["Baseball Training", "/#baseball"],
-      ["Softball Training", "/#softball"],
-      ["Pitching", "/#pitching"],
-      ["Mental Performance", "/#mental-performance"],
-      ["Programs", "/#programs"],
-      ["Memberships", "/#memberships"],
+      ["Baseball Training", "/training/baseball"],
+      ["Softball Training", "/training/softball"],
+      ["Pitching", "/training/pitching"],
+      ["Mental Performance", "/training/mental-performance"],
+      ["Programs", "/programs"],
+      ["Memberships", "/memberships"],
     ],
   },
   {
     label: "Company",
     links: [
       ["About IPL", "/about"],
-      ["Our Coaches", "/about#coaches"],
-      ["Events", "/#programs"],
-      ["Support IPL", contact + "?subject=Support%20IPL"],
+      ["Events", "/programs"],
+      ["Donation Requests", "/support"],
       ["Contact", "/contact"],
     ],
   },
 ];
-const social = [
-  ["Instagram", "f10af.svg"],
-  ["Facebook", "5ebab.svg"],
-  ["YouTube", "987e2.svg"],
-  ["X", "1bc14.svg"],
-  ["LinkedIn", "c2305.svg"],
+/* Social profiles. Only entries with a URL render. Add the real profile URLs here. */
+const social: [string, string, string][] = [
+  ["Instagram", "f10af.svg", "https://www.instagram.com/ingeperformancelab/"],
+  ["Facebook", "5ebab.svg", "https://www.facebook.com/IngePerformanceLab"],
 ];
+const socialLinks = social.filter(([, , href]) => href);
 ---
 
 {
@@ -55,8 +54,10 @@ const social = [
         <div class="footer_top">
           <a
             class="footer_booking"
-            href={booking}
-            aria-label="Inquire about booking a session"
+            href={swift.home}
+            target="_blank"
+            rel="noopener"
+            aria-label="Book at Inge Performance Lab on Swift (opens in a new tab)"
           >
             <div class="footer_booking_content">
               <>
@@ -69,7 +70,7 @@ const social = [
               </>
             </div>
             <img
-              src="/images/figma/647c8.webp"
+              src="/images/footer-swift-mockup.webp"
               alt="The Swift booking app shown on a phone"
               loading="lazy"
             />
@@ -129,11 +130,15 @@ const social = [
                 </>
               </div>
             </div>
-            <div class="footer_social" aria-label="Social media">
-              {social.map(([label, file]) => (
-                <span class="footer_social_icon" title={label} role="img" aria-label={label} style={`--_icon: url(/images/figma/${file})`} />
-              ))}
-            </div>
+            {socialLinks.length > 0 && (
+              <ul class="footer_social" aria-label="Social media" role="list">
+                {socialLinks.map(([label, file, href]) => (
+                  <li>
+                    <a class="footer_social_icon" href={href} target="_blank" rel="noopener" aria-label={`Inge Performance Lab on ${label} (opens in a new tab)`} title={label} style={`--_icon: url(/images/figma/${file})`} />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
         <div class="footer_bottom">
@@ -144,17 +149,12 @@ const social = [
             </p>
             <ul class="footer_legal">
               {[
-                "Privacy Policy",
-                "Terms & Conditions",
-                "Waiver",
-                "Facility Policies",
-                "Accessibility",
-              ].map((label) => (
+                ["Privacy Policy", "/privacy-policy"],
+                ["Terms & Conditions", "/terms"],
+                ["Accessibility", "/accessibility"],
+              ].map(([label, href]) => (
                 <li>
-                  <a
-                    class="footer_link"
-                    href={`${contact}?subject=${encodeURIComponent(label + " request")}`}
-                  >
+                  <a class="footer_link" href={href}>
                     {label}
                   </a>
                 </li>
@@ -232,13 +232,16 @@ const social = [
     }
     .footer_booking > img {
       position: absolute;
-      width: 108%;
-      max-width: none;
-      height: 23.5625rem;
-      object-fit: cover;
-      left: -4%;
+      width: 86%;
+      max-width: 18.8125rem;
+      height: auto;
+      left: 0;
       bottom: 0;
+      transform-origin: 30% 100%;
+      transition: scale 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
+    .footer_booking:hover > img, .footer_booking:focus-visible > img { scale: 1.05; }
+    @media (prefers-reduced-motion: reduce) { .footer_booking > img { transition: none; } }
     .footer_info {
       display: flex;
       flex-direction: column;
@@ -313,6 +316,7 @@ const social = [
     .footer_social {
       display: flex;
       gap: var(--space-3);
+      list-style: none; margin: 0; padding: 0;
     }
     .footer_social_icon {
       display: block;

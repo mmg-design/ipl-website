@@ -1,9 +1,11 @@
+import { swift } from "@/data/swift";
 const asset = (file: string) => `/images/figma/${file}`;
 export const contact = "mailto:info@ingeperformancelab.com";
 export const booking = `${contact}?subject=Cage%20booking%20inquiry`;
 export const training = [
   {
     id: "baseball",
+    href: "/training/baseball",
     heading: "Baseball Training",
     text: "Private and small-group hitting and fielding",
     image: asset("bba82.webp"),
@@ -12,6 +14,7 @@ export const training = [
   },
   {
     id: "softball",
+    href: "/training/softball",
     heading: "Softball Training",
     text: "Lessons and teamwork on the full indoor infield",
     image: asset("1cf5b.webp"),
@@ -20,6 +23,7 @@ export const training = [
   },
   {
     id: "pitching",
+    href: "/training/pitching",
     heading: "Pitching",
     text: "High Performance Training with Kyle Fedorka",
     image: asset("8edc4.webp"),
@@ -28,6 +32,7 @@ export const training = [
   },
   {
     id: "mental-performance",
+    href: "/training/mental-performance",
     heading: "Mental Performance",
     text: "Champion Mindset Group, exclusive to the Lab",
     image: asset("31bca.webp"),
@@ -36,6 +41,7 @@ export const training = [
   },
   {
     id: "team-training",
+    href: "/training/team-rentals",
     heading: "Team Rentals",
     text: "Pro Practice Sessions with Brandon",
     image: asset("9aeaf.webp"),
@@ -59,7 +65,7 @@ export const features = [
   {
     heading: "The Den",
     text: "Strength and speed for every sport. A D1-caliber weight room powered by 2SP.",
-    image: asset("582d5.webp"),
+    image: asset("28ee9.webp"),
     href: "/the-den",
   },
 ];
@@ -69,14 +75,14 @@ export const facility = [
     eyebrow: "Infield",
     heading: "Full Turf Infield",
     text: "A varsity-size indoor softball field for team practice, fielding work and small-sided games all winter.",
-    image: asset("card-infield.webp"),
+    image: "/images/infield-turf.webp",
     buttonLabel: "Team Rentals",
-    buttonHref: "/#programs",
+    buttonHref: "/training/team-rentals",
   },
   {
     id: "cages",
     eyebrow: "Cages",
-    heading: "Six Wide Tunnels",
+    heading: "Batting Cages",
     text: "Jr. Hack Attack machines for baseball and softball, HitTrax included in every cage.",
     image: asset("bba82.webp"),
     buttonLabel: "Batting Cages",
@@ -96,7 +102,7 @@ export const facility = [
     eyebrow: "Strength",
     heading: "The Den",
     text: "A Division 1 caliber weight room run by 2SP. Strength, speed and conditioning built for baseball and softball bodies.",
-    image: asset("28ee9.webp"),
+    image: "/images/the-den/den-med-ball-group.webp",
     buttonLabel: "The Den",
     buttonHref: "/#the-den",
   },
@@ -125,7 +131,7 @@ export const facility = [
     text: "Infield and cage combos by the hour or by the season, plus Pro Practice sessions run start to finish by Brandon Inge.",
     image: asset("11101.webp"),
     buttonLabel: "Team Rentals",
-    buttonHref: "/#programs",
+    buttonHref: "/training/team-rentals",
   },
   {
     id: "leagues",
@@ -134,7 +140,7 @@ export const facility = [
     text: "Small-sided fastpitch and baseball leagues on the full turf infield all winter. Standings posted, every at-bat tracked.",
     image: asset("cc2e2.webp"),
     buttonLabel: "Programs",
-    buttonHref: "/#programs",
+    buttonHref: "/programs#leagues",
   },
 ];
 export const programs = [
@@ -143,17 +149,20 @@ export const programs = [
     heading: "6v6 Winter Softball Leagues",
     text: "10U, 12U and 14U fastpitch, plus 6v6 baseball for players up to age 12, on the full indoor infield. Games count, standings are posted, and every at-bat is tracked on HitTrax. Winter 2027 registration is open.",
     image: asset("cc2e2.webp"),
+    href: "/programs#leagues",
   },
   {
     id: "pro-practice",
     heading: "Pro Practice Sessions",
     text: "Brandon Inge runs your team's practice start to finish, offensive or defensive. 8 to 12 players. Pricing is the $150 per hour field rental plus $20 per player per hour. You bring the roster, he brings the plan.",
     image: asset("78fac.webp"),
+    href: swift.lessons.brandonProOffense,
   },
   {
     id: "team-training",
     heading: "Team Training Blocks",
     text: "Lock in the infield and cages for your team every week. Organizations that commit to 12 or more weeks get 15% off, and your slot is yours all winter.",
     image: asset("11101.webp"),
+    href: swift.rentals.fieldCombo90m,
   },
 ];

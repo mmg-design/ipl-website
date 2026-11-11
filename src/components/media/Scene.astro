@@ -3,12 +3,12 @@ interface Props {
   /** Set to `false` to omit the component. */
   render?: boolean;
   /** Background treatment. */
-  variant: "hero" | "glow" | "den" | "technology" | "cta";
+  variant: "hero" | "glow" | "den" | "technology" | "cta" | "wall";
   /** Utility classes. */
   class?: string;
 }
 const { render = true, variant, class: className } = Astro.props;
-const images = { hero: "hero-4.webp", cta: "cta-0.webp", den: "d1b9b.webp" };
+const images = { hero: "hero-4.webp", cta: "cta-0.webp", den: "../the-den/den-med-ball-group.webp" };
 const videos: Partial<Record<Props["variant"], string>> = {
   hero: "https://IPLPullZone.b-cdn.net/Main%20Website%20Video.mp4",
   cta: "https://IPLPullZone.b-cdn.net/Footer%20Video.mp4",
@@ -39,6 +39,13 @@ const video = videos[variant];
           src={`/images/figma/${images.den}`}
           alt=""
           loading="lazy"
+        />
+      )}
+      {variant === "wall" && (
+        <img
+          class="scene_wall"
+          src="/images/the-den/den-wall.webp"
+          alt=""
         />
       )}
       {variant === "glow" && (
@@ -119,11 +126,30 @@ const video = videos[variant];
           linear-gradient(0deg, var(--dark-1000), transparent 65%),
           linear-gradient(90deg, #0007, transparent);
       }
+      /* Den wall photo: behind the hero, anchored to its bottom edge, desaturated,
+         strongest at the bottom and fading out toward the top. */
+      &.wall { background: var(--dark-900); }
+      /* Left wash for legibility, right-side blue glow, and a bottom fade into the next section. */
+      &.wall::after {
+        content: ""; position: absolute; inset: 0; pointer-events: none;
+        background:
+          linear-gradient(to bottom, transparent 70%, var(--dark-900) 100%),
+          radial-gradient(40% 55% at 78% 50%, rgb(14 120 190 / 0.45), transparent 70%),
+          linear-gradient(90deg, rgb(2 21 33 / 0.92) 0%, rgb(2 21 33 / 0.8) 40%, rgb(2 21 33 / 0.35) 70%, rgb(2 21 33 / 0.2) 100%);
+      }
+      &.wall .scene_wall {
+        position: absolute; left: 0; bottom: 0; width: 100%; height: 100%;
+        object-fit: cover; object-position: 50% 62%; max-width: none;
+        opacity: 0.55; filter: grayscale(1) contrast(1.05);
+        -webkit-mask-image: linear-gradient(to top, transparent 0%, black 25%, black 50%, transparent 95%);
+        mask-image: linear-gradient(to top, transparent 0%, black 25%, black 50%, transparent 95%);
+      }
       &.den {
         background: var(--dark-950);
       }
       &.den .scene_photo {
-        opacity: 0.38;
+        opacity: 0.1;
+        filter: grayscale(1) contrast(0.95);
       }
       &.technology {
         background: linear-gradient(var(--light-100), var(--light-200));

@@ -1,14 +1,16 @@
 /**
  * Minimal Sanity client (no dependencies). Uses the public CDN query API.
- * Set these in .env (and in Cloudflare build env) to turn Sanity on:
+ * Project: diyqcziw (Inge Performance Lab org). Override with env vars if needed:
  *   SANITY_PROJECT_ID=xxxx
  *   SANITY_DATASET=production
  *   SANITY_API_VERSION=2025-01-01   (optional)
- * With no project id, every fetch returns null and pages use their fallback data.
+ * If Sanity has no published documents of a type, pages use their fallback data.
  */
-const projectId = import.meta.env.SANITY_PROJECT_ID as string | undefined;
-const dataset = (import.meta.env.SANITY_DATASET as string | undefined) ?? "production";
-const apiVersion = (import.meta.env.SANITY_API_VERSION as string | undefined) ?? "2025-01-01";
+const env = ((import.meta as any).env ?? {}) as Record<string, string | undefined>;
+/** IPL's Sanity project (public value, also in studio/env.ts). An env var overrides it. */
+const projectId = env.SANITY_PROJECT_ID ?? "diyqcziw";
+const dataset = env.SANITY_DATASET ?? "production";
+const apiVersion = env.SANITY_API_VERSION ?? "2025-01-01";
 
 export const sanityEnabled = Boolean(projectId);
 

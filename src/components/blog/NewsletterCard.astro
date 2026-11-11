@@ -1,0 +1,44 @@
+---
+/**
+ * "Get the next post" card beside the article.
+ * TODO: point `action` at the email tool IPL picks (Mailchimp, Beehiiv, etc.). Until then it opens an email to the front desk.
+ */
+import GoogleBadge from "@/components/content/GoogleBadge.astro";
+import Button from "@/components/Button.astro";
+import { contact } from "@/data/home";
+interface Props { heading?: string; text?: string }
+const {
+  heading = "Get the next post",
+  text = "New posts on hitting, pitching, strength and the Michigan season, written by our coaching staff.",
+} = Astro.props;
+---
+
+<form class="newsletter-card" action={`${contact}?subject=Add%20me%20to%20the%20IPL%20blog%20list`} method="post" enctype="text/plain">
+  <p class="newsletter-card_heading">{heading}</p>
+  <p class="newsletter-card_text">{text}</p>
+  <label class="sr-only" for="newsletter-email">Email address</label>
+  <input class="newsletter-card_input" id="newsletter-email" name="email" type="email" placeholder="Enter your email" autocomplete="email" required />
+  <Button type="submit" class="newsletter-card_btn">Subscribe</Button>
+  <GoogleBadge class="newsletter-card_badge" />
+</form>
+
+<style is:global>
+  @layer components {
+    .newsletter-card {
+      display: flex; flex-direction: column; gap: 1rem; padding: 1.75rem; border-radius: 1rem;
+      background: linear-gradient(180deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.02)); border: 1px solid rgb(255 255 255 / 0.14);
+      box-shadow: 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.5);
+    }
+    .newsletter-card > * { margin: 0; }
+    .newsletter-card_heading { font-size: 1.125rem; font-weight: var(--primary-bold); }
+    .newsletter-card_text { font-size: 0.9375rem; line-height: 1.6; opacity: 0.85; }
+    .newsletter-card_input {
+      font: inherit; font-size: 0.9375rem; color: inherit; padding: 0.75rem 0.875rem; border-radius: 0.5rem;
+      background: rgb(0 0 0 / 0.2); border: 1px solid rgb(255 255 255 / 0.18);
+    }
+    .newsletter-card_input::placeholder { color: rgb(255 255 255 / 0.5); }
+    .newsletter-card_input:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 1px; }
+    .newsletter-card_btn { width: 100%; justify-content: center; }
+    .newsletter-card_badge { align-self: center; }
+  }
+</style>

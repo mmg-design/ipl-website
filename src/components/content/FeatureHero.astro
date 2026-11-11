@@ -5,6 +5,9 @@ import Paragraph from "@/components/typography/Paragraph.astro";
 import Eyebrow from "@/components/typography/Eyebrow.astro";
 import Button from "@/components/Button.astro";
 import GoogleBadge from "@/components/content/GoogleBadge.astro";
+import PartnerTicker from "@/components/content/PartnerTicker.astro";
+import ClipCycler from "@/components/media/ClipCycler.astro";
+import type { Clip } from "@/data/media";
 
 interface Link { label: string; href: string }
 interface Props {
@@ -13,11 +16,38 @@ interface Props {
   text: string;
   primary?: Link;
   secondary?: Link;
+  /** Split layout: copy left, clips playing one at a time on the right. Use on a plain navy section. */
+  media?: { clips: Clip[] };
+  /** Partner logo ticker under the badge (inset training heroes). */
+  ticker?: boolean;
+  /** "center": centered copy and buttons, no Google badge (Book a Tour, Header 78). */
+  align?: "start" | "center";
 }
-const { eyebrow, title, text, primary, secondary } = Astro.props;
+const { eyebrow, title, text, primary, secondary, media, ticker = false, align = "start" } = Astro.props;
+const centered = align === "center";
 ---
 
-<div class="feature-hero_content">
+{media ? (
+<div class="feature-hero_split">
+  <div class="feature-hero_content">
+    <Eyebrow>{eyebrow}</Eyebrow>
+    <Heading tag="h1" variant="h1">{title}</Heading>
+    <Paragraph class="max-width-none">{text}</Paragraph>
+    {(primary || secondary) && (
+      <div class="feature-hero_actions">
+        {primary && <Button element="link" href={primary.href}>{primary.label}</Button>}
+        {secondary && <Button element="link" href={secondary.href} emphasis="secondary">{secondary.label}</Button>}
+      </div>
+    )}
+    <GoogleBadge />
+  </div>
+  <div class="feature-hero_media">
+    <ClipCycler class="feature-hero_clips" clips={media.clips} />
+  </div>
+</div>
+) : (
+
+<div class:list={["feature-hero_content", centered && "is-centered"]}>
   <Eyebrow>{eyebrow}</Eyebrow>
   <Heading tag="h1" variant="h1">{title}</Heading>
   <Paragraph class="max-width-none">{text}</Paragraph>
@@ -27,8 +57,14 @@ const { eyebrow, title, text, primary, secondary } = Astro.props;
       {secondary && <Button element="link" href={secondary.href} emphasis="secondary">{secondary.label}</Button>}
     </div>
   )}
-  <GoogleBadge />
+  {centered ? null : ticker ? (
+    <div class="feature-hero_proof">
+      <GoogleBadge />
+      <div class="feature-hero_ticker"><PartnerTicker /></div>
+    </div>
+  ) : <GoogleBadge />}
 </div>
+)}
 
 <style is:global>
   @layer components {
@@ -48,6 +84,79 @@ const { eyebrow, title, text, primary, secondary } = Astro.props;
     @keyframes feature-hero-zoom { from { scale: 1; } to { scale: 1.08; } }
     @media (prefers-reduced-motion: reduce) { .feature-hero_bg img { animation: none; } }
     .feature-hero_bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(2 35 55 / 0.9) 0%, rgb(2 35 55 / 0.78) 40%, rgb(2 35 55 / 0.55) 75%, rgb(2 35 55 / 0.45) 100%); }
+    /* Split hero: plain navy, copy left, photo and clips right */
+    .feature-hero_section.is-split { min-height: max(44rem, 92svh); isolation: isolate; }
+    .feature-hero_section.is-split::before {
+      content: ""; position: absolute; z-index: -1; right: -10%; top: 15%; width: 60%; height: 80%;
+      background: radial-gradient(closest-side, rgb(14 120 190 / 0.28), transparent); filter: blur(3rem); pointer-events: none;
+    }
+    .feature-hero_split {
+      display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center;
+      gap: var(--space-8); width: 100%; padding-block: 8rem var(--space-8);
+    }
+    .feature-hero_split .feature-hero_content { padding-block: 0; }
+    .feature-hero_media { justify-self: center; width: min(100%, 22rem); }
+    .feature-hero_clips {
+      width: 100%; border-radius: 1rem; border: 1px solid rgb(255 255 255 / 0.12);
+      box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.03), 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.6);
+    }
+    @media (width < 64rem) {
+      .feature-hero_split { grid-template-columns: 1fr; padding-top: 7rem; }
+      .feature-hero_media { width: min(100%, 18rem); }
+    }
+    /* Lighter overlay so more of the photo shows (training pages). Copy side stays dark enough to read. */
+    /* Training heroes use tall nav photos: frame the upper body, not the middle. */
+    .feature-hero_bg.is-light img { object-position: 50% 25%; transform-origin: 50% 25%; }
+    .feature-hero_bg.is-light::after { background: linear-gradient(90deg, rgb(2 35 55 / 0.92) 0%, rgb(2 35 55 / 0.88) 14%, rgb(2 35 55 / 0.78) 28%, rgb(2 35 55 / 0.62) 42%, rgb(2 35 55 / 0.46) 56%, rgb(2 35 55 / 0.34) 70%, rgb(2 35 55 / 0.27) 85%, rgb(2 35 55 / 0.24) 100%); }
+    /* Inset hero (training pages): the hero sits in a pocket on a white page. A white
+       gap frames the sides and bottom, the bottom corners round off, and the white
+       flows straight into the next (white) section. The top stays flush under the nav. */
+    /* Busier photos: a heavier overlay so the copy reads cleanly */
+    .feature-hero_bg.is-dim::after { background: linear-gradient(90deg, rgb(2 35 55 / 0.96) 0%, rgb(2 35 55 / 0.93) 18%, rgb(2 35 55 / 0.86) 34%, rgb(2 35 55 / 0.74) 50%, rgb(2 35 55 / 0.6) 66%, rgb(2 35 55 / 0.5) 82%, rgb(2 35 55 / 0.46) 100%); }
+/* Photo sits on the right and dissolves into the copy side, for portrait photos whose subject would land behind the text */
+    .feature-hero_bg.is-right img {
+      width: 64%; margin-left: auto;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.5) 18%, #000 40%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.5) 18%, #000 40%);
+    }
+    @media (width < 64rem) { .feature-hero_bg.is-right img { width: 100%; -webkit-mask-image: none; mask-image: none; } }
+        .feature-hero_bg.is-top img { object-position: 50% 0%; transform-origin: 50% 0%; }
+    /* Inset heroes: extra room between the Google badge and the rounded bottom edge */
+    .feature-hero_section.is-inset .feature-hero_content { padding-bottom: calc(var(--space-7) + 3.5rem); }
+    .feature-hero_section.is-inset { --_gutter: 1rem; --_radius: 1.5rem; background-color: #fff; min-height: max(38rem, 80svh); }
+    /* Inset training heroes: photo sits right, blue-tinted, and fades into the navy on the left for legible copy. */
+    .feature-hero_section.is-inset .feature-hero_bg img {
+      width: 62%; height: 100%; margin-left: auto; object-position: 50% 50%; transform-origin: 70% 50%;
+      filter: grayscale(1) contrast(1.05); opacity: 0.6; mix-blend-mode: luminosity;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.55) 22%, #000 48%);
+      mask-image: linear-gradient(90deg, transparent 0%, rgb(0 0 0 / 0.55) 22%, #000 48%);
+    }
+    .feature-hero_section.is-inset .feature-hero_bg::after {
+      background: linear-gradient(90deg, rgb(2 35 55 / 0.9) 0%, rgb(2 35 55 / 0.7) 35%, rgb(2 35 55 / 0.25) 65%, rgb(2 35 55 / 0.15) 100%),
+                  linear-gradient(0deg, rgb(2 35 55 / 0.45), transparent 35%);
+    }
+    @media (width < 64rem) { .feature-hero_section.is-inset .feature-hero_bg img { width: 100%; opacity: 0.35; -webkit-mask-image: none; mask-image: none; } }
+    /* Inset training heroes: 80vh so the next section's eyebrow just peeks in. */
+    .feature-hero_section.is-inset { height: auto; min-height: max(40rem, 86svh); }
+    .feature-hero_section.is-inset .feature-hero_content { padding-block: 9rem calc(var(--_gutter) + 5.5rem); gap: 1.5rem; }
+    .feature-hero_section.is-inset .feature-hero_content .heading { font-size: clamp(2.75rem, 4.6vw, 4rem); }
+    /* Centered hero (Header 78): copy stacks in the middle, photo band sits underneath */
+    .feature-hero_content.is-centered { align-items: center; text-align: center; margin-inline: auto; max-width: 52rem; padding-block: 10rem 3.5rem; }
+    .feature-hero_content.is-centered .text { max-width: 40rem; margin-inline: auto; }
+    .feature-hero_content.is-centered .feature-hero_actions { justify-content: center; }
+    @media (width < 64rem) { .feature-hero_content.is-centered { padding-top: 8rem; } }
+    .feature-hero_proof { display: flex; align-items: center; gap: 2.5rem; width: 100%; }
+    .feature-hero_ticker { flex: 1; min-width: 0; }
+    .feature-hero_ticker .partner-ticker_wrap { --_max-width: 100%; }
+    @media (width < 48rem) { .feature-hero_proof { flex-direction: column; align-items: flex-start; gap: 1.5rem; } .feature-hero_section.is-inset { height: auto; } }
+    .feature-hero_section.is-inset .feature-hero_bg {
+      inset: 0 var(--_gutter) var(--_gutter);
+      width: auto; height: auto;
+      border-radius: 0 0 var(--_radius) var(--_radius);
+      isolation: isolate; clip-path: inset(0 round 0 0 var(--_radius) var(--_radius));
+      background-color: #022337;
+    }
+    @media (width < 48rem) { .feature-hero_section.is-inset { --_gutter: 0.5rem; --_radius: 1rem; } }
     .feature_section { min-height: 0; }
     .feature_section-fade { background-image: linear-gradient(180deg, #fff, #eef3f7); }
     .feature_section-glow { overflow: hidden; isolation: isolate; }

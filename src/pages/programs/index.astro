@@ -1,0 +1,53 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import StickyProgramList from "@/components/content/StickyProgramList.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { hero, leagues, team, why } from "@/data/programs";
+---
+
+<Layout theme="dark" overlap title="Baseball and Softball Leagues, Camps and Team Programs in Brighton, MI">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-inset programs-hero" aria-label="Programs at Inge Performance Lab">
+    <div slot="background" class="feature-hero_bg is-light" aria-hidden="true">
+      <img src={hero.image} alt="" />
+    </div>
+    <FeatureHero {...hero} ticker />
+  </Section>
+
+  <Section id="leagues" theme="light" class="feature_section programs_section" aria-labelledby="leagues-title">
+    <StickyProgramList {...leagues} id="leagues-title" />
+  </Section>
+
+  <Section id="team-training" theme="light" class="feature_section feature_section-fade programs_section" aria-labelledby="team-title">
+    <StickyProgramList {...team} id="team-title" />
+  </Section>
+
+  <Section id="camps" theme="dark" class="feature_section feature_section-glow" aria-label="Camps and clinics">
+    <SplitFeature {...why} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser page="programs" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    /* Sticky intro needs visible overflow on its section. */
+    .programs_section, .programs_section > .container { overflow: visible; }
+  }
+</style>

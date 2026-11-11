@@ -8,4 +8,5 @@ export const SITE_URL = "https://ingeperformancelab.com";
 /** BCP 47 locale tag used to format dates and numbers. */
 export const SITE_LOCALE = "en-US";
 /** Routes excluded from search and the sitemap. Surrounding slashes are ignored. */
-export const NOINDEX_ROUTES: string[] = ["/404"];
+/** Book a Tour stays out of search until its form has an endpoint (Web3Forms). */
+export const NOINDEX_ROUTES: string[] = ["/404", "/book-a-tour"];

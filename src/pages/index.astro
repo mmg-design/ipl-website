@@ -9,6 +9,8 @@ import Eyebrow from "@/components/typography/Eyebrow.astro";
 import Button from "@/components/Button.astro";
 import ButtonWrapper from "@/components/wrapper/ButtonWrapper.astro";
 import Img from "@/components/media/Img.astro";
+import ClipCycler from "@/components/media/ClipCycler.astro";
+import { hero as denHero } from "@/data/the-den";
 import Scene from "@/components/media/Scene.astro";
 import Card from "@/components/item/Card.astro";
 import HeroMain from "@/components/content/HeroMain.astro";
@@ -44,8 +46,8 @@ import { training, facility, programs, booking, contact } from "@/data/home";
     <Scene slot="background" variant="glow" />
     <ContentWrapper centered>
       <Eyebrow>The Facility</Eyebrow>
-      <Heading id="facility-title">Train like the pros do.</Heading>
-      <Paragraph maxWidth={60} class="text-wrap-balance"
+      <Heading id="facility-title" variant="h1">Train like the pros do.</Heading>
+      <Paragraph maxWidth={46} class="text-wrap-balance"
         >Our coaches have played and coached at the highest levels. We pair
         fundamentals that have never changed with modern technology that
         measures progress and enhances feedback.</Paragraph
@@ -88,7 +90,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
               image={item.image}
               icon={item.icon}
               crop={item.crop}
-              buttonHref={`${contact}?subject=${encodeURIComponent(item.heading + " inquiry")}`}
+              buttonHref={item.href ?? `${contact}?subject=${encodeURIComponent(item.heading + " inquiry")}`}
             />
           ))
       }
@@ -151,18 +153,14 @@ import { training, facility, programs, booking, contact } from "@/data/home";
         <Button element="link" href="/the-den"
           >Explore The Den</Button
         >
-        <Button element="link" href="/#memberships" emphasis="secondary"
+        <Button element="link" href="/memberships" emphasis="secondary"
           >See memberships</Button
         >
       </ButtonWrapper
       >
-      <Img
-        slot="column2"
-        src="/images/figma/28ee9.webp"
-        alt="Strength training in The Den at Inge Performance Lab"
-        width={600}
-        height={640}
-      />
+      <div slot="column2" class="home-den_clip">
+        <ClipCycler class="feature-hero_clips" clips={denHero.media.clips} />
+      </div>
     </ContentWrapper>
   </Section>
   <!-- Programs -->
@@ -181,7 +179,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
         >
         <Button element="link" href="#program-list">See all programs</Button
         >
-        <Button element="link" href="/#memberships" emphasis="secondary"
+        <Button element="link" href="/memberships" emphasis="secondary"
           >See memberships</Button
         >
       </ButtonWrapper
@@ -198,7 +196,8 @@ import { training, facility, programs, booking, contact } from "@/data/home";
             <Card
               {...item}
               variant="program"
-              buttonHref={`${contact}?subject=${encodeURIComponent(item.heading + " inquiry")}`}
+              buttonHref={item.href}
+              learnMore
             />
           ))
         }
@@ -227,3 +226,13 @@ import { training, facility, programs, booking, contact } from "@/data/home";
     <CtaMain />
   </Section>
 </Layout>
+
+<style is:global>
+  @layer components {
+    .home-den_clip { width: min(100%, 22rem); margin-inline: auto; }
+    .home-den_clip .clip-cycler {
+      width: 100%; border-radius: 1rem; border: 1px solid rgb(255 255 255 / 0.12);
+      box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.03), 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.6);
+    }
+  }
+</style>

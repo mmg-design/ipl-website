@@ -1,0 +1,57 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import HeroCollage from "@/components/content/HeroCollage.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import SectionIntro from "@/components/content/SectionIntro.astro";
+import PartnerTicker from "@/components/content/PartnerTicker.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import DonationRequestForm from "@/components/content/DonationRequestForm.astro";
+import { hero, collage, ways, partners, mission } from "@/data/support";
+---
+
+<Layout theme="dark" overlap title="Request a Donation from Inge Performance Lab" description="Schools, teams and nonprofits in Livingston County can request a donation or sponsorship from Inge Performance Lab in Brighton, MI, for events and fundraisers.">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section training-hero" aria-label="Donation requests">
+    <HeroCollage slot="background" photos={collage} />
+    <div class="training-hero_copy"><FeatureHero {...hero} /></div>
+  </Section>
+
+  <Section id="ways" theme="light" class="feature_section" aria-label="Ways to help">
+    <WaysGrid {...ways} variant="tracks" />
+  </Section>
+
+  <Section id="partners" theme="dark" class="feature_section support-partners" aria-label="Current partners">
+    <div class="support-partners_inner">
+      <SectionIntro {...partners} />
+      <PartnerTicker class="support-partners_ticker" />
+    </div>
+  </Section>
+
+  <Section id="mission" theme="dark" class="feature_section feature_section-glow" aria-label="Our mission">
+    <SplitFeature {...mission} />
+  </Section>
+
+  <Section id="request" theme="light" class="feature_section" aria-labelledby="request-title">
+    <div class="support-request">
+      <SectionIntro eyebrow="Donation request form" heading="Tell us about your event." text="Fill out the form below. The IPL team reviews every request and will reach out with next steps." id="request-title" />
+      <DonationRequestForm />
+    </div>
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Get in touch with Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .support-partners { background: #011a29; }
+    .support-partners_inner { display: flex; flex-direction: column; align-items: center; gap: var(--space-7); width: 100%; }
+    .support-partners_ticker { width: min(100%, 64rem); }
+  }
+    .support-request { display: flex; flex-direction: column; gap: var(--space-8); width: 100%; }
+</style>

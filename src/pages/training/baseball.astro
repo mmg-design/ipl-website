@@ -1,0 +1,60 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import FeatureHero from "@/components/content/FeatureHero.astro";
+import SplitFeature from "@/components/content/SplitFeature.astro";
+import WaysGrid from "@/components/content/WaysGrid.astro";
+import PricingTiers from "@/components/content/PricingTiers.astro";
+import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
+import BlogTeaser from "@/components/content/BlogTeaser.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import TrainingLinks from "@/components/content/TrainingLinks.astro";
+import { hero, difference, coach, infield, pricing, coaches, programs } from "@/data/baseball-training";
+---
+
+<Layout theme="dark" overlap title="Baseball Lessons and Training in Brighton, MI">
+  <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-inset" aria-label="Baseball lessons and training">
+    <div slot="background" class="feature-hero_bg is-light" aria-hidden="true">
+      <img src={hero.image} alt="" />
+    </div>
+    <FeatureHero {...hero} ticker />
+  </Section>
+
+  <Section id="coach" theme="light" class="feature_section feature_section-fade" aria-label="What we coach">
+    <WaysGrid {...coach} variant="stack" />
+  </Section>
+
+  <Section id="programs" theme="light" class="feature_section feature_section-fade" aria-label="Baseball programs">
+    <WaysGrid {...programs} />
+  </Section>
+
+  <Section id="infield" theme="dark" class="feature_section feature_section-glow" aria-label="Full indoor infield">
+    <SplitFeature {...infield} />
+  </Section>
+
+  <Section id="difference" theme="light" class="feature_section" aria-label="The difference">
+    <SplitFeature {...difference} glow={false} />
+  </Section>
+
+  <Section id="rates" theme="light" class="feature_section" aria-labelledby="pricing-title">
+    <PricingTiers {...pricing} />
+  </Section>
+
+  <Section id="testimonials" theme="light" class="feature_section" aria-labelledby="testimonials-title">
+    <TestimonialsSection />
+  </Section>
+
+  <Section id="more-training" theme="light" class="feature_section feature_section-fade" aria-label="Other training at IPL">
+    <TrainingLinks current="baseball" />
+  </Section>
+
+  <Section id="blog" theme="dark" class="feature_section" aria-labelledby="blog-title">
+    <BlogTeaser page="baseball-training" />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>

@@ -1,0 +1,32 @@
+---
+import Layout from "@/layouts/BaseLayout.astro";
+import Section from "@/components/wrapper/Section.astro";
+import Scene from "@/components/media/Scene.astro";
+import BlogIndex from "@/components/blog/BlogIndex.astro";
+import CtaMain from "@/components/content/CtaMain.astro";
+import { getAllPosts } from "@/data/posts";
+
+const posts = await getAllPosts();
+---
+
+<Layout theme="dark" overlap title="Baseball and Softball Training Blog" description="Real numbers out of IPL's own cages, the Michigan dates that shape a winter, and the answers our coaches give at the front desk.">
+  <Section theme="dark" paddingTop="none" class="feature_section blog_section" aria-label="IPL blog">
+    <BlogIndex
+      eyebrow="IPL Blog"
+      title="Baseball, softball, and athletic education"
+      text="Real numbers out of our own cages, the Michigan dates that shape a winter, and the same answers our coaches give at the front desk. Written by the people who run the lessons."
+      posts={posts}
+    />
+  </Section>
+
+  <Section id="contact" paddingTop="none" paddingBottom="none" aria-label="Book at Inge Performance Lab">
+    <Scene slot="background" variant="cta" />
+    <CtaMain />
+  </Section>
+</Layout>
+
+<style is:global>
+  @layer components {
+    .blog_section { background: radial-gradient(60rem 30rem at 50% 0%, rgb(14 120 190 / 0.28), transparent 70%), #022337; }
+  }
+</style>

@@ -14,7 +14,17 @@ interface Props {
   contactPrompt?: boolean;
 }
 const { heading, text, items, contactPrompt = false } = Astro.props;
+const answered = items.filter((f) => !f.answer.trim().startsWith("["));
+const schema = answered.length
+  ? JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: answered.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })),
+    })
+  : null;
 ---
+
+{schema && <script type="application/ld+json" set:html={schema} />}
 
 <div class="faq-section_wrap">
   <SectionIntro eyebrow="FAQs" heading={heading} text={text} variant="h3" id="faqs-title" />
