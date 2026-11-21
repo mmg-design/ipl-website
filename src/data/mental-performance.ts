@@ -66,11 +66,7 @@ export const partner = {
   logo: { src: "/images/figma/73872.webp", alt: "Champion Mindset Group" },
   heading: "Sport psychology, coached like a skill.",
   text: "Champion Mindset Group was founded by Dr. Jason Novetsky, a sport and performance psychology coach and former Division I athlete. The work pairs evidence-based sport psychology with Stoic principles, and it sits alongside 2SP and High Performance Training in how IPL develops athletes.",
-  people: [
-    { name: "Dr. Jason Novetsky", role: "Founder", image: "/images/coaches/cmg-jason.webp" },
-    { name: "Kelsey Reiter, MS", role: "Mental performance coach", image: "/images/coaches/cmg-kelsey.webp" },
-    { name: "Sammi Woods, MS", role: "Mental performance coach", image: "/images/coaches/cmg-sammi.webp" },
-  ],
+  /* Coach profiles hidden for now (Dr. Jason Novetsky, Kelsey Reiter, Sammi Woods; photos in /images/coaches/cmg-*.webp). */
   button: { label: "Visit Champion Mindset", href: cmg },
 };
 

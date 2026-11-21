@@ -9,8 +9,8 @@ const l = swift.lessons;
 
 export const hero = {
   eyebrow: "Softball and fastpitch training · Brighton, MI",
-  title: "Expert-backed softball training and lessons, right here in Michigan.",
-  text: "Softball training and softball hitting lessons on a full indoor turf infield, with machines set for softball in every cage and coaches who are in the fastpitch community year round. At our facility, baseball and softball share the spotlight, with dedicated resources and a commitment to helping every athlete grow.",
+  title: "A softball training facility built for fastpitch, right here in Michigan.",
+  text: "Softball lessons and softball hitting lessons at a true softball training facility: a full indoor turf infield, machines set for softball in every cage, and coaches who are in the fastpitch community year round. At our facility, baseball and softball share the spotlight, with dedicated resources and a commitment to helping every athlete grow.",
   image: navCard.image,
   primary: { label: "Book a lesson", href: "#rates" },
   secondary: { label: "Softball programs", href: "#programs" },
