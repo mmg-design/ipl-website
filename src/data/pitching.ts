@@ -6,7 +6,6 @@ export const hero = {
   title: "Expert-backed pitching lessons and training, right here in Michigan.",
   text: "Pitching at IPL runs through High Performance Training, so mechanics, velocity and arm care get coached together instead of one at a time. Every lesson is recorded, and your athlete can complete their strength and sports performance training with 2SP on the same day, all in one spot.",
   image: "/images/figma/8edc4.webp",
-  logo: { src: "/images/logos/high-performance.webp", alt: "High Performance Training" },
   primary: { label: "Book a lesson", href: swift.lessons.hp60 },
 };
 

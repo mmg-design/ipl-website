@@ -51,19 +51,19 @@ export const training = [
 export const features = [
   {
     heading: "Batting Cages",
-    text: "Six wide tunnels, fully equipped with machines and HitTrax in every single cage.",
+    text: "Six wide tunnels with pitching machines and HitTrax in every single cage.",
     image: asset("bf6c5.webp"),
     href: "/batting-cages",
   },
   {
     heading: "HitTrax",
-    text: "Cutting-edge technology to deeply understand your swing included at no extra charge.",
+    text: "Swing data and video replay on every rep, included at no extra charge.",
     image: asset("9ae85.webp"),
     href: "/hittrax",
   },
   {
-    heading: "The Den powered by 2SP Sports",
-    text: "The Den powered by 2SP Sports delivers comprehensive sports performance designed to develop stronger, faster, and more explosive athletes.",
+    heading: "The Den by 2SP",
+    text: "Sports performance training that builds stronger, faster and more explosive athletes.",
     image: asset("28ee9.webp"),
     href: "/the-den",
   },

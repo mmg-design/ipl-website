@@ -139,7 +139,6 @@ import { training, facility, programs, booking, contact } from "@/data/home";
   <Section id="the-den" aria-labelledby="den-title">
     <Scene slot="background" variant="den" />
     <ContentWrapper variant="columns" visualRatio={15 / 16}>
-      <span class="home-den_logo"><img src="/images/figma/d36ad.webp" alt="2SP Sports" width="1920" height="1080" loading="lazy" /></span>
       <Eyebrow>Sports Performance Powered by 2SP</Eyebrow>
       <Heading id="den-title">Building Better Humans Through Sport</Heading>
       <Paragraph
@@ -161,6 +160,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
       >
       <div slot="column2" class="home-den_clip">
         <ClipCycler class="feature-hero_clips" clips={denHero.media.clips} />
+        <img class="home-den_logo" src="/images/logos/2sp-sports.webp" alt="2SP Sports" width="800" height="145" loading="lazy" />
       </div>
     </ContentWrapper>
   </Section>
@@ -230,9 +230,9 @@ import { training, facility, programs, booking, contact } from "@/data/home";
 
 <style is:global>
   @layer components {
-    .home-den_clip { width: min(100%, 22rem); margin-inline: auto; }
-    .home-den_logo { position: relative; display: block; overflow: hidden; width: 10rem; height: 2.28rem; margin-bottom: 1rem; }
-    .home-den_logo > img { position: absolute; max-width: none; width: 107.98%; height: 273.33%; left: -3.99%; top: -86.67%; }
+    .home-den_clip { position: relative; width: min(100%, 22rem); margin-inline: auto; }
+    /* 2SP logo rides on the bottom-right corner of the clips, clear of the caption (bottom left). */
+    .home-den_logo { position: absolute; z-index: 4; right: 1rem; bottom: 1rem; width: 7.5rem; height: auto; filter: drop-shadow(0 0.25rem 0.75rem rgb(0 0 0 / 0.5)); pointer-events: none; }
     .home-den_clip .clip-cycler {
       width: 100%; border-radius: 1rem; border: 1px solid rgb(255 255 255 / 0.12);
       box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.03), 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.6);

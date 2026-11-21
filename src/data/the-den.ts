@@ -7,7 +7,6 @@ export const hero = {
   title: "Building Better Humans Through Sport",
   text: "The Den powered by 2SP Sports delivers a comprehensive sports performance experience designed to develop stronger, faster, and more explosive athletes. Through individualized programming, expert coaching, and a commitment to long-term athletic development, we prepare athletes to perform at their highest level.",
   image: "/images/the-den/den-force-plate.webp",
-  logo: { src: "/images/logos/2sp-sports.webp", alt: "2SP Sports" },
   primary: { label: "Book Free Assessment", href: "#free-assessment" },
   secondary: { label: "See memberships", href: "#memberships" },
   media: {
@@ -15,22 +14,33 @@ export const hero = {
   },
 };
 
-/* Every Den option in one place at the top of the page (per Abe). */
+/* Every Den option in one place at the top of the page (per Abe): monthly memberships, then packs and drop-ins. */
 export const memberships = {
   id: "memberships-title",
-  eyebrow: "Memberships",
-  heading: "Where Grit Fuels Growth",
-  text: "Three monthly programs by age, plus a 10-session pack and drop-ins. Not sure where to start? Book a free assessment.",
+  eyebrow: "Pricing",
+  heading: "Memberships",
+  text: "Where Grit Fuels Growth. Three monthly programs by age.",
   tiers: [
     { name: "Performance Training", price: "$400/mo", note: "ages 12 to 18", description: "Comprehensive strength and conditioning designed to maximize athletic performance through 12 coach-led training sessions per month.", features: ["12 coach-led sessions a month", "Strength, speed and conditioning", "Led by a certified strength coach"], image: "/images/the-den/den-trap-bar.webp", alt: "An athlete lifting in The Den", imagePosition: "50% 0%", cta: { label: "Join", href: swift.memberships.denPerformance } },
     { name: "Performance Training Lite", price: "$320/mo", note: "ages 12 to 18", description: "A flexible performance training option offering 8 coach-led sessions per month to build strength, speed, and athleticism.", features: ["8 coach-led sessions a month", "Strength, speed and athleticism", "Led by a certified strength coach"], image: "/images/the-den/den-med-ball-group.webp", alt: "A group doing med ball work in The Den", cta: { label: "Join", href: swift.memberships.denPerformanceLite } },
     { name: "Foundations", price: "$199/mo", note: "ages 9 to 11", description: "Introduce young athletes to proper movement mechanics, coordination, and foundational strength through 8 age-appropriate sessions per month in a group.", features: ["8 group sessions a month", "Movement, coordination and strength", "Age-appropriate programming"], image: "/images/the-den/den-med-ball-throws.webp", alt: "Young athletes doing med ball throws in The Den", cta: { label: "Join", href: swift.memberships.denFoundations } },
   ],
-  actions: [
-    { label: "10-Session Pack: $450", href: swift.packages.den10, emphasis: "secondary" as const },
-    { label: "Drop-In: $60/session", href: swift.classes, emphasis: "secondary" as const },
-    { label: "Book a Free Assessment", href: "#free-assessment", emphasis: "primary" as const },
+};
+
+export const packs = {
+  id: "packs-title",
+  eyebrow: "No membership needed",
+  heading: "Session packs and drop-ins",
+  text: "Same floor, same coaches, on your schedule.",
+  tiers: [
+    { name: "10-Session Pack", price: "$450", note: "ages 12 and up", description: "Ten Performance Training sessions to use on your own schedule.", features: ["10 coach-led sessions", "Book any open session", "Good for 6 months"], image: "/images/the-den/den-hex-bar.webp", alt: "An athlete pulling a hex bar in The Den", cta: { label: "Buy the pack", href: swift.packages.den10 } },
+    { name: "Drop-In", price: "$60", note: "per session", description: "One coach-led session. Show up, train, leave.", features: ["Single coach-led session", "No commitment", "Book in Swift"], image: "/images/the-den/den-sprint-start.webp", alt: "An athlete driving out of a sprint start", cta: { label: "Book a session", href: swift.classes } },
   ],
+};
+
+export const assessment = {
+  text: "Not sure which program fits? Start with a free assessment.",
+  button: { label: "Book a Free Assessment", href: "#free-assessment" },
 };
 
 export const room = {
