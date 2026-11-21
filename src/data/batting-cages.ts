@@ -4,8 +4,8 @@ import { swift } from "@/data/swift";
 
 export const hero = {
   eyebrow: "Batting cage rentals · Brighton, MI",
-  title: "Get the reps in with batting cage rentals.",
-  text: "Six wide tunnels. Jr. Hack Attack machines set for baseball or softball. HitTrax with video in every cage, included. Book by the half hour or the hour, online, in under a minute.",
+  title: "Get the reps in at our indoor batting cages.",
+  text: "Six wide indoor batting cages in Brighton. Jr. Hack Attack machines set for baseball or softball. HitTrax with video in every cage, included. Book by the half hour or the hour, online, in under a minute.",
   image: "/images/batting-cages/hero.webp",
   primary: { label: "Book a cage", href: swift.rentals.cage1 },
   secondary: { label: "See memberships", href: "/memberships" },

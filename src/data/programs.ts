@@ -9,8 +9,8 @@ const ask = (subject: string) => `${contact}?subject=${encodeURIComponent(subjec
 
 export const hero = {
   eyebrow: "Camps, clinics and leagues · Brighton, MI",
-  title: "Leagues, team blocks and practices.",
-  text: "Our 6v6 leagues give athletes live reps in a fast-paced, competitive environment all off-season. Team blocks hold your slot all winter, and Pro Practice sessions are planned and run start to finish by Brandon Inge. Camps and clinics are posted here as they open.",
+  title: "Baseball leagues, camps and team practices.",
+  text: "Our 6v6 baseball leagues and softball leagues give athletes live reps in a fast-paced, competitive environment all off-season. Team blocks hold your slot all winter, and Pro Practice sessions are planned and run start to finish by Brandon Inge. Baseball camps and softball camps are posted here as they open.",
   image: "/images/figma/cc2e2.webp",
   primary: { label: "See leagues", href: "#leagues" },
   secondary: { label: "Team training", href: "#team-training" },

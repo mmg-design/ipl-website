@@ -3,9 +3,10 @@ import { swift } from "@/data/swift";
 import { denClips } from "@/data/media";
 
 export const hero = {
-  eyebrow: "Sports Performance Training · Michigan",
+  eyebrow: "Speed and Agility Training · Sports Performance by 2SP",
+  h1Eyebrow: true,
   title: "Building Better Humans Through Sport",
-  text: "The Den powered by 2SP Sports delivers a comprehensive sports performance experience designed to develop stronger, faster, and more explosive athletes. Through individualized programming, expert coaching, and a commitment to long-term athletic development, we prepare athletes to perform at their highest level.",
+  text: "The Den powered by 2SP Sports delivers speed and agility training, baseball strength training and a comprehensive sports performance experience designed to develop stronger, faster, and more explosive athletes. Through individualized programming, expert coaching, and a commitment to long-term athletic development, we prepare athletes to perform at their highest level.",
   image: "/images/the-den/den-force-plate.webp",
   primary: { label: "Book Free Assessment", href: "#free-assessment" },
   secondary: { label: "See memberships", href: "#memberships" },
@@ -33,8 +34,8 @@ export const packs = {
   heading: "Session packs and drop-ins",
   text: "Same floor, same coaches, on your schedule.",
   tiers: [
-    { name: "10-Session Pack", price: "$450", note: "ages 12 and up", description: "Ten Performance Training sessions to use on your own schedule.", features: ["10 coach-led sessions", "Book any open session", "Good for 6 months"], image: "/images/the-den/den-hex-bar.webp", alt: "An athlete pulling a hex bar in The Den", cta: { label: "Buy the pack", href: swift.packages.den10 } },
-    { name: "Drop-In", price: "$60", note: "per session", description: "One coach-led session. Show up, train, leave.", features: ["Single coach-led session", "No commitment", "Book in Swift"], image: "/images/the-den/den-sprint-start.webp", alt: "An athlete driving out of a sprint start", cta: { label: "Book a session", href: swift.classes } },
+    { name: "10-Session Pack", price: "$450", note: "ages 12 and up", description: "Ten Performance Training sessions to use on your own schedule.", features: ["10 coach-led sessions", "Book any open session", "Good for 6 months"], cta: { label: "Buy the pack", href: swift.packages.den10 } },
+    { name: "Drop-In", price: "$60", note: "per session", description: "One coach-led session. Show up, train, leave.", features: ["Single coach-led session", "No commitment", "Book in Swift"], cta: { label: "Book a session", href: swift.classes } },
   ],
 };
 

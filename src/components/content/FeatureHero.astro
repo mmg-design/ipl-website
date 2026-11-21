@@ -24,8 +24,10 @@ interface Props {
   align?: "start" | "center";
   /** Partner logo above the eyebrow (The Den: 2SP, Pitching: HP). */
   logo?: { src: string; alt: string };
+  /** SEO: the eyebrow carries the page's target term as the H1 and the headline renders as an H2 (same look). */
+  h1Eyebrow?: boolean;
 }
-const { eyebrow, title, text, primary, secondary, media, ticker = false, align = "start", logo } = Astro.props;
+const { eyebrow, title, text, primary, secondary, media, ticker = false, align = "start", logo, h1Eyebrow = false } = Astro.props;
 const centered = align === "center";
 ---
 
@@ -33,8 +35,8 @@ const centered = align === "center";
 <div class="feature-hero_split">
   <div class="feature-hero_content">
     {logo && <img class="feature-hero_logo" src={logo.src} alt={logo.alt} />}
-    <Eyebrow>{eyebrow}</Eyebrow>
-    <Heading tag="h1" variant="h1">{title}</Heading>
+    <Eyebrow tag={h1Eyebrow ? "h1" : "p"}>{eyebrow}</Eyebrow>
+    <Heading tag={h1Eyebrow ? "h2" : "h1"} variant="h1">{title}</Heading>
     <Paragraph class="max-width-none">{text}</Paragraph>
     {(primary || secondary) && (
       <div class="feature-hero_actions">
@@ -52,8 +54,8 @@ const centered = align === "center";
 
 <div class:list={["feature-hero_content", centered && "is-centered"]}>
   {logo && <img class="feature-hero_logo" src={logo.src} alt={logo.alt} />}
-  <Eyebrow>{eyebrow}</Eyebrow>
-  <Heading tag="h1" variant="h1">{title}</Heading>
+  <Eyebrow tag={h1Eyebrow ? "h1" : "p"}>{eyebrow}</Eyebrow>
+  <Heading tag={h1Eyebrow ? "h2" : "h1"} variant="h1">{title}</Heading>
   <Paragraph class="max-width-none">{text}</Paragraph>
   {(primary || secondary) && (
     <div class="feature-hero_actions">

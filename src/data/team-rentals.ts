@@ -6,8 +6,8 @@ const navCard = training.find((t) => t.id === "team-training")!;
 
 export const hero = {
   eyebrow: "Indoor Field and Cage Rentals for Teams · Brighton, MI",
-  title: "Give your team a real field to practice on all winter.",
-  text: "Book the full turf infield and six HitTrax cages by the block and run an actual practice in January, instead of rotating twelve kids through one cage. Teams that commit to 12 weeks or more receive a discount.",
+  title: "Indoor baseball field rental and batting cages for your team.",
+  text: "Batting cage rental and indoor baseball field rental by the block: reserve the full turf infield and six HitTrax cages and run an actual practice in January, instead of rotating twelve kids through one cage. Teams that commit to 12 weeks or more receive a discount.",
   image: navCard.image,
   primary: { label: "Request a block", href: request },
   secondary: { label: "See rates", href: "#rates" },

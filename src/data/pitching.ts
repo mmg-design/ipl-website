@@ -3,8 +3,8 @@ import { swift } from "@/data/swift";
 
 export const hero = {
   eyebrow: "Baseball pitching lessons · High Performance Training at IPL",
-  title: "Expert-backed pitching lessons and training, right here in Michigan.",
-  text: "Pitching at IPL runs through High Performance Training, so mechanics, velocity and arm care get coached together instead of one at a time. Every lesson is recorded, and your athlete can complete their strength and sports performance training with 2SP on the same day, all in one spot.",
+  title: "Expert-backed baseball pitching lessons, right here in Michigan.",
+  text: "Baseball pitching lessons at IPL run through High Performance Training, so mechanics, velocity and arm care get coached together instead of one at a time. Every lesson is recorded, and your athlete can complete their strength and sports performance training with 2SP on the same day, all in one spot.",
   image: "/images/figma/8edc4.webp",
   primary: { label: "Book a lesson", href: swift.lessons.hp60 },
 };

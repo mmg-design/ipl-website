@@ -16,7 +16,8 @@ import FreeAssessment from "@/components/content/FreeAssessment.astro";
 import { hero, memberships, packs, assessment, room, twoSP, clips, faqs } from "@/data/the-den";
 ---
 
-<Layout theme="dark" overlap title="The Den: Baseball and Softball Strength Training in Michigan">
+<Layout theme="dark" overlap title="Speed and Agility Training at The Den by 2SP"
+  description="Speed and agility training and baseball strength training at The Den by 2SP in Brighton, MI. Memberships from $199, drop-ins and a free assessment.">
   <Section theme="dark" paddingTop="none" paddingBottom="none" class="feature-hero_section is-split" aria-label="The Den strength training">
     <Scene slot="background" variant="wall" />
     <FeatureHero {...hero} ticker />
@@ -67,8 +68,17 @@ import { hero, memberships, packs, assessment, room, twoSP, clips, faqs } from "
 
 <style is:global>
   @layer components {
-    .den-pricing { display: flex; flex-direction: column; gap: calc(var(--space-8) * 2); }
-    .den-pricing_assessment { display: flex; flex-direction: column; align-items: center; gap: 1rem; text-align: center; }
-    .den-pricing_assessment p { margin: 0; font-size: 1.125rem; font-weight: 600; }
+    .den-pricing { display: flex; flex-direction: column; gap: calc(var(--space-8) * 2); width: 100%; min-width: 0; }
+    .den-pricing > * { min-width: 0; }
+    @media (width < 40rem) { .den-pricing .pricing-tiers_list { grid-template-columns: minmax(0, 1fr); } }
+    /* Free assessment prompt: its own bordered band, clearly apart from the tables above. */
+    .den-pricing_assessment {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem;
+      width: 100%; max-width: 64rem; margin: var(--space-4) auto 0; padding: 1.75rem 2.25rem;
+      border: 1px solid rgb(11 53 80 / 0.14); border-radius: 0.75rem; background: rgb(11 53 80 / 0.04);
+    }
+    .den-pricing_assessment p { flex: 1 1 18rem; margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.35; text-wrap: balance; }
+    .den-pricing_assessment > :last-child { flex: none; }
+    @media (width < 48rem) { .den-pricing_assessment { flex-direction: column; text-align: center; padding: 1.5rem; } .den-pricing_assessment p { flex: none; } }
   }
 </style>

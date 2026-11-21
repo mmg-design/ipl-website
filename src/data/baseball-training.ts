@@ -10,7 +10,7 @@ const ask = (subject: string) => `${contact}?subject=${encodeURIComponent(subjec
 export const hero = {
   eyebrow: "Baseball lessons and training · Brighton, MI",
   title: "Expert-backed baseball lessons and training, right here in Michigan.",
-  text: "Private lessons, small groups and team sessions on a full indoor infield, with HitTrax on every swing and a former big leaguer setting the standard. Ages 8 through college.",
+  text: "Private baseball lessons, hitting lessons, small groups and team sessions on a full indoor infield, with HitTrax on every swing and a former big leaguer setting the standard. Ages 8 through college.",
   image: navCard.image,
   primary: { label: "Book a lesson", href: "#rates" },
   secondary: { label: "Baseball programs", href: "#programs" },

@@ -4,8 +4,8 @@ import type { Pathway } from "@/components/content/PathwayList.astro";
 
 export const hero = {
   eyebrow: "Baseball and softball training · Brighton, MI",
-  title: "Find the training pathway built for your goals",
-  text: "Hitting, fielding, pitching, strength and the mental side are each taught by someone who did it at the highest level. Start wherever your athlete needs the most help, and move between them as they develop.",
+  title: "An indoor baseball training facility built around your goals",
+  text: "Youth baseball training, softball, pitching, strength and the mental side are each taught by someone who did it at the highest level. Start wherever your athlete needs the most help, and move between them as they develop.",
   primary: { label: "Book a lesson", href: booking },
   secondary: { label: "Contact us", href: "/contact" },
 };

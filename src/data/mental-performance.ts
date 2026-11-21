@@ -8,8 +8,8 @@ const navCard = training.find((t) => t.id === "mental-performance")!;
 
 export const hero = {
   eyebrow: "Champion Mindset Group · Exclusive Partner",
-  title: "Enhance your game between the ears.",
-  text: "Every big league clubhouse has a mental skills coach. Now IPL does. Confidence, focus and routines, taught like any other skill, for athletes who have the tools and freeze when it counts.",
+  title: "Train with a sports mental performance coach.",
+  text: "Every big league clubhouse has a sports mental performance coach. Now IPL does. Confidence, focus and routines, taught like any other skill, for athletes who have the tools and freeze when it counts.",
   image: navCard.image,
   primary: { label: "Book a session", href: cmg },
   secondary: { label: "Ask a question", href: ask },
