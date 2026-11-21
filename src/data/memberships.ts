@@ -37,7 +37,7 @@ export const elitePlans = {
   tiers: [
     { name: "Platinum Foundations", price: "$500/mo", note: "ages 11 and under", features: ["Unlimited cage sessions, up to 1 hour a day", "Up to 2 Den sessions a week", "Custom 2SP program", "10% off your first month"], image: "/images/the-den/den-med-ball-throws.webp", alt: "Young athletes doing med ball throws in The Den", cta: { label: "Join", href: m.platinumFoundations } },
     { name: "Platinum Performance", price: "$700/mo", note: "ages 12 and up", features: ["Unlimited cage sessions, up to 1 hour a day", "Up to 3 Den sessions a week", "Custom 2SP program", "10% off your first month"], image: "/images/the-den/den-force-plate.webp", alt: "Athletes testing on the force plate in The Den", cta: { label: "Join", href: m.platinumPerformance }, featured: true, badge: "Cages and The Den" },
-    { name: "Inge Elite Orange", price: "$730/mo", note: "Inge Elite", features: ["[What is included: confirm with Shani]"], image: "/images/the-den/den-hex-bar.webp", alt: "An athlete pulling a hex bar in The Den", cta: { label: "Join", href: m.ingeEliteOrange } },
+    { name: "Inge Elite", price: "By invitation", note: "evaluated by Brandon Inge", features: ["Invitation-only program", "Athletes are evaluated by Brandon Inge"], image: "/images/the-den/den-hex-bar.webp", alt: "An athlete pulling a hex bar in The Den", cta: { label: "Contact us", href: "mailto:info@ingeperformancelab.com?subject=Inge%20Elite" } },
   ],
 };
 

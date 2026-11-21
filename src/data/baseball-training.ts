@@ -1,11 +1,11 @@
 /** Baseball Training page content (/training/baseball). */
-import { booking, training } from "@/data/home";
+import { booking, contact, training } from "@/data/home";
 import { swift } from "@/data/swift";
 
 /* Hero photo always matches this page's card in the Training dropdown. */
 const navCard = training.find((t) => t.id === "baseball")!;
 
-const register = "/contact";
+const ask = (subject: string) => `${contact}?subject=${encodeURIComponent(subject)}`;
 
 export const hero = {
   eyebrow: "Baseball lessons and training · Brighton, MI",
@@ -46,14 +46,14 @@ export const coach = {
     {
       title: "Fielding and infield",
       text: "Footwork, glove work and throwing at game speed on a full turf infield. Taught by a third baseman who spent 13 years in the majors.",
-      points: ["Full-size indoor turf infield", "Position-specific reps", "Pro defense sessions with Brandon"],
+      points: ["Indoor turf infield", "Position-specific reps", "Pro defense sessions with Brandon"],
       image: "/images/figma/dc8a9.webp",
       alt: "The full turf infield at IPL",
       button: { label: "See the infield", href: "#infield" },
     },
     {
       title: "Pitching",
-      text: "Mechanics, velocity and arm care through the High Performance Throwing Program, with the strength work done next door in The Den.",
+      text: "Mechanics, velocity and arm care through the High Performance Throwing Program, with strength work done with 2SP in The Den, all in one spot.",
       points: ["Video on every bullpen", "Arm care built into the plan", "Strength with 2SP in The Den"],
       image: "/images/figma/8edc4.webp",
       alt: "A pitcher throwing in the IPL pitching tunnel",
@@ -66,15 +66,15 @@ export const coach = {
 export const infield = {
   eyebrow: "Full indoor infield",
   heading: "A real field, indoors, all winter.",
-  text: "Our turf infield is built to full varsity dimensions, so the reps your athlete takes in January carry straight into the spring. Teams book it by the block, and individual athletes use it in lessons. Nobody else in Livingston County has anything like it.",
+  text: "Our turf infield is built to softball dimensions and used by baseball and softball teams all winter, so the reps your athlete takes in January carry straight into the spring. Teams book it by the block, and individual athletes use it in lessons. Nobody else in Livingston County has anything like it.",
   image: "/images/infield-turf.webp",
-  alt: "The full varsity turf infield at IPL",
+  alt: "The turf infield at IPL",
 };
 
 export const pricing = {
   eyebrow: "Rates",
   heading: "Lesson pricing.",
-  text: "One on one. Book 30 or 60 minutes online. Cage fee included.",
+  text: "One-on-one. Book 30 or 60 minutes online. Cage fee included.",
   tiers: [
     { name: "Brandon Inge", price: "$200", note: "per hour, $100 per 30 minutes", features: ["Hitting and fielding with a 13-year big leaguer", "HitTrax on every swing", "Video and written takeaways"], image: "/images/figma/78fac.webp", alt: "Brandon Inge coaching hitters", cta: { label: "Book a lesson", href: swift.lessons.brandon60 } },
     { name: "Rob Heumann", price: "$140", note: "per hour, $75 per 30 minutes", features: ["IPL lead hitting and fielding instructor", "Cage rental included", "HitTrax on every swing", "Small group options", "Ages 8 and up"], image: "/images/batting-cages/machine.webp", alt: "A hitter working in the cage", cta: { label: "Book a lesson", href: swift.lessons.rob60 } },
@@ -90,8 +90,8 @@ export const coaches = {
 export const programs = {
   heading: "Baseball camps, clinics and leagues.",
   items: [
-    { title: "Winter skills camp", text: "Hitting, fielding and base running across winter break. Ages, dates and pricing announced at registration.", image: "/images/hittrax/derby.webp", alt: "Young players at an IPL camp", button: { label: "Register", href: register } },
-    { title: "Winter hitting clinic", text: "Four weeks, one focus. HitTrax numbers before and after so progress is measured, not guessed.", image: "/images/batting-cages/machine.webp", alt: "A hitter in the cage", button: { label: "Register", href: register } },
-    { title: "Indoor winter league", text: "Six on six on the full turf infield. Games count, standings are posted, every at-bat is tracked.", image: "/images/figma/cc2e2.webp", alt: "Players on the indoor field", button: { label: "Register", href: register } },
+    { title: "Winter skills camp", text: "Coming soon. Hitting, fielding and base running. Ages, dates and pricing will be posted here when registration opens.", image: "/images/hittrax/derby.webp", alt: "Young players at an IPL camp", button: { label: "Get notified", href: ask("Baseball winter skills camp") } },
+    { title: "Winter hitting clinic", text: "Coming soon. Four weeks, one focus, with HitTrax numbers before and after. Dates and pricing will be posted here.", image: "/images/batting-cages/machine.webp", alt: "A hitter in the cage", button: { label: "Get notified", href: ask("Baseball winter hitting clinic") } },
+    { title: "6v6 winter league", text: "6v6 on the turf infield, with live reps in a fast-paced, competitive environment during the off-season.", image: "/images/figma/cc2e2.webp", alt: "Players on the indoor field", button: { label: "Email us to join", href: ask("6v6 Baseball league") } },
   ],
 };

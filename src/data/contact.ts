@@ -15,6 +15,6 @@ export const contactFaqs = [
   },
   {
     question: "Do you offer team or organization discounts?",
-    answer: "Yes. Organizations that run 12 or more weeks of programming through IPL get 15% off. See Team Rentals.",
+    answer: "Yes. Teams and organizations that commit to 12 weeks or more receive a discount. See Team Rentals.",
   },
 ];

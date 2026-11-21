@@ -35,7 +35,6 @@ export const fallbackCoaches: Coach[] = [
   { name: "Megan Bondy", role: "Softball hitting instructor", bio: "Softball hitting lessons for fastpitch athletes. [Credentials: confirm with Shani]", sports: ["softball"], aboutPage: false },
   { name: "Taylor Wagner", role: "Softball catching instructor", bio: "Catching lessons for fastpitch athletes. [Credentials: confirm with Shani]", sports: ["softball"], aboutPage: false },
   { name: "Rob Heumann", role: "Hitting instructor", bio: "IPL's lead hitting and fielding instructor, and assistant varsity baseball and hitting coach at Detroit Country Day School.", sports: ["baseball"], aboutPage: false },
-  { name: "A.J. Achter", role: "Pitching instructor", bio: "Former MLB relief pitcher with the Twins and Angels, and former pitching coach at Eastern Michigan. Bullpen work, arm care and pitch design.", sports: ["baseball", "pitching"], aboutPage: false },
 ];
 
 const COACHES_QUERY = `*[_type == "coach" && !(_id in path("drafts.**")) && showOnSite != false] | order(order asc){

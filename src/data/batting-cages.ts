@@ -18,7 +18,7 @@ export const included = {
   items: [
     { tag: "Technology", title: "HitTrax with video", text: "Exit velocity, launch angle, spray chart and replay after every swing. Running in all six tunnels.", image: "/images/batting-cages/hittrax.webp", alt: "A coach pointing at HitTrax swing data on a screen" },
     { tag: "Machines", title: "Jr. Hack Attack machines", text: "Three-wheel machines that throw real movement, set for baseball or softball in seconds.", image: "/images/batting-cages/machine.webp", alt: "A hitter loading against a Jr. Hack Attack machine" },
-    { tag: "Equipment", title: "Game-quality balls", text: "Balls are inspected and refreshed often.", image: "/images/batting-cages/hero.webp", alt: "A hitter swinging in a batting cage" },
+    { tag: "Equipment", title: "Professional-caliber balls", text: "We use high-quality, professional-caliber baseballs and softballs.", image: "/images/batting-cages/hero.webp", alt: "A hitter swinging in a batting cage" },
     { tag: "Space", title: "Room to actually hit", text: "Wide tunnels, full net height, bright lighting.", image: "/images/figma/dc8a9.webp", alt: "The indoor turf field and lighting at IPL" },
   ],
 };

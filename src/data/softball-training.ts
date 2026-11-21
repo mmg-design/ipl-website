@@ -1,16 +1,16 @@
 /** Softball Training page content (/training/softball). Section order follows Figma "Softball Training". */
-import { training } from "@/data/home";
+import { contact, training } from "@/data/home";
 import { swift } from "@/data/swift";
 
 /* Hero photo always matches this page's card in the Training dropdown. */
 const navCard = training.find((t) => t.id === "softball")!;
-const register = "/contact";
+const ask = (subject: string) => `${contact}?subject=${encodeURIComponent(subject)}`;
 const l = swift.lessons;
 
 export const hero = {
   eyebrow: "Softball and fastpitch training · Brighton, MI",
   title: "Expert-backed softball lessons and training, right here in Michigan.",
-  text: "A full indoor turf infield, machines set for softball in every cage, and coaches who are in the fastpitch community year round. Not a baseball facility that tolerates softball.",
+  text: "A full indoor turf infield, machines set for softball in every cage, and coaches who are in the fastpitch community year round. At our facility, baseball and softball share the spotlight, with dedicated resources and a commitment to helping every athlete grow.",
   image: navCard.image,
   primary: { label: "Book a lesson", href: "#rates" },
   secondary: { label: "Softball programs", href: "#programs" },
@@ -19,7 +19,7 @@ export const hero = {
 export const infield = {
   eyebrow: "The infield",
   heading: "A real infield for fastpitch, indoors.",
-  text: "Travel teams run full defensive practices here in February. Pitchers work off a real distance. Infielders take reps at real angles. When the snow melts, nothing changes but the roof.",
+  text: "Travel teams run full defensive practices here all winter. Pitchers work off a real distance. Infielders take reps at real angles. When the snow melts, nothing changes but the roof.",
   image: "/images/figma/11101.webp",
   alt: "Softball players working on the indoor turf infield",
 };
@@ -69,7 +69,7 @@ export const community = {
 export const pricing = {
   eyebrow: "Rates",
   heading: "Lesson pricing.",
-  text: "One on one. Book 30 or 60 minutes online. A deposit is paid at booking and the rest at the lesson.",
+  text: "One-on-one. Book 30 or 60 minutes online. A deposit is paid at booking and the remainder is due at the lesson.",
   tiers: [
     { name: "Jordan Humitz", price: "$85", note: "per hour, $60 per 30 minutes", features: ["Softball hitting", "HitTrax in softball mode", "30 or 60 minute lessons"], image: "/images/batting-cages/hero.webp", alt: "A hitter in an IPL cage", cta: { label: "Book a lesson", href: l.jordan60 } },
     { name: "Megan Bondy", price: "$110", note: "per hour, $65 per 30 minutes", features: ["Softball hitting", "HitTrax on every swing", "30 or 60 minute lessons"], image: "/images/batting-cages/hittrax.webp", alt: "A coach reviewing HitTrax data", cta: { label: "Book a lesson", href: l.megan60 } },
@@ -86,8 +86,8 @@ export const coaches = {
 export const programs = {
   heading: "Softball camps, clinics and leagues.",
   items: [
-    { title: "Winter hitting clinic", text: "Four weeks, one focus. HitTrax numbers before and after. Dates and pricing announced at registration.", image: "/images/batting-cages/machine.webp", alt: "A hitter in the cage", button: { label: "Register", href: register } },
-    { title: "Fastpitch pitching clinic", text: "Mechanics and spin, with video. Dates and pricing announced at registration.", image: "/images/figma/8edc4.webp", alt: "A pitcher working with a coach", button: { label: "Register", href: register } },
-    { title: "Indoor winter league", text: "Six on six on the full turf infield. Games count, standings are posted.", image: "/images/figma/11101.webp", alt: "Softball players on the indoor field", button: { label: "Register", href: register } },
+    { title: "Winter hitting clinic", text: "Coming soon. Four weeks, one focus, with HitTrax numbers before and after. Dates and pricing will be posted here.", image: "/images/training/softball-cage.webp", alt: "A softball hitter in an IPL cage", button: { label: "Get notified", href: ask("Softball winter hitting clinic") } },
+    { title: "Fastpitch pitching clinic", text: "Coming soon. Mechanics and spin, with video. Dates and pricing will be posted here.", image: "/images/figma/9aeaf.webp", alt: "A softball team on the IPL infield", button: { label: "Get notified", href: ask("Fastpitch pitching clinic") } },
+    { title: "6v6 winter league", text: "6v6 on the turf infield, with live reps in a fast-paced, competitive environment during the off-season.", image: "/images/figma/11101.webp", alt: "Softball players on the indoor field", button: { label: "Email us to join", href: ask("6v6 Softball league") } },
   ],
 };

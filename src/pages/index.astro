@@ -74,7 +74,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
       <Paragraph slot="column2" variant="large" maxWidth={40}
         >Every path here is coached by people who played or trained at the
         highest level: Brandon’s 13 MLB seasons, 2SP’s strength staff, HP’s
-        throwing program. Pick the one that fits your athlete.</Paragraph
+        throwing program and Champion Mindset’s mental performance coaches. Pick the one that fits your athlete.</Paragraph
       >
     </ContentWrapper>
     <Grid medium={2} class="gap-3">
@@ -139,6 +139,7 @@ import { training, facility, programs, booking, contact } from "@/data/home";
   <Section id="the-den" aria-labelledby="den-title">
     <Scene slot="background" variant="den" />
     <ContentWrapper variant="columns" visualRatio={15 / 16}>
+      <span class="home-den_logo"><img src="/images/figma/d36ad.webp" alt="2SP Sports" width="1920" height="1080" loading="lazy" /></span>
       <Eyebrow>Performance Training Powered by 2SP</Eyebrow>
       <Heading id="den-title">Build the Whole Athlete.</Heading>
       <Paragraph
@@ -230,6 +231,8 @@ import { training, facility, programs, booking, contact } from "@/data/home";
 <style is:global>
   @layer components {
     .home-den_clip { width: min(100%, 22rem); margin-inline: auto; }
+    .home-den_logo { position: relative; display: block; overflow: hidden; width: 10rem; height: 2.28rem; margin-bottom: 1rem; }
+    .home-den_logo > img { position: absolute; max-width: none; width: 107.98%; height: 273.33%; left: -3.99%; top: -86.67%; }
     .home-den_clip .clip-cycler {
       width: 100%; border-radius: 1rem; border: 1px solid rgb(255 255 255 / 0.12);
       box-shadow: 0 0 0 0.5rem rgb(255 255 255 / 0.03), 0 1.5rem 4rem -1rem rgb(0 0 0 / 0.6);

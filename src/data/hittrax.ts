@@ -4,7 +4,7 @@ import { booking } from "@/data/home";
 export const hero = {
   eyebrow: "HitTrax batting cages · Livingston County, MI",
   title: "Deeply understand and improve your swing.",
-  text: "HitTrax tracks exit velocity, launch angle, distance and spray, with video replay, live after every swing. It runs in all six IPL tunnels and it is included with every cage rental and lesson.",
+  text: "HitTrax tracks exit velocity, launch angle, distance and spray, with video replay, live after every swing. It runs in all six IPL tunnels, with another unit on the turf field, and it is included with every cage rental and lesson.",
   image: "/images/batting-cages/hittrax.webp",
   primary: { label: "Book a cage", href: booking },
   secondary: { label: "Book a lesson", href: booking },

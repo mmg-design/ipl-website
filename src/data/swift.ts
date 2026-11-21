@@ -36,6 +36,7 @@ export const swift = {
   },
   /* HP Throwing Program (Kyle Fedorka), November start. For the Pitching page. */
   throwing: {
+    levels: `${facility}/memberships`, // every public membership, including each HP level
     hsWithLifting: membership(8498), // HS Throwing w/ 2SP Lifting, $650/mo
     hsMonFriWithLifting: membership(8604), // HS Throwing Mon/Fri w/ 2SP Lifting, $500/mo
     hsThrowingOnly: membership(8500), // HS Throwing ONLY, $450/mo

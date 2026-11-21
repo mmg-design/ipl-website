@@ -48,7 +48,7 @@ export const stops = {
   text: "The whole floor in fifteen minutes.",
   items: [
     { title: "The Cages", text: "Six tunnels, HitTrax live on the screens.", image: "/images/figma/47586.webp", alt: "Hitter in a batting cage with the HitTrax screen behind", position: "50% 35%" },
-    { title: "The Infield", text: "Full varsity turf. Walk the bases.", image: "/images/infield-turf.webp", alt: "Indoor turf infield at Inge Performance Lab" },
+    { title: "The Infield", text: "Turf built to softball dimensions. Walk the bases.", image: "/images/infield-turf.webp", alt: "Indoor turf infield at Inge Performance Lab" },
     { title: "The Den", text: "The 2SP strength room.", image: "/images/figma/582d5.webp", alt: "Athletes training box jumps in The Den strength room" },
   ],
 };

@@ -1,4 +1,3 @@
-import { swift } from "@/data/swift";
 const asset = (file: string) => `/images/figma/${file}`;
 export const contact = "mailto:info@ingeperformancelab.com";
 export const booking = `${contact}?subject=Cage%20booking%20inquiry`;
@@ -25,7 +24,7 @@ export const training = [
     id: "pitching",
     href: "/training/pitching",
     heading: "Pitching",
-    text: "High Performance Training with Kyle Fedorka",
+    text: "High Performance Training with Kyle Fedorka and Jarret Olson",
     image: asset("8edc4.webp"),
     icon: asset("8dde5.svg"),
     crop: "pitching",
@@ -64,7 +63,7 @@ export const features = [
   },
   {
     heading: "The Den",
-    text: "Strength and speed for every sport. A D1-caliber weight room powered by 2SP.",
+    text: "Strength and speed for baseball and softball athletes. A D1-caliber weight room powered by 2SP.",
     image: asset("28ee9.webp"),
     href: "/the-den",
   },
@@ -83,7 +82,7 @@ export const facility = [
     id: "cages",
     eyebrow: "Cages",
     heading: "Batting Cages",
-    text: "Jr. Hack Attack machines for baseball and softball, HitTrax included in every cage.",
+    text: "Jr. Hack Attack machines, HitTrax and high-quality, professional-caliber baseballs and softballs in every cage.",
     image: asset("bba82.webp"),
     buttonLabel: "Batting Cages",
     buttonHref: "/batting-cages",
@@ -137,7 +136,7 @@ export const facility = [
     id: "leagues",
     eyebrow: "Leagues",
     heading: "Indoor Leagues",
-    text: "Small-sided fastpitch and baseball leagues on the full turf infield all winter. Standings posted, every at-bat tracked.",
+    text: "6v6 fastpitch and baseball leagues on the turf infield all winter, with live reps in a fast-paced, competitive environment during the off-season.",
     image: asset("cc2e2.webp"),
     buttonLabel: "Programs",
     buttonHref: "/programs#leagues",
@@ -147,22 +146,22 @@ export const programs = [
   {
     id: "winter-leagues",
     heading: "6v6 Winter Softball Leagues",
-    text: "10U, 12U and 14U fastpitch, plus 6v6 baseball for players up to age 12, on the full indoor infield. Games count, standings are posted, and every at-bat is tracked on HitTrax. Winter 2027 registration is open.",
+    text: "10U, 12U and 14U fastpitch, plus 6v6 baseball for players up to age 12, on the indoor turf infield. It is all about live reps in a fast-paced, competitive environment during the off-season. Email us to join for Winter 2027.",
     image: asset("cc2e2.webp"),
     href: "/programs#leagues",
   },
   {
     id: "pro-practice",
     heading: "Pro Practice Sessions",
-    text: "Brandon Inge runs your team's practice start to finish, offensive or defensive. 8 to 12 players. Pricing is the $150 per hour field rental plus $20 per player per hour. You bring the roster, he brings the plan.",
+    text: "Brandon Inge runs your team's practice start to finish, offensive or defensive. 8 to 12 players. Defensive sessions are the $150 field rental plus $20 per player. Offensive sessions are the $160 cage rental plus $20 per player. Contact us to schedule.",
     image: asset("78fac.webp"),
-    href: swift.lessons.brandonProOffense,
+    href: "/training/team-rentals#pro-practice",
   },
   {
     id: "team-training",
     heading: "Team Training Blocks",
-    text: "Lock in the infield and cages for your team every week. Organizations that commit to 12 or more weeks get 15% off, and your slot is yours all winter.",
+    text: "Lock in the infield and cages for your team every week. Teams that commit to 12 weeks or more receive a discount, and your slot is yours all winter. Contact us to schedule.",
     image: asset("11101.webp"),
-    href: swift.rentals.fieldCombo90m,
+    href: "/training/team-rentals",
   },
 ];

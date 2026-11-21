@@ -1,4 +1,4 @@
-/** The Den feature page content. Baseball and softball first, open to every sport (per Shani's note). */
+/** The Den feature page content. Page copy stays on baseball and softball; the FAQ covers other sports and links to 2SP. */
 import { booking } from "@/data/home";
 import { swift } from "@/data/swift";
 import { denClips } from "@/data/media";
@@ -6,7 +6,7 @@ import { denClips } from "@/data/media";
 export const hero = {
   eyebrow: "Baseball and softball strength training · Michigan",
   title: "Training built for the sport you play.",
-  text: "The Den is a Division 1 caliber weight room inside IPL, run by 2SP. Rotational power, arm care, speed, agility and durability, programmed for baseball and softball athletes first. Every other sport is welcome on the floor too.",
+  text: "The Den is a Division 1 caliber weight room inside IPL, run by 2SP. Rotational power, arm care, speed, agility and durability, programmed for baseball and softball athletes first.",
   image: "/images/the-den/den-force-plate.webp",
   primary: { label: "Book a session", href: booking },
   secondary: { label: "See memberships", href: "/memberships" },
@@ -38,7 +38,7 @@ export const room = {
 
 export const twoSP = {
   heading: "2SP builds the athlete. IPL makes the ballplayer.",
-  text: "2SP is the foundation for every athlete who comes through IPL. They build strength, speed and agility, then IPL and HP sharpen the baseball and softball player. Hockey, soccer, football and basketball athletes train in The Den all year too.",
+  text: "2SP is the foundation for every athlete who comes through IPL. They build strength, speed and agility, then IPL and HP sharpen the baseball and softball player.",
   button: { label: "Learn more about 2SP", href: "#programs" },
   image: "/images/the-den/den-med-ball-group.webp",
   video: denClips.sledPush.src,
@@ -51,7 +51,7 @@ export const programs = {
   text: "Three monthly programs, plus drop-in and session packages for anyone.",
   tiers: [
     { name: "Foundations", price: "$199/mo", note: "ages 13 and under", features: ["Movement quality, coordination, speed and strength", "Age-appropriate programming", "2SP coach on the floor"], image: "/images/the-den/den-med-ball-throws.webp", alt: "Young athletes doing med ball throws in The Den", cta: { label: "Join", href: swift.memberships.denFoundations } },
-    { name: "Performance Training Lite", price: "$320/mo", note: "ages 14 and up", features: ["Performance Training programming", "[Sessions per week: confirm with Shani]", "2SP coach on the floor"], image: "/images/the-den/den-med-ball-group.webp", alt: "A group doing med ball work in The Den", cta: { label: "Join", href: swift.memberships.denPerformanceLite } },
+    { name: "Performance Training Lite", price: "$320/mo", note: "ages 14 and up", features: ["Performance Training programming", "2 sessions per week (8 per month)", "2SP coach on the floor"], image: "/images/the-den/den-med-ball-group.webp", alt: "A group doing med ball work in The Den", cta: { label: "Join", href: swift.memberships.denPerformanceLite } },
     { name: "Performance Training", price: "$400/mo", note: "ages 14 and up", features: ["Structured small-group training", "Strength, speed, power, agility and movement efficiency", "Proven performance methods", "Return-to-play and in-season cycles", "Coach on the floor"], image: "/images/the-den/den-trap-bar.webp", alt: "An athlete lifting in The Den", imagePosition: "50% 0%", cta: { label: "Join", href: swift.memberships.denPerformance } },
   ],
 };
@@ -67,7 +67,7 @@ export const faqs = {
   heading: "Questions about The Den.",
   text: "Straight answers before your first session.",
   items: [
-    { question: "Do you train athletes from other sports?", answer: "Yes. Baseball and softball come first, but 2SP trains every athlete who walks in. Hockey, soccer, football and basketball players train in The Den all year." },
+    { question: "Do you train athletes from other sports?", answer: "Yes. The Den is built around baseball and softball, but 2SP Sports Performance trains athletes in every sport, including hockey, soccer, football and basketball.", link: { label: "Visit 2SP Sports Performance", href: "https://www.2spsports.com" } },
     { question: "Who runs The Den?", answer: "2SP Sports Performance. Every session has a 2SP coach on the floor, and individual programs are built by the 2SP Director of Strength and Conditioning." },
     { question: "What age can my athlete start?", answer: "Foundations is built for athletes 13 and under, with age-appropriate work on movement quality, coordination, speed and strength. Performance Training is for athletes 14 and up." },
     { question: "Is strength training safe for youth athletes?", answer: "Done right, yes. Young athletes start with movement quality and bodyweight control before load is added, and a coach is on the floor for every rep." },
