@@ -12,8 +12,10 @@ interface Props {
   items: Faq[];
   /** Show the "Still have questions?" prompt. */
   contactPrompt?: boolean;
+  /** Partner logo shown above the contact prompt (Pitching: HP). Light-on-dark logos get a navy chip. */
+  promptLogo?: { src: string; alt: string };
 }
-const { heading, text, items, contactPrompt = false } = Astro.props;
+const { heading, text, items, contactPrompt = false, promptLogo } = Astro.props;
 const answered = items.filter((f) => !f.answer.trim().startsWith("["));
 const schema = answered.length
   ? JSON.stringify({
@@ -37,6 +39,7 @@ const schema = answered.length
   </Accordion>
   {contactPrompt && (
     <div class="faq-section_prompt">
+      {promptLogo && <span class="faq-section_logo"><img src={promptLogo.src} alt={promptLogo.alt} loading="lazy" /></span>}
       <h3 class="faq-section_prompt-title">Still have questions?</h3>
       <p class="faq-section_prompt-text">Call the desk or send the form.</p>
       <Button element="link" href="/contact">Contact us</Button>
@@ -46,6 +49,8 @@ const schema = answered.length
 
 <style is:global>
   @layer components {
+    .faq-section_logo { display: inline-flex; padding: 0.75rem 1.25rem; border-radius: 0.75rem; background: #0b3550; margin-bottom: 0.5rem; }
+    .faq-section_logo img { display: block; height: 2.75rem; width: auto; }
     .faq-section_wrap { width: 100%; max-width: 48rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-8); }
     .faq-section_list .accordion_item:first-child { border-top: var(--border-width) solid var(--border); }
     .faq-section_list .accordion_body { padding-bottom: 1.5rem; }

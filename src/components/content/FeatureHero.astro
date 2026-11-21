@@ -22,14 +22,17 @@ interface Props {
   ticker?: boolean;
   /** "center": centered copy and buttons, no Google badge (Book a Tour, Header 78). */
   align?: "start" | "center";
+  /** Partner logo above the eyebrow (The Den: 2SP, Pitching: HP). */
+  logo?: { src: string; alt: string };
 }
-const { eyebrow, title, text, primary, secondary, media, ticker = false, align = "start" } = Astro.props;
+const { eyebrow, title, text, primary, secondary, media, ticker = false, align = "start", logo } = Astro.props;
 const centered = align === "center";
 ---
 
 {media ? (
 <div class="feature-hero_split">
   <div class="feature-hero_content">
+    {logo && <img class="feature-hero_logo" src={logo.src} alt={logo.alt} />}
     <Eyebrow>{eyebrow}</Eyebrow>
     <Heading tag="h1" variant="h1">{title}</Heading>
     <Paragraph class="max-width-none">{text}</Paragraph>
@@ -48,6 +51,7 @@ const centered = align === "center";
 ) : (
 
 <div class:list={["feature-hero_content", centered && "is-centered"]}>
+  {logo && <img class="feature-hero_logo" src={logo.src} alt={logo.alt} />}
   <Eyebrow>{eyebrow}</Eyebrow>
   <Heading tag="h1" variant="h1">{title}</Heading>
   <Paragraph class="max-width-none">{text}</Paragraph>
@@ -103,6 +107,8 @@ const centered = align === "center";
       padding-block: 9rem var(--space-7);
     }
     .feature-hero_content > * { margin: 0 !important; }
+    .feature-hero_content > .feature-hero_logo { display: block; width: auto; height: 2.5rem; max-width: 100%; margin-bottom: 0.75rem !important; }
+    .feature-hero_content > .feature-hero_logo[src*="high-performance"] { height: 3.75rem; }
     .feature-hero_content .heading { margin-block: 0.25rem 0.5rem !important; }
     /* Subheadline and buttons: the same 3rem between them on every feature hero (content gap + this margin) */
     .feature-hero_actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.25rem !important; }

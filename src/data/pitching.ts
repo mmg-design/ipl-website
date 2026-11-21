@@ -4,8 +4,9 @@ import { swift } from "@/data/swift";
 export const hero = {
   eyebrow: "Baseball pitching lessons · High Performance Training at IPL",
   title: "Expert-backed pitching lessons and training, right here in Michigan.",
-  text: "Pitching at IPL runs through the High Performance Throwing Program, so mechanics, velocity and arm care get coached together instead of one at a time. Every lesson is recorded, and your athlete can complete their strength and sports performance training with 2SP on the same day, all in one spot.",
+  text: "Pitching at IPL runs through High Performance Training, so mechanics, velocity and arm care get coached together instead of one at a time. Every lesson is recorded, and your athlete can complete their strength and sports performance training with 2SP on the same day, all in one spot.",
   image: "/images/figma/8edc4.webp",
+  logo: { src: "/images/logos/high-performance.webp", alt: "High Performance Training" },
   primary: { label: "Book a lesson", href: swift.lessons.hp60 },
 };
 
@@ -46,7 +47,7 @@ export const pricing = {
   heading: "Lesson pricing.",
   text: "One-on-one. Book 30 or 60 minutes online.",
   tiers: [
-    { name: "HP Throwing Program", price: "$130/hr", note: "$65 per 30 minutes", features: ["Kyle Fedorka, Director of Pitching Development", "Jarret Olson", "Mechanics, velocity, arm care", "Video every session"], image: "/images/figma/8edc4.webp", alt: "A pitcher throwing in the tunnel", cta: { label: "Book a lesson", href: swift.lessons.hp60 } },
+    { name: "Individual Throwing Lessons", price: "$130/hr", note: "$65 per 30 minutes", features: ["Kyle Fedorka, Director of Pitching Development", "Jarret Olson", "Mechanics, velocity, arm care", "Video every session"], image: "/images/figma/8edc4.webp", alt: "A pitcher throwing in the tunnel", cta: { label: "Book a lesson", href: swift.lessons.hp60 } },
   ],
 };
 

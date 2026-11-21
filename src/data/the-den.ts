@@ -1,28 +1,35 @@
-/** The Den feature page content. Page copy stays on baseball and softball; the FAQ covers other sports and links to 2SP. */
-import { booking } from "@/data/home";
+/** The Den feature page content. Copy from Abe (2SP); the FAQ covers other sports and links to 2SP. */
 import { swift } from "@/data/swift";
 import { denClips } from "@/data/media";
 
 export const hero = {
-  eyebrow: "Baseball and softball strength training · Michigan",
-  title: "Training built for the sport you play.",
-  text: "The Den is a Division 1 caliber weight room inside IPL, run by 2SP. Rotational power, arm care, speed, agility and durability, programmed for baseball and softball athletes first.",
+  eyebrow: "Sports Performance Training · Michigan",
+  title: "Building Better Humans Through Sport",
+  text: "The Den powered by 2SP Sports delivers a comprehensive sports performance experience designed to develop stronger, faster, and more explosive athletes. Through individualized programming, expert coaching, and a commitment to long-term athletic development, we prepare athletes to perform at their highest level.",
   image: "/images/the-den/den-force-plate.webp",
-  primary: { label: "Book a session", href: booking },
-  secondary: { label: "See memberships", href: "/memberships" },
+  logo: { src: "/images/logos/2sp-sports.webp", alt: "2SP Sports" },
+  primary: { label: "Book Free Assessment", href: "#free-assessment" },
+  secondary: { label: "See memberships", href: "#memberships" },
   media: {
     clips: [denClips.boxJump, denClips.trapBar, denClips.sledPush, denClips.splitSquat, denClips.stepUp, denClips.forcePlate],
   },
 };
 
-export const packages = {
-  eyebrow: "Flexible packages",
-  heading: "Drop in or buy a pack.",
-  text: "No membership required. Same floor, same coaches.",
-  items: [
-    { title: "Drop-in session", text: "$60 for a single session. Show up, train, leave.", image: "/images/the-den/den-hex-bar.webp", alt: "An athlete pulling a hex bar in The Den" },
-    { title: "10 session package", text: "$450. Ten sessions, use them on your schedule.", image: "/images/the-den/den-band-lateral.webp", alt: "An athlete doing banded lateral work in The Den" },
-    { title: "20 session package", text: "$800. The best per-session rate in the building.", image: "/images/the-den/den-sprint-start.webp", alt: "An athlete driving out of a sprint start" },
+/* Every Den option in one place at the top of the page (per Abe). */
+export const memberships = {
+  id: "memberships-title",
+  eyebrow: "Memberships",
+  heading: "Where Grit Fuels Growth",
+  text: "Three monthly programs by age, plus a 10-session pack and drop-ins. Not sure where to start? Book a free assessment.",
+  tiers: [
+    { name: "Performance Training", price: "$400/mo", note: "ages 12 to 18", description: "Comprehensive strength and conditioning designed to maximize athletic performance through 12 coach-led training sessions per month.", features: ["12 coach-led sessions a month", "Strength, speed and conditioning", "Led by a certified strength coach"], image: "/images/the-den/den-trap-bar.webp", alt: "An athlete lifting in The Den", imagePosition: "50% 0%", cta: { label: "Join", href: swift.memberships.denPerformance } },
+    { name: "Performance Training Lite", price: "$320/mo", note: "ages 12 to 18", description: "A flexible performance training option offering 8 coach-led sessions per month to build strength, speed, and athleticism.", features: ["8 coach-led sessions a month", "Strength, speed and athleticism", "Led by a certified strength coach"], image: "/images/the-den/den-med-ball-group.webp", alt: "A group doing med ball work in The Den", cta: { label: "Join", href: swift.memberships.denPerformanceLite } },
+    { name: "Foundations", price: "$199/mo", note: "ages 9 to 11", description: "Introduce young athletes to proper movement mechanics, coordination, and foundational strength through 8 age-appropriate sessions per month in a group.", features: ["8 group sessions a month", "Movement, coordination and strength", "Age-appropriate programming"], image: "/images/the-den/den-med-ball-throws.webp", alt: "Young athletes doing med ball throws in The Den", cta: { label: "Join", href: swift.memberships.denFoundations } },
+  ],
+  actions: [
+    { label: "10-Session Pack: $450", href: swift.packages.den10, emphasis: "secondary" as const },
+    { label: "Drop-In: $60/session", href: swift.classes, emphasis: "secondary" as const },
+    { label: "Book a Free Assessment", href: "#free-assessment", emphasis: "primary" as const },
   ],
 };
 
@@ -30,7 +37,7 @@ export const room = {
   eyebrow: "The room",
   heading: "Racks, turf, sleds, space.",
   text: "Platforms and racks, open turf for sled and med ball work, and the space to run a full group without waiting on a station. 2SP coaches are on the floor for every session.",
-  button: { label: "Book a tour", href: booking },
+  button: { label: "Book a Free Assessment", href: "#free-assessment" },
   image: "/images/the-den/den-trap-bar.webp",
   video: denClips.trapBar.src,
   alt: "An athlete doing trap bar deadlifts in front of the racks",
@@ -39,21 +46,10 @@ export const room = {
 export const twoSP = {
   heading: "2SP builds the athlete. IPL makes the ballplayer.",
   text: "2SP is the foundation for every athlete who comes through IPL. They build strength, speed and agility, then IPL and HP sharpen the baseball and softball player.",
-  button: { label: "Learn more about 2SP", href: "#programs" },
+  button: { label: "See memberships", href: "#memberships" },
   image: "/images/the-den/den-med-ball-group.webp",
   video: denClips.sledPush.src,
   alt: "2SP coaches running a sled push in The Den",
-};
-
-export const programs = {
-  eyebrow: "Programs",
-  heading: "Pick your program.",
-  text: "Three monthly programs, plus drop-in and session packages for anyone.",
-  tiers: [
-    { name: "Foundations", price: "$199/mo", note: "ages 13 and under", features: ["Movement quality, coordination, speed and strength", "Age-appropriate programming", "2SP coach on the floor"], image: "/images/the-den/den-med-ball-throws.webp", alt: "Young athletes doing med ball throws in The Den", cta: { label: "Join", href: swift.memberships.denFoundations } },
-    { name: "Performance Training Lite", price: "$320/mo", note: "ages 14 and up", features: ["Performance Training programming", "2 sessions per week (8 per month)", "2SP coach on the floor"], image: "/images/the-den/den-med-ball-group.webp", alt: "A group doing med ball work in The Den", cta: { label: "Join", href: swift.memberships.denPerformanceLite } },
-    { name: "Performance Training", price: "$400/mo", note: "ages 14 and up", features: ["Structured small-group training", "Strength, speed, power, agility and movement efficiency", "Proven performance methods", "Return-to-play and in-season cycles", "Coach on the floor"], image: "/images/the-den/den-trap-bar.webp", alt: "An athlete lifting in The Den", imagePosition: "50% 0%", cta: { label: "Join", href: swift.memberships.denPerformance } },
-  ],
 };
 
 export const clips = {
@@ -68,10 +64,12 @@ export const faqs = {
   text: "Straight answers before your first session.",
   items: [
     { question: "Do you train athletes from other sports?", answer: "Yes. The Den is built around baseball and softball, but 2SP Sports Performance trains athletes in every sport, including hockey, soccer, football and basketball.", link: { label: "Visit 2SP Sports Performance", href: "https://www.2spsports.com" } },
-    { question: "Who runs The Den?", answer: "2SP Sports Performance. Every session has a 2SP coach on the floor, and individual programs are built by the 2SP Director of Strength and Conditioning." },
-    { question: "What age can my athlete start?", answer: "Foundations is built for athletes 13 and under, with age-appropriate work on movement quality, coordination, speed and strength. Performance Training is for athletes 14 and up." },
+    { question: "Who runs The Den?", answer: "2SP Sports Performance. Individual programs are built by the 2SP Director of Strength and Conditioning." },
+    { question: "Are the training sessions led by a coach?", answer: "Yes. Every session in The Den is led by a Certified Strength and Conditioning Specialist." },
+    { question: "How old do they need to be to train in The Den?", answer: "Our Foundations sessions accept ages 9 through 11. Our Performance Training sessions accept ages 12 through 18." },
+    { question: "What do sessions look like for ages 11 and under?", answer: "Our Foundations group emphasizes proper technique and fundamental movement patterns in strength training, speed development, and plyometrics. This program is designed to build a strong athletic foundation that supports long-term development." },
     { question: "Is strength training safe for youth athletes?", answer: "Done right, yes. Young athletes start with movement quality and bodyweight control before load is added, and a coach is on the floor for every rep." },
-    { question: "Do I need a membership to train in The Den?", answer: "No. Drop in for $60, or buy a 10 session pack for $450 or a 20 session pack for $800. Monthly programs start at $199." },
+    { question: "Do I need a membership to train in The Den?", answer: "No. Drop in for $60 a session or buy a 10-session pack for $450. Monthly programs start at $199. Not sure which fits? Book a free assessment." },
     { question: "Can my athlete train in season?", answer: "Yes. Programs run return-to-play and in-season cycles, so athletes keep strength through the season without wearing down." },
     { question: "Can I combine The Den with cage time?", answer: "Yes. Platinum memberships include unlimited cage sessions plus a custom 2SP program in The Den, two or three sessions a week depending on age." },
     { question: "Do you program arm care for pitchers?", answer: "Yes. Arm care is built into the programming and coordinated with High Performance Training, so pitchers get stronger without conflicting plans." },

@@ -6,6 +6,8 @@ import { tipFor } from "@/data/pricing-glossary";
 
 interface Tier {
   name: string; price: string; note?: string; features: string[];
+  /** Short paragraph under the price. */
+  description?: string;
   image?: string; alt?: string; cta: { label: string; href: string };
   /** CSS object-position for the photo, e.g. "50% 0%" to keep heads in frame. */
   imagePosition?: string;
@@ -36,6 +38,7 @@ const uid = Math.random().toString(36).slice(2, 7);
           <p class="pricing-tiers_amount">{tier.price}</p>
           {tier.note && <p class="pricing-tiers_note">{tier.note}</p>}
         </div>
+        {tier.description && <p class="pricing-tiers_description">{tier.description}</p>}
         <ul class="pricing-tiers_features" role="list">
           {tier.features.map((f, j) => {
             const tip = tipFor(f);
@@ -94,6 +97,7 @@ const uid = Math.random().toString(36).slice(2, 7);
     .pricing-tiers_price > p { margin: 0; }
     .pricing-tiers_amount { font-size: clamp(2.75rem, 4vw, 3.625rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; }
     .pricing-tiers_note { font-size: 0.9375rem; line-height: 1.5; opacity: 0.85; }
+    .pricing-tiers_description { margin: 0; font-size: 0.9375rem; line-height: 1.55; text-align: center; opacity: 0.9; }
     .pricing-tiers_features { list-style: none; margin: 0; padding: 0.25rem 0 0; width: 100%; display: flex; flex-direction: column; gap: 0.75rem; border-top: 1px solid rgb(255 255 255 / 0.1); padding-top: 1.5rem; }
     .pricing-tiers_features li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9375rem; line-height: 1.45; }
     .pricing-tiers_features li > svg { width: 1rem; height: 1rem; flex: none; color: white; }

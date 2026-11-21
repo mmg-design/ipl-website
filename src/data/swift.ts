@@ -8,6 +8,7 @@ const facility = "https://book.runswiftapp.com/facilities/ingeperformancelab";
 const rental = (id: number) => `${facility}/rentals?rentalId=${id}`;
 const membership = (id: number) => `${facility}/memberships?membershipId=${id}`;
 const lesson = (id: number) => `${facility}/lessons?lessonId=${id}`;
+const pkg = (id: number) => `${facility}/packages?packageId=${id}`;
 
 export const swift = {
   home: facility,
@@ -27,13 +28,19 @@ export const swift = {
     silver: membership(7873), // Silver Cage Membership, $149/mo
     gold: membership(7872), // Gold Cage Membership, $199/mo
     unlimited: membership(7871), // Unlimited Cage Membership, $299/mo
-    platinumFoundations: membership(8714), // Platinum Foundations, $500/mo (13 and under)
-    platinumPerformance: membership(8713), // Platinum Performance, $700/mo (14 and up)
+    platinumFoundations: membership(8714), // Platinum Foundations, $500/mo (11 and under)
+    platinumPerformance: membership(8713), // Platinum Performance, $700/mo (12 and up)
     denFoundations: membership(7875), // The Den Foundations Training, $199/mo
     denPerformance: membership(7503), // The Den Performance Training, $400/mo
     denPerformanceLite: membership(8453), // The Den Performance Training Lite, $320/mo
     ingeEliteOrange: membership(8655), // Inge Elite Orange, $730/mo
   },
+  /* Credit packages. */
+  packages: {
+    den10: pkg(4678), // The Den 10-Session Package, $450
+  },
+  /* Group classes, including The Den's Foundations (11 and under) and Performance Training (12+) sessions. Drop-ins book here. */
+  classes: `${facility}/classes`,
   /* HP Throwing Program (Kyle Fedorka), November start. For the Pitching page. */
   throwing: {
     levels: `${facility}/memberships`, // every public membership, including each HP level

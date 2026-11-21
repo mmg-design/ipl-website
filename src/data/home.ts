@@ -62,8 +62,8 @@ export const features = [
     href: "/hittrax",
   },
   {
-    heading: "The Den",
-    text: "Strength and speed for baseball and softball athletes. A D1-caliber weight room powered by 2SP.",
+    heading: "The Den powered by 2SP Sports",
+    text: "The Den powered by 2SP Sports delivers comprehensive sports performance designed to develop stronger, faster, and more explosive athletes.",
     image: asset("28ee9.webp"),
     href: "/the-den",
   },
@@ -98,9 +98,9 @@ export const facility = [
   },
   {
     id: "strength",
-    eyebrow: "Strength",
+    eyebrow: "Weight Room",
     heading: "The Den",
-    text: "A Division 1 caliber weight room run by 2SP. Strength, speed and conditioning built for baseball and softball bodies.",
+    text: "The Den powered by 2SP Sports delivers comprehensive sports performance designed to develop stronger, faster, and more explosive athletes.",
     image: "/images/the-den/den-med-ball-group.webp",
     buttonLabel: "The Den",
     buttonHref: "/#the-den",

@@ -1,0 +1,93 @@
+---
+/**
+ * 2SP's "Free Assessment - IPL" GoHighLevel form in a centered popup.
+ * Any link to "#free-assessment" opens it (and a page loaded with that hash opens it too).
+ * The form only loads on first open, so pages stay light until someone asks for it.
+ */
+const formId = "2w1bpVzihSGXsr0Bd0iT";
+---
+
+<dialog id="free-assessment" class="free-assessment" aria-labelledby="free-assessment-title" data-form-id={formId}>
+  <div class="free-assessment_head">
+    <h2 id="free-assessment-title" class="free-assessment_title">Book a free assessment</h2>
+    <button type="button" class="free-assessment_close" aria-label="Close" data-close>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </button>
+  </div>
+  <div class="free-assessment_body"><p class="free-assessment_loading" role="status">Loading the form…</p></div>
+</dialog>
+
+<script is:inline>
+  (() => {
+    const dialog = document.getElementById("free-assessment");
+    if (!dialog) return;
+    const id = dialog.dataset.formId;
+    let loaded = false;
+    const load = () => {
+      if (loaded) return;
+      loaded = true;
+      const frame = document.createElement("iframe");
+      frame.src = `https://api.leadconnectorhq.com/widget/form/${id}`;
+      frame.id = `inline-${id}`;
+      frame.title = "Free Assessment - IPL";
+      frame.style.cssText = "width:100%;height:731px;border:none;border-radius:8px";
+      frame.setAttribute("data-layout", "{'id':'INLINE'}");
+      frame.setAttribute("data-trigger-type", "alwaysShow");
+      frame.setAttribute("data-activation-type", "alwaysActivated");
+      frame.setAttribute("data-deactivation-type", "neverDeactivate");
+      frame.setAttribute("data-form-name", "Free Assessment - IPL");
+      frame.setAttribute("data-height", "731");
+      frame.setAttribute("data-layout-iframe-id", `inline-${id}`);
+      frame.setAttribute("data-form-id", id);
+      dialog.querySelector(".free-assessment_body").append(frame);
+      const s = document.createElement("script");
+      s.src = "https://link.msgsndr.com/js/form_embed.js";
+      s.async = true;
+      document.body.append(s);
+    };
+    const open = () => { load(); if (!dialog.open) dialog.showModal(); };
+    const isTrigger = (t) => t && t.closest && t.closest('a[href$="#free-assessment"]');
+    // Start loading the form as soon as someone heads for a button, so it is ready by the click.
+    document.addEventListener("pointerover", (e) => { if (isTrigger(e.target)) load(); }, { passive: true });
+    document.addEventListener("focusin", (e) => { if (isTrigger(e.target)) load(); });
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest && e.target.closest('a[href$="#free-assessment"]');
+      if (!link) return;
+      const url = new URL(link.href, location.href);
+      if (url.pathname !== location.pathname) return; // a link from another page just navigates
+      e.preventDefault();
+      open();
+    });
+    dialog.querySelector("[data-close]").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (e) => { if (e.target === dialog) dialog.close(); });
+    dialog.addEventListener("close", () => { if (location.hash === "#free-assessment") history.replaceState(null, "", location.pathname + location.search); });
+    if (location.hash === "#free-assessment") open();
+  })();
+</script>
+
+<style is:global>
+  /* Unlayered on purpose: the site's base reset zeroes dialog margins and backgrounds. */
+  dialog.free-assessment {
+    position: fixed; inset: 0; margin: auto; height: fit-content;
+    width: min(40rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem);
+    padding: 0; border: none; border-radius: 0.75rem; overflow: auto;
+    background: #fff; color: #022337;
+    box-shadow: 0 1.5rem 4rem rgb(1 26 41 / 0.45);
+  }
+  dialog.free-assessment:not([open]) { display: none; }
+  dialog.free-assessment::backdrop { background: rgb(1 20 33 / 0.7); backdrop-filter: blur(2px); }
+  .free-assessment_head {
+    position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1rem 1.25rem; background: #fff; border-bottom: 1px solid rgb(2 35 55 / 0.1);
+  }
+  .free-assessment_title { margin: 0; font-size: 1.25rem; font-weight: 800; line-height: 1.2; color: #022337; }
+  .free-assessment_close {
+    display: inline-flex; width: 2.5rem; height: 2.5rem; align-items: center; justify-content: center; flex: none;
+    border: none; border-radius: 50%; color: #022337; background: rgb(2 35 55 / 0.06); cursor: pointer;
+  }
+  .free-assessment_close svg { width: 1.125rem; height: 1.125rem; }
+  .free-assessment_close:hover, .free-assessment_close:focus-visible { background: rgb(2 35 55 / 0.12); }
+  .free-assessment_body { padding: 0.75rem 1rem 1rem; background: #fff; }
+  .free-assessment_loading { margin: 1.5rem 0; text-align: center; font-size: 0.9375rem; color: rgb(2 35 55 / 0.7); }
+  .free-assessment_body:has(iframe[style*="visibility: visible"]) .free-assessment_loading { display: none; }
+</style>

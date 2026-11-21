@@ -11,7 +11,9 @@ import PricingTiers from "@/components/content/PricingTiers.astro";
 import TestimonialsSection from "@/components/content/TestimonialsSection.astro";
 import BlogTeaser from "@/components/content/BlogTeaser.astro";
 import CtaMain from "@/components/content/CtaMain.astro";
-import { hero, packages, room, twoSP, programs, clips, faqs } from "@/data/the-den";
+import Button from "@/components/Button.astro";
+import FreeAssessment from "@/components/content/FreeAssessment.astro";
+import { hero, memberships, room, twoSP, clips, faqs } from "@/data/the-den";
 ---
 
 <Layout theme="dark" overlap title="The Den: Baseball and Softball Strength Training in Michigan">
@@ -20,7 +22,12 @@ import { hero, packages, room, twoSP, programs, clips, faqs } from "@/data/the-d
     <FeatureHero {...hero} />
   </Section>
 
-  {/* Flexible packages: hidden for now (data kept in the-den.ts as `packages`). */}
+  <Section id="memberships" theme="light" class="feature_section" aria-labelledby="memberships-title">
+    <PricingTiers {...memberships} />
+    <div class="den-memberships_actions">
+      {memberships.actions.map((a) => <Button element="link" href={a.href} emphasis={a.emphasis}>{a.label}</Button>)}
+    </div>
+  </Section>
 
   <Section id="clips" theme="dark" class="feature_section" aria-label="Inside The Den">
     <ClipReel {...clips} />
@@ -32,10 +39,6 @@ import { hero, packages, room, twoSP, programs, clips, faqs } from "@/data/the-d
 
   <Section id="2sp" theme="dark" class="feature_section feature_section-glow" aria-label="About 2SP">
     <SplitFeature {...twoSP} headingVariant="h3" />
-  </Section>
-
-  <Section id="programs" theme="light" class="feature_section" aria-labelledby="pricing-title">
-    <PricingTiers {...programs} />
   </Section>
 
   <Section id="faqs" theme="light" class="feature_section" aria-labelledby="faqs-title">
@@ -54,4 +57,12 @@ import { hero, packages, room, twoSP, programs, clips, faqs } from "@/data/the-d
     <Scene slot="background" variant="cta" />
     <CtaMain />
   </Section>
+
+  <FreeAssessment />
 </Layout>
+
+<style is:global>
+  @layer components {
+    .den-memberships_actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: var(--space-8); }
+  }
+</style>

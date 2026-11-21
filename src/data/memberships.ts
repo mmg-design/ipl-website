@@ -56,8 +56,8 @@ export const included = {
 export const den = {
   eyebrow: "Strength only",
   heading: "Just want The Den?",
-  text: "The Den runs its own monthly programs, coached by 2SP: Foundations for ages 13 and under at $199, Performance Training Lite at $320 and Performance Training at $400. No cage plan needed.",
-  button: { label: "See Den programs", href: "/the-den#programs" },
+  text: "The Den runs its own monthly programs, coached by 2SP: Foundations for ages 9 to 11 at $199, and Performance Training Lite at $320 or Performance Training at $400 for ages 12 to 18. No cage plan needed.",
+  button: { label: "See Den programs", href: "/the-den#memberships" },
   image: "/images/the-den/den-band-lateral.webp",
   video: denClips.splitSquat.src,
   alt: "An athlete doing split squats at the rack in The Den",
