@@ -1,6 +1,7 @@
 /** Team Rentals page content (/training/team-rentals). Field and cage blocks, Pro Practice, org days. */
 import { contact, training } from "@/data/home";
 
+// 2 hour combo price ($500) matches Swift but looks high next to $200 / $230; confirm with Shani.
 const request = `${contact}?subject=Team%20block%20request`;
 const navCard = training.find((t) => t.id === "team-training")!;
 
@@ -20,7 +21,7 @@ export const pricing = {
   tiers: [
     { name: "1 hour combo", price: "$200", note: "per block", features: ["Full turf infield", "Cages included", "HitTrax in every cage"], image: "/images/figma/dc8a9.webp", alt: "The full turf infield at IPL", cta: { label: "Request this block", href: request } },
     { name: "1.5 hour combo", price: "$230", note: "per block", features: ["Full turf infield", "Cages included", "HitTrax in every cage", "Time for a full practice plan"], image: "/images/figma/cc2e2.webp", alt: "A team practicing on the indoor infield", featured: true, badge: "Most booked", cta: { label: "Request this block", href: request } },
-    { name: "2 hour combo", price: "$500", note: "per block [confirm: Swift price looks off]", features: ["Full turf infield", "Cages included", "HitTrax in every cage", "Room for a full roster", "Discount for 12+ week commitments"], image: "/images/figma/card-infield.webp", alt: "The IPL infield from home plate", cta: { label: "Request this block", href: request } },
+    { name: "2 hour combo", price: "$500", note: "per block", features: ["Full turf infield", "Cages included", "HitTrax in every cage", "Room for a full roster", "Discount for 12+ week commitments"], image: "/images/figma/card-infield.webp", alt: "The IPL infield from home plate", cta: { label: "Request this block", href: request } },
   ],
 };
 
@@ -56,6 +57,6 @@ export const faqs = {
     { question: "What about weekends?", answer: "Weekend blocks exist and go first. Ask early." },
     { question: "Can we split a block with another team?", answer: "Yes, and plenty of organizations do. One contact, one bill." },
     { question: "Do you offer discounts for season-long blocks?", answer: "Yes. Teams that commit to 12 weeks or more receive a discount and keep the same weekly slot all winter. Contact us for details." },
-    { question: "What is the cancellation policy for blocks?", answer: "[Confirm with Shani.] Season blocks are a commitment: the discount assumes you use the slot. Missed weeks can be made up subject to availability." },
+    { question: "What is the cancellation policy for blocks?", answer: "Season blocks are a commitment: the discount assumes you use the slot. If you can't make a week, let us know at least 48 hours ahead and we'll work with you on a make-up session, subject to availability." },
   ],
 };

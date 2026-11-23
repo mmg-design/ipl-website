@@ -32,8 +32,8 @@ export const fallbackCoaches: Coach[] = [
   { name: "Strength Lead, 2SP Sports Performance", role: "The Den powered by 2SP", bio: "Strength, speed and conditioning for every sport that walks in.", sports: ["strength"] },
   { name: "Champion Mindset Coach", role: "Mental performance", bio: "Confidence and pressure, coached as a skill.", sports: ["mental"] },
   { name: "Jordan Humitz", role: "Softball lead", bio: "Hitting and pitching instruction for fastpitch athletes, with deep roots in the Michigan travel softball community.", sports: ["softball"] },
-  { name: "Megan Bondy", role: "Softball hitting instructor", bio: "Softball hitting lessons for fastpitch athletes. [Credentials: confirm with Shani]", sports: ["softball"], aboutPage: false },
-  { name: "Taylor Wagner", role: "Softball catching instructor", bio: "Catching lessons for fastpitch athletes. [Credentials: confirm with Shani]", sports: ["softball"], aboutPage: false },
+  { name: "Megan Bondy", role: "Softball hitting instructor", bio: "Softball hitting lessons for fastpitch athletes, from first swings through travel ball.", sports: ["softball"], aboutPage: false },
+  { name: "Taylor Wagner", role: "Softball catching instructor", bio: "Catching lessons for fastpitch athletes: receiving, blocking, framing and throwing out runners.", sports: ["softball"], aboutPage: false },
   { name: "Rob Heumann", role: "Hitting instructor", bio: "IPL's lead hitting and fielding instructor, and assistant varsity baseball and hitting coach at Detroit Country Day School.", sports: ["baseball"], aboutPage: false },
 ];
 

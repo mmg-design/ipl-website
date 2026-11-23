@@ -80,6 +80,6 @@ export const faqs = {
     { question: "How much does it cost?", answer: "Champion Mindset Group sets its own rates and handles booking. IPL athletes get 10% off their first private session. Mention IPL when you book." },
     { question: "How do I book?", answer: "Book directly with Champion Mindset Group at champmindset.com. Have a question first? Contact IPL and we'll point you to the right coach." },
     { question: "Can my whole team do this?", answer: "Yes. Champion Mindset Group runs team development on communication, leadership and shared routines, and joins IPL camps and special events. Contact us to set one up." },
-    { question: "What ages do you work with?", answer: "[Confirm age range with Champion Mindset Group.]" },
+    { question: "What ages do you work with?", answer: "Youth, high school and college athletes, usually from about age 10 up. Champion Mindset Group can tell you whether a younger athlete is ready." },
   ],
 };

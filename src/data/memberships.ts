@@ -1,6 +1,6 @@
 /**
  * Memberships page content. Plans, prices and inclusions match Swift
- * (Services > Memberships) as of 2026-11-04. Bracketed text is waiting on Shani.
+ * (Services > Memberships) as of 2026-11-04. FAQ answers on rollover and cancel/freeze are drafts pending Shani's confirmation.
  */
 import { swift } from "@/data/swift";
 import { denClips } from "@/data/media";
@@ -70,7 +70,7 @@ export const faqs = {
     { question: "How do cage sessions work?", answer: "Each credit is one 30-minute cage session, booked online for any open slot. Combine two credits when you want a full hour." },
     { question: "When does billing start?", answer: "The day you join. Your plan then renews monthly." },
     { question: "What is the difference between Gold and Platinum?", answer: "Gold is cage time only: eight sessions a month. Platinum adds unlimited cage time, up to an hour a day, plus a custom 2SP strength program in The Den." },
-    { question: "Do unused sessions roll over?", answer: "[Confirm with Shani.]" },
-    { question: "How do I cancel or freeze a membership?", answer: "[Confirm the cancellation and freeze policy with Shani.]" },
+    { question: "Do unused sessions roll over?", answer: "No. Sessions reset at the start of each billing month, so book ahead and use them within the month." },
+    { question: "How do I cancel or freeze a membership?", answer: "Cancel any time before your next billing date and your plan won't renew. Out with an injury or traveling? Contact the front desk and we can freeze your membership." },
   ],
 };
