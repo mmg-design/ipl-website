@@ -32,7 +32,7 @@ on:
 permissions:
   contents: write
   checks: read
-  statuses: read
+  statuses: write
 
 concurrency:
   group: mmg-agent-${{ inputs.branch }}
@@ -116,10 +116,20 @@ jobs:
           for i in $(seq 1 60); do
             total=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs" -q '.total_count')
             open=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs" -q '[.check_runs[] | select(.status != "completed")] | length')
-            if [ "$total" -gt 0 ] && [ "$open" -eq 0 ]; then echo "Preview build finished."; exit 0; fi
+            if [ "$total" -gt 0 ] && [ "$open" -eq 0 ]; then echo "Preview build finished."; break; fi
             sleep 15
           done
-          echo "The preview build didn't finish within 15 minutes; the dashboard will keep looking for it."
+          # Pass Cloudflare's preview details on as a commit status the dashboard can read.
+          summary=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs" -q '[.check_runs[].output.summary // ""] | join("\n")')
+          version=$(printf '%s' "$summary" | grep -oiE 'Version ID: *[0-9a-f]{8}' | head -1 | grep -oiE '[0-9a-f]{8}$' || true)
+          url=$(printf '%s' "$summary" | grep -oE 'https://[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev[^ )]*' | head -1 || true)
+          if [ -n "$version$url" ]; then
+            gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$sha" -f state=success -f context="MMG preview" \
+              -f description="Cloudflare version ${version:-unknown}" ${url:+-f target_url="$url"} >/dev/null
+            echo "Preview: ${url:-version $version}"
+          else
+            echo "No preview details yet; the dashboard will keep looking."
+          fi
 
       - name: Tell the dashboard
         if: always() && env.CALLBACK != ''
