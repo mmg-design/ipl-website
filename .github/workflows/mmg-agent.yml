@@ -1,0 +1,128 @@
+# MMG Studio agent: makes one task's change on its own branch.
+# Started only by the MMG dashboard (workflow_dispatch). It never merges or
+# deploys to production: it pushes to an mmg-agent/* branch, Cloudflare builds
+# a preview for that branch, and the dashboard opens the pull request.
+name: MMG agent
+run-name: "MMG agent run ${{ inputs.run_id }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Dashboard run number
+        required: true
+        type: string
+      branch:
+        description: Branch to work on (mmg-agent/...)
+        required: true
+        type: string
+      title:
+        description: Short title for the change
+        required: true
+        type: string
+      brief:
+        description: What to change
+        required: true
+        type: string
+      callback:
+        description: Dashboard address to tell when the run finishes
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  checks: read
+  statuses: read
+
+concurrency:
+  group: mmg-agent-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      RUN_ID: ${{ inputs.run_id }}
+      BRANCH: ${{ inputs.branch }}
+      TITLE: ${{ inputs.title }}
+      BRIEF: ${{ inputs.brief }}
+      CALLBACK: ${{ inputs.callback }}
+    steps:
+      - name: Check the inputs
+        run: |
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "run_id must be a number"; exit 1; }
+          [[ "$BRANCH" =~ ^mmg-agent/[a-z0-9-]+$ ]] || { echo "branch must look like mmg-agent/task-12"; exit 1; }
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Start from the task branch
+        run: |
+          git config user.name "MMG Studio agent"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            git checkout -b "$BRANCH"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Make the change
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODEL: ${{ vars.MMG_AGENT_MODEL || 'claude-opus-5-5' }}
+        run: |
+          { cat .github/mmg-agent/prompt.md; printf '\n%s\n' "$BRIEF"; } > "$RUNNER_TEMP/prompt.md"
+          npx -y @anthropic-ai/claude-code@2.1.322 -p \
+            --model "$MODEL" \
+            --permission-mode acceptEdits \
+            --allowedTools "Read" "Glob" "Grep" "Edit" "Write" "Bash(npm run build)" "Bash(npm run check)" \
+            --disallowedTools "Edit(.github/**)" "Write(.github/**)" "WebFetch" "WebSearch" \
+            --output-format json < "$RUNNER_TEMP/prompt.md" > "$RUNNER_TEMP/out.json"
+          jq -r '.result // "The agent finished without a summary."' "$RUNNER_TEMP/out.json" > "$RUNNER_TEMP/summary.md"
+          echo "Cost: \$$(jq -r '.total_cost_usd // "?"' "$RUNNER_TEMP/out.json")"
+          tee -a "$GITHUB_STEP_SUMMARY" < "$RUNNER_TEMP/summary.md"
+          if [ "$(jq -r '.is_error // false' "$RUNNER_TEMP/out.json")" = "true" ]; then exit 1; fi
+
+      - name: Keep protected files untouched
+        run: |
+          bad=$(git status --porcelain -- .github package.json package-lock.json wrangler.jsonc astro.config.mjs)
+          if [ -n "$bad" ]; then echo "The agent changed files it must not touch:"; echo "$bad"; exit 1; fi
+
+      - name: Check the site builds
+        run: npm run build
+
+      - name: Commit and push
+        run: |
+          git add -A
+          { echo "$TITLE"; echo; cat "$RUNNER_TEMP/summary.md"; echo; echo "MMG-Agent-Run: $RUN_ID"; } > "$RUNNER_TEMP/message.txt"
+          git commit --allow-empty -F "$RUNNER_TEMP/message.txt"
+          git push origin "$BRANCH"
+
+      # The dashboard reads the preview link from this build, so give it time.
+      - name: Wait for the preview build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha=$(git rev-parse HEAD)
+          for i in $(seq 1 60); do
+            total=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs" -q '.total_count')
+            open=$(gh api "repos/$GITHUB_REPOSITORY/commits/$sha/check-runs" -q '[.check_runs[] | select(.status != "completed")] | length')
+            if [ "$total" -gt 0 ] && [ "$open" -eq 0 ]; then echo "Preview build finished."; exit 0; fi
+            sleep 15
+          done
+          echo "The preview build didn't finish within 15 minutes; the dashboard will keep looking for it."
+
+      - name: Tell the dashboard
+        if: always() && env.CALLBACK != ''
+        run: |
+          curl -sS -X POST -H "Content-Type: application/json" --max-time 20 \
+            -d "{\"runId\": $RUN_ID}" "$CALLBACK" || true
